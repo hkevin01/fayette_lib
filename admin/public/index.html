@@ -139,6 +139,7 @@
     <button class="tab-btn" data-tab="hosting">🏠 Hosting Info</button>
     <button class="tab-btn" data-tab="staff">👥 Staff</button>
     <button class="tab-btn" data-tab="homepage-images">🖼️ Images</button>
+    <button class="tab-btn" data-tab="jobs">💼 Jobs</button>
     <button class="tab-btn" data-tab="recyclebin">🗑️ Recycle Bin</button>
     <button class="tab-btn" data-tab="activitylog">🔍 Activity Log</button>
     <button class="tab-btn" data-tab="backups">💾 Backups</button>
@@ -298,6 +299,22 @@
 
     <!-- ===== ANALYTICS DASHBOARD TAB ===== -->
     <div class="tab-pane" id="tab-analytics">
+
+      <!-- Period Selector -->
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-body" style="display:flex;align-items:center;flex-wrap:wrap;gap:.75rem">
+          <strong style="font-size:.9rem;color:var(--gray-600)">Period:</strong>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap" id="analyticsPeriodBtns">
+            <button class="btn btn-sm" data-period="24h" onclick="setAnalyticsPeriod('24h')" style="background:var(--blue);color:#fff">24h</button>
+            <button class="btn btn-sm" data-period="7d" onclick="setAnalyticsPeriod('7d')">7 days</button>
+            <button class="btn btn-sm" data-period="30d" onclick="setAnalyticsPeriod('30d')">30 days</button>
+            <button class="btn btn-sm" data-period="90d" onclick="setAnalyticsPeriod('90d')">90 days</button>
+            <button class="btn btn-sm" data-period="1y" onclick="setAnalyticsPeriod('1y')">1 year</button>
+            <button class="btn btn-sm" data-period="all" onclick="setAnalyticsPeriod('all')">All time</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Traffic Summary Cards -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem">
         <div class="card" style="margin-bottom:0">
@@ -318,11 +335,17 @@
             <div style="font-size:.85rem;color:var(--gray-600)">Total Pageviews</div>
           </div>
         </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-body" style="text-align:center">
+            <div style="font-size:2rem;font-weight:700;color:var(--purple,#7c3aed);margin-bottom:.25rem" id="periodPV">—</div>
+            <div style="font-size:.85rem;color:var(--gray-600)" id="periodPVLabel">Pageviews (period)</div>
+          </div>
+        </div>
       </div>
 
       <!-- Top Pages -->
       <div class="card">
-        <div class="card-head"><h2>Top Pages (24h)</h2></div>
+        <div class="card-head"><h2>Top Pages <span id="topPagesLabel" style="font-weight:400;font-size:.85rem;color:var(--gray-600)">(24h)</span></h2></div>
         <div class="card-body" style="padding:0">
           <table style="width:100%">
             <thead><tr><th>Page</th><th style="text-align:right">Views</th></tr></thead>
@@ -333,11 +356,22 @@
 
       <!-- Top Events -->
       <div class="card">
-        <div class="card-head"><h2>Top Interactions (24h)</h2></div>
+        <div class="card-head"><h2>Top Interactions <span id="topEventsLabel" style="font-weight:400;font-size:.85rem;color:var(--gray-600)">(24h)</span></h2></div>
         <div class="card-body" style="padding:0">
           <table style="width:100%">
             <thead><tr><th>Event Type</th><th style="text-align:right">Count</th></tr></thead>
             <tbody id="topEventsBody"><tr><td colspan="2" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Monthly Breakdown -->
+      <div class="card">
+        <div class="card-head"><h2>Monthly Pageviews (Last 12 Months)</h2></div>
+        <div class="card-body" style="padding:0">
+          <table style="width:100%">
+            <thead><tr><th>Month</th><th style="text-align:right">Pageviews</th><th style="text-align:right">Bar</th></tr></thead>
+            <tbody id="monthlyBody"><tr><td colspan="3" class="empty">Loading…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -353,12 +387,21 @@
         </div>
       </div>
 
-      <!-- Clear Analytics -->
+      <!-- Analytics Controls -->
       <div class="card">
         <div class="card-head"><h2>⚠️ Analytics Controls</h2></div>
         <div class="card-body">
-          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Dangerous operations — proceed with caution.</p>
-          <button class="btn btn-danger btn-sm" onclick="clearAllAnalytics()">Clear All Analytics Data</button>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Manage analytics data storage.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end">
+            <div>
+              <label style="display:block;font-size:.8rem;font-weight:600;margin-bottom:.35rem" for="prunedays">Delete entries older than (days):</label>
+              <div style="display:flex;gap:.5rem;align-items:center">
+                <input id="prunedays" type="number" min="1" max="3650" value="90" style="width:80px;padding:.35rem .5rem;border:1px solid var(--gray-300);border-radius:var(--radius);font-size:.9rem">
+                <button class="btn btn-warning btn-sm" onclick="pruneAnalytics()">Prune Old Data</button>
+              </div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="clearAllAnalytics()">Clear All Analytics Data</button>
+          </div>
         </div>
       </div>
     </div>
@@ -653,6 +696,27 @@
       </div>
     </div>
 
+    <!-- ===== JOBS TAB ===== -->
+    <div class="tab-pane" id="tab-jobs">
+      <div class="card">
+        <div class="card-head">
+          <h2>Job Postings</h2>
+          <button class="btn btn-success btn-sm" onclick="openJobModal(null)">+ Add Posting</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table>
+            <thead><tr><th>Title</th><th>Type</th><th>Salary</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="jobsTableBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="background:#f0fdf4;border:1px solid #bbf7d0;margin-top:1rem">
+        <div class="card-body" style="font-size:.85rem;color:#166534">
+          <strong>💡 Tips:</strong> Set status to <em>Closed</em> to hide a posting from the public without deleting it. The Jobs page only shows <em>Active</em> postings. Deleted postings go to the Recycle Bin for 60 days.
+        </div>
+      </div>
+    </div>
+
     <!-- ===== RECYCLE BIN TAB ===== -->
     <div class="tab-pane" id="tab-recyclebin">
       <div class="card">
@@ -754,6 +818,57 @@
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closeImgModal()">Cancel</button>
       <button class="btn btn-primary" id="imgUploadSaveBtn" onclick="submitImgUpload()">Upload &amp; Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     JOB POSTING MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="jobModal">
+  <div class="modal" style="max-width:740px">
+    <div class="modal-head">
+      <h3 id="jobModalTitle">Add Job Posting</h3>
+      <button class="close-btn" onclick="closeJobModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="job-idx">
+      <div class="form-row">
+        <div class="fg" style="flex:2"><label>Job Title *</label><input type="text" id="job-title" maxlength="120" required placeholder="e.g. Bookmobile Driver"></div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="job-status">
+            <option value="active">Active (visible)</option>
+            <option value="closed">Closed (hidden)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Type</label>
+          <select id="job-type">
+            <option value="Full-Time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Seasonal">Seasonal</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Volunteer">Volunteer</option>
+          </select>
+        </div>
+        <div class="fg"><label>Hours</label><input type="text" id="job-hours" maxlength="80" placeholder="e.g. 40 hrs/week"></div>
+        <div class="fg"><label>Salary / Pay</label><input type="text" id="job-salary" maxlength="80" placeholder="e.g. $25,000/year"></div>
+      </div>
+      <div class="fg"><label>Location</label><input type="text" id="job-location" maxlength="120" placeholder="e.g. Fayette County, WV"></div>
+      <div class="fg"><label>Position Summary</label><textarea id="job-summary" rows="3" maxlength="3000" placeholder="Brief overview of the role…"></textarea></div>
+      <div class="fg"><label>Essential Job Duties <span style="font-weight:400;color:var(--gray-600)">(one per line)</span></label><textarea id="job-duties" rows="6" maxlength="8000" placeholder="Drive the bookmobiles to scheduled stops&#10;Assist patrons in finding materials&#10;…"></textarea></div>
+      <div class="fg"><label>Job Requirements <span style="font-weight:400;color:var(--gray-600)">(one per line)</span></label><textarea id="job-requirements" rows="5" maxlength="5000" placeholder="High school diploma or GED required&#10;Valid WV Driver's License&#10;…"></textarea></div>
+      <div class="fg"><label>Compensation &amp; Benefits <span style="font-weight:400;color:var(--gray-600)">(one per line)</span></label><textarea id="job-compensation" rows="4" maxlength="3000" placeholder="Salary: $25,000/year&#10;Health insurance&#10;Retirement plan&#10;…"></textarea></div>
+      <div class="fg"><label>How to Apply</label><textarea id="job-how-to-apply" rows="3" maxlength="2000" placeholder="Download the application, complete it, and mail to…"></textarea></div>
+      <div class="fg"><label>Application URL <span style="font-weight:400;color:var(--gray-600)">(optional)</span></label><input type="url" id="job-app-url" maxlength="500" placeholder="https://…"></div>
+      <p class="err" id="jobErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeJobModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveJob()">Save Posting</button>
     </div>
   </div>
 </div>
@@ -1257,6 +1372,7 @@
     loadStaff();
     loadHomepageImages();
     loadHomepageFeatures();
+    loadJobs();
     loadRecycleBin();
   }
 
@@ -1267,6 +1383,9 @@
     }
     if (btn.dataset.tab === 'homepage-features') {
       btn.addEventListener('click', loadHomepageFeatures, { once: false });
+    }
+    if (btn.dataset.tab === 'jobs') {
+      btn.addEventListener('click', loadJobs, { once: false });
     }
     if (btn.dataset.tab === 'recyclebin') {
       btn.addEventListener('click', loadRecycleBin, { once: false });
@@ -1644,6 +1763,7 @@
       if (!item || item.type === 'digital_resource')     loadResources();
       if (!item || item.type === 'homepage_image')       loadHomepageImages();
       if (!item || item.type === 'homepage_feature')     loadHomepageFeatures();
+      if (!item || item.type === 'job_posting')          loadJobs();
     } catch (e) { toast('Error: ' + e.message); }
   };
 
@@ -2077,6 +2197,108 @@
       await api('PUT', '/api/content/homepage_features', list);
       homepageFeatures = list;
       renderHomepageFeatures();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  /* ================================================================
+     JOBS
+     ================================================================ */
+  let allJobs = [];
+
+  function loadJobs() {
+    api('GET', '/api/content/jobs').then(res => {
+      allJobs = Array.isArray(res.data) ? res.data : [];
+      renderJobs();
+    }).catch(() => toast('Could not load job postings.'));
+  }
+
+  function renderJobs() {
+    const tbody = document.getElementById('jobsTableBody');
+    if (!tbody) return;
+    if (!allJobs.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">No job postings yet. Click "+ Add Posting" to create one.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allJobs.map((j, i) => `
+      <tr>
+        <td><strong>${esc(j.title)}</strong></td>
+        <td>${esc(j.type || '—')} ${j.hours ? '<span style="color:var(--gray-600);font-size:.8rem">(' + esc(j.hours) + ')</span>' : ''}</td>
+        <td>${esc(j.salary || '—')}</td>
+        <td><span class="badge ${j.status === 'active' ? 'cat-general' : 'cat-children'}" style="${j.status === 'active' ? 'background:#d1fae5;color:#065f46' : 'background:#fee2e2;color:#991b1b'}">${j.status === 'active' ? 'Active' : 'Closed'}</span></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" onclick="openJobModal(${i})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteJob(${i})" style="margin-left:.35rem">Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  window.openJobModal = function(idx) {
+    const j = idx !== null ? (allJobs[idx] || {}) : {};
+    document.getElementById('job-idx').value = idx !== null ? idx : '';
+    document.getElementById('job-title').value = j.title || '';
+    document.getElementById('job-status').value = j.status || 'active';
+    document.getElementById('job-type').value = j.type || 'Full-Time';
+    document.getElementById('job-hours').value = j.hours || '';
+    document.getElementById('job-salary').value = j.salary || '';
+    document.getElementById('job-location').value = j.location || '';
+    document.getElementById('job-summary').value = j.summary || '';
+    document.getElementById('job-duties').value = Array.isArray(j.duties) ? j.duties.join('\n') : '';
+    document.getElementById('job-requirements').value = Array.isArray(j.requirements) ? j.requirements.join('\n') : '';
+    document.getElementById('job-compensation').value = Array.isArray(j.compensation) ? j.compensation.join('\n') : '';
+    document.getElementById('job-how-to-apply').value = j.how_to_apply || '';
+    document.getElementById('job-app-url').value = j.application_url || '';
+    document.getElementById('jobModalTitle').textContent = idx !== null ? 'Edit Job Posting' : 'Add Job Posting';
+    showErr('jobErr', '');
+    document.getElementById('jobModal').classList.add('open');
+  };
+
+  window.closeJobModal = function() {
+    document.getElementById('jobModal').classList.remove('open');
+  };
+
+  window.saveJob = async function() {
+    const title = document.getElementById('job-title').value.trim();
+    if (!title) { showErr('jobErr', 'Title is required.'); return; }
+    const splitLines = id => document.getElementById(id).value.split('\n').map(s => s.trim()).filter(Boolean);
+    const idxStr = document.getElementById('job-idx').value;
+    const idx = idxStr !== '' ? Number(idxStr) : null;
+    const entry = {
+      id:              (idx !== null && allJobs[idx] ? allJobs[idx].id : null) || ('job-' + Date.now()),
+      title,
+      status:          document.getElementById('job-status').value,
+      type:            document.getElementById('job-type').value,
+      hours:           document.getElementById('job-hours').value.trim(),
+      salary:          document.getElementById('job-salary').value.trim(),
+      location:        document.getElementById('job-location').value.trim(),
+      summary:         document.getElementById('job-summary').value.trim(),
+      duties:          splitLines('job-duties'),
+      requirements:    splitLines('job-requirements'),
+      compensation:    splitLines('job-compensation'),
+      how_to_apply:    document.getElementById('job-how-to-apply').value.trim(),
+      application_url: document.getElementById('job-app-url').value.trim(),
+    };
+    const list = [...allJobs];
+    if (idx !== null) {
+      list[idx] = entry;
+    } else {
+      list.push(entry);
+    }
+    try {
+      await api('PUT', '/api/content/jobs', list);
+      allJobs = list;
+      renderJobs();
+      closeJobModal();
+      toast(idx !== null ? 'Job posting updated!' : 'Job posting added!');
+    } catch (e) { showErr('jobErr', 'Error: ' + e.message); }
+  };
+
+  window.deleteJob = async function(idx) {
+    if (!confirm('Delete this job posting? It will go to the Recycle Bin for 60 days.')) return;
+    try {
+      await api('DELETE', '/api/content/jobs/' + idx);
+      loadJobs();
+      loadRecycleBin();
+      toast('Job posting moved to Recycle Bin.');
     } catch (e) { toast('Error: ' + e.message); }
   };
 
@@ -2635,12 +2857,31 @@
   /* ================================================================
      ANALYTICS DASHBOARD
      ================================================================ */
+  let _analyticsPeriod = '24h';
+
+  window.setAnalyticsPeriod = function(period) {
+    _analyticsPeriod = period;
+    // Update button styles
+    document.querySelectorAll('#analyticsPeriodBtns .btn').forEach(btn => {
+      btn.style.background = btn.dataset.period === period ? 'var(--blue)' : '';
+      btn.style.color = btn.dataset.period === period ? '#fff' : '';
+    });
+    loadAnalyticsData();
+  };
+
+  const PERIOD_LABELS = { '24h': '24 hours', '7d': '7 days', '30d': '30 days', '90d': '90 days', '1y': '1 year', 'all': 'All time' };
+
   function loadAnalyticsData() {
-    api('GET', '/api/analytics/summary').then(summary => {
+    api('GET', `/api/analytics/summary?period=${_analyticsPeriod}`).then(summary => {
       document.getElementById('pv24h').textContent = summary.pageviews_24h || '0';
       document.getElementById('ev24h').textContent = summary.events_24h || '0';
       document.getElementById('totPV').textContent = summary.total_pageviews || '0';
-      
+      document.getElementById('periodPV').textContent = summary.period_pageviews ?? '0';
+      const pl = PERIOD_LABELS[_analyticsPeriod] || _analyticsPeriod;
+      document.getElementById('periodPVLabel').textContent = `Pageviews (${pl})`;
+      document.getElementById('topPagesLabel').textContent = `(${pl})`;
+      document.getElementById('topEventsLabel').textContent = `(${pl})`;
+
       // Top pages
       const topPagesTbody = document.getElementById('topPagesBody');
       if (summary.top_pages && summary.top_pages.length) {
@@ -2649,7 +2890,7 @@
       } else {
         topPagesTbody.innerHTML = '<tr><td colspan="2" class="empty">No data yet</td></tr>';
       }
-      
+
       // Top events
       const topEventsTbody = document.getElementById('topEventsBody');
       if (summary.top_events && summary.top_events.length) {
@@ -2662,6 +2903,26 @@
         }).join('');
       } else {
         topEventsTbody.innerHTML = '<tr><td colspan="2" class="empty">No data yet</td></tr>';
+      }
+
+      // Monthly breakdown
+      const monthlyTbody = document.getElementById('monthlyBody');
+      if (summary.monthly_breakdown && summary.monthly_breakdown.length) {
+        const maxCount = Math.max(...summary.monthly_breakdown.map(m => m.count), 1);
+        monthlyTbody.innerHTML = summary.monthly_breakdown.slice().reverse().map(m => {
+          const barPct = Math.round((m.count / maxCount) * 100);
+          const [yr, mo] = m.month.split('-');
+          const label = new Date(parseInt(yr), parseInt(mo) - 1, 1).toLocaleString('default', { month: 'short', year: 'numeric' });
+          return `<tr>
+            <td>${esc(label)}</td>
+            <td style="text-align:right;font-weight:600">${m.count}</td>
+            <td style="min-width:80px;padding-right:.75rem">
+              <div style="background:var(--blue);height:10px;border-radius:3px;width:${barPct}%;min-width:2px"></div>
+            </td>
+          </tr>`;
+        }).join('');
+      } else {
+        monthlyTbody.innerHTML = '<tr><td colspan="3" class="empty">No monthly data yet</td></tr>';
       }
     }).catch(e => {
       console.error('Analytics load failed:', e);
@@ -2684,6 +2945,17 @@
       document.getElementById('recentPVBody').innerHTML = '<tr><td colspan="2" class="empty">Could not load</td></tr>';
     });
   }
+
+  window.pruneAnalytics = async function() {
+    const days = parseInt(document.getElementById('prunedays').value || '90', 10);
+    if (isNaN(days) || days < 1) { toast('Enter a valid number of days.'); return; }
+    if (!confirm(`Delete all analytics entries older than ${days} days?\n\nThis CANNOT be undone.`)) return;
+    try {
+      const result = await api('DELETE', `/api/analytics/prune?days=${days}`);
+      toast(`Pruned ${result.removed_pageviews} pageviews and ${result.removed_events} events older than ${days} days.`);
+      loadAnalyticsData();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
 
   window.clearAllAnalytics = async function() {
     if (!confirm('Delete ALL analytics data?\n\nThis CANNOT be undone — all pageviews and events will be lost forever.')) return;

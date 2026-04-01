@@ -53,101 +53,9 @@
         <p>Join the Fayette County Public Libraries team.</p>
       </div>
 
-      <!-- Current Opening: Bookmobile Driver -->
-      <div class="job-card">
-        <div class="job-header">
-          <div>
-            <h2>Bookmobile Driver</h2>
-            <p style="color:var(--gray-600);font-size:.875rem;margin-top:.2rem">Fayette County Public Libraries — Fayette County, WV</p>
-          </div>
-          <span class="job-badge">Now Hiring</span>
-        </div>
-        <div class="job-body">
-          <div class="job-meta">
-            <div class="job-meta-item">📍 Fayette County, WV</div>
-            <div class="job-meta-item">⏱️ Full-Time (40 hrs/week)</div>
-            <div class="job-meta-item">💵 $25,000/year</div>
-            <div class="job-meta-item">🏛️ Full Benefits Package</div>
-          </div>
-
-          <div class="job-section">
-            <h3>Position Summary</h3>
-            <p>Under the general supervision of the Assistant Director, the <strong>Bookmobile Driver</strong> drives the library's bookmobiles and assists the other bookmobile driver at schools, community stops, and fills in at branch libraries throughout the county. The library operates both a mid-size and a large bookmobile serving all of Fayette County.</p>
-          </div>
-
-          <div class="job-section">
-            <h3>Essential Job Duties</h3>
-            <ul>
-              <li>Drive the bookmobiles to specified locations on a predetermined schedule</li>
-              <li>Assist the other bookmobile driver when needed</li>
-              <li>Greet patrons and assist them in the use of the bookmobile</li>
-              <li>Assist patrons in locating library materials, including reader's advisory, interlibrary loan, and new materials requests</li>
-              <li>Perform general circulation routines: check-in, check-out, renewal of materials, collect fines and fees</li>
-              <li>Process applications for and issue new library cards following appropriate procedures</li>
-              <li>Process new materials before adding to the bookmobile collection; shelve and maintain materials</li>
-              <li>Weed the collection; read shelves to keep them neat and orderly; rotate bookmobile inventory regularly</li>
-              <li>Maintain knowledge of available materials and patron reading preferences, especially at school stops</li>
-              <li>Work at branch libraries when needed and on short notice</li>
-              <li>Assist with programming (Summer Reading Program, Fayette County Adventure Days) and outreach (homebound deliveries, Head Start, parades)</li>
-              <li>Deliver materials to branch locations in Fayette County and the Raleigh County Public Library</li>
-              <li>Maintain familiarity with technologies: online catalog, digital devices, Microsoft Windows, Internet, and email</li>
-              <li>Keep the bookmobile clean inside and out — vacuuming, shampooing carpets, dusting shelves, and washing the exterior</li>
-              <li>Perform daily vehicle inspections, refuel the vehicle, and track oil changes for the generator and engine</li>
-              <li>Report any mechanical issues to the Director or Assistant Director promptly</li>
-              <li>Respect the confidentiality of library users and records</li>
-              <li>Other duties as assigned by the Director</li>
-            </ul>
-          </div>
-
-          <div class="job-section">
-            <h3>Job Requirements</h3>
-            <ul>
-              <li>High school diploma or GED required; some college preferred</li>
-              <li>Must possess a valid West Virginia Driver's License and proof of auto insurance</li>
-              <li>Clean driving record required</li>
-              <li>May be required to obtain a Class D driver's license to operate the larger bookmobile</li>
-              <li>Ability to read, follow, and understand maps and GPS navigation systems</li>
-              <li>Ability to safely operate library vehicles in varied driving conditions (weather, traffic, road hazards)</li>
-              <li>Understanding of basic mechanical systems of the bookmobile</li>
-              <li>Must be able to sit, stand, stoop, stretch, climb, lift, carry, and retrieve materials — generally not exceeding 50 lbs</li>
-              <li>Ability to learn and follow library procedures and the library computer system; proficiency with a laptop computer</li>
-              <li>Excellent customer service skills or willingness to develop them</li>
-            </ul>
-          </div>
-
-          <div class="job-section">
-            <h3>Compensation &amp; Benefits</h3>
-            <ul>
-              <li>Salary: $25,000/year</li>
-              <li>Health insurance</li>
-              <li>Life insurance</li>
-              <li>Retirement plan</li>
-              <li>22 board-approved holidays per year</li>
-              <li>Vacation and sick leave</li>
-            </ul>
-          </div>
-
-          <div class="info-box info">
-            <span class="ib-icon">📋</span>
-            <div>
-              <strong>How to Apply:</strong> Download the <a href="https://fayette.lib.wv.us/wp-content/uploads/2021/07/job-application-form-template-download-standard-20170814-1.pdf" target="_blank" rel="noopener">Job Application (PDF)</a>, complete it, and submit in person or by mail to:<br><br>
-              <strong>Fayette County Public Libraries</strong><br>
-              531 Summit St, Oak Hill, WV 25901<br>
-              Attn: Library Director<br><br>
-              Questions? Call <a href="tel:+13044650121">304-465-0121</a>.
-            </div>
-          </div>
-
-          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem">
-            <a href="https://fayette.lib.wv.us/wp-content/uploads/2021/07/job-application-form-template-download-standard-20170814-1.pdf" target="_blank" rel="noopener" class="btn btn-primary">⬇ Download Application</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- No other openings -->
-      <div class="info-box warning">
-        <span class="ib-icon">📢</span>
-        <div>No other positions are currently listed. Check back regularly or call <a href="tel:+13044650121">304-465-0121</a> for the latest openings.</div>
+      <!-- Dynamic job listings — rendered from content.json by inline script below -->
+      <div id="job-listings">
+        <p class="text-muted" style="padding:1.5rem 0">Loading current openings…</p>
       </div>
 
       <!-- Job Search Resources -->
@@ -177,11 +85,9 @@
     </main>
 
     <aside class="sidebar">
-      <div class="sidebar-widget">
+      <div class="sidebar-widget" id="apply-widget" style="display:none">
         <div class="widget-title">💼 Apply Today</div>
-        <div class="widget-body">
-          <p class="text-sm" style="margin-bottom:.75rem">Interested in the Bookmobile Driver position? Download the application and bring it to any branch.</p>
-          <a href="https://fayette.lib.wv.us/wp-content/uploads/2021/07/job-application-form-template-download-standard-20170814-1.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center">⬇ Download Application</a>
+        <div class="widget-body" id="apply-widget-body">
           <p class="text-sm mt-2"><strong>Questions?</strong><br><a href="tel:+13044650121">304-465-0121</a></p>
         </div>
       </div>
@@ -212,6 +118,111 @@
     <span class="help-float-icon" aria-hidden="true">📞</span>
     Need Help? Call Us
   </a>
+
+  <script>
+  (function () {
+    'use strict';
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function safeUrl(u) {
+      if (!u) return '';
+      const s = String(u).trim();
+      return /^https?:\/\//i.test(s) ? s : '';
+    }
+    function renderJobCard(j) {
+      const appUrl = safeUrl(j.application_url);
+      const applyHtml = j.how_to_apply
+        ? `<div class="info-box info" style="margin-top:1.25rem">
+            <span class="ib-icon">📋</span>
+            <div><strong>How to Apply:</strong><br>${esc(j.how_to_apply).replace(/\n/g, '<br>')}</div>
+           </div>`
+        : '';
+      const dlBtn = appUrl
+        ? `<div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem">
+            <a href="${esc(appUrl)}" target="_blank" rel="noopener" class="btn btn-primary">⬇ Download Application</a>
+           </div>`
+        : '';
+      return `
+        <div class="job-card">
+          <div class="job-header">
+            <div>
+              <h2>${esc(j.title)}</h2>
+              <p style="color:var(--gray-600);font-size:.875rem;margin-top:.2rem">Fayette County Public Libraries — ${esc(j.location || 'Fayette County, WV')}</p>
+            </div>
+            <span class="job-badge">Now Hiring</span>
+          </div>
+          <div class="job-body">
+            <div class="job-meta">
+              ${j.location ? `<div class="job-meta-item">📍 ${esc(j.location)}</div>` : ''}
+              ${(j.type || j.hours) ? `<div class="job-meta-item">⏱️ ${esc(j.type || '')}${j.hours ? ' (' + esc(j.hours) + ')' : ''}</div>` : ''}
+              ${j.salary ? `<div class="job-meta-item">💵 ${esc(j.salary)}</div>` : ''}
+              ${j.compensation && j.compensation.length ? '<div class="job-meta-item">🏛️ Benefits Package</div>' : ''}
+            </div>
+            ${j.summary ? `<div class="job-section"><h3>Position Summary</h3><p>${esc(j.summary)}</p></div>` : ''}
+            ${j.duties && j.duties.length ? `<div class="job-section"><h3>Essential Job Duties</h3><ul>${j.duties.map(d => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
+            ${j.requirements && j.requirements.length ? `<div class="job-section"><h3>Job Requirements</h3><ul>${j.requirements.map(r => `<li>${esc(r)}</li>`).join('')}</ul></div>` : ''}
+            ${j.compensation && j.compensation.length ? `<div class="job-section"><h3>Compensation &amp; Benefits</h3><ul>${j.compensation.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>` : ''}
+            ${applyHtml}
+            ${dlBtn}
+          </div>
+        </div>`;
+    }
+
+    function renderJobs(jobs) {
+      const container  = document.getElementById('job-listings');
+      const widget     = document.getElementById('apply-widget');
+      const widgetBody = document.getElementById('apply-widget-body');
+      const active     = (jobs || []).filter(j => j.status === 'active');
+      if (!active.length) {
+        container.innerHTML = `
+          <div class="info-box warning">
+            <span class="ib-icon">📢</span>
+            <div>No positions are currently listed. Check back regularly or call
+              <a href="tel:+13044650121">304-465-0121</a> for the latest openings.</div>
+          </div>`;
+        return;
+      }
+      container.innerHTML = active.map(renderJobCard).join('');
+
+      // Build sidebar Apply Today widget
+      const firstWithApp = active.find(j => safeUrl(j.application_url));
+      if (firstWithApp) {
+        const url = safeUrl(firstWithApp.application_url);
+        widgetBody.innerHTML = `
+          <p class="text-sm" style="margin-bottom:.75rem">Interested in the <strong>${esc(firstWithApp.title)}</strong> position? Download the application and bring it to any branch.</p>
+          <a href="${esc(url)}" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center">⬇ Download Application</a>
+          <p class="text-sm mt-2"><strong>Questions?</strong><br><a href="tel:+13044650121">304-465-0121</a></p>`;
+        widget.style.display = '';
+      } else {
+        widgetBody.innerHTML = `<p class="text-sm"><strong>Questions?</strong><br><a href="tel:+13044650121">304-465-0121</a></p>`;
+        widget.style.display = '';
+      }
+    }
+
+    // Wait for main.js to load siteData (it fires a custom event), or self-fetch
+    function tryRenderFromSiteData() {
+      if (window.siteData && window.siteData.jobs) {
+        renderJobs(window.siteData.jobs);
+      } else {
+        fetch('../data/content.json')
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(d => renderJobs(d.jobs || []))
+          .catch(() => {
+            document.getElementById('job-listings').innerHTML =
+              '<p class="text-muted">Could not load job postings. Please try again later.</p>';
+          });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => setTimeout(tryRenderFromSiteData, 200));
+    } else {
+      setTimeout(tryRenderFromSiteData, 200);
+    }
+  })();
+  </script>
 
 </body>
 </html>

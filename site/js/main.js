@@ -89,7 +89,7 @@
     const path = window.location.pathname;
     document.querySelectorAll('.nav-link').forEach(link => {
       const href = link.getAttribute('href') || '';
-      if (path.endsWith(href) || (href !== '#' && href !== '' && path.includes(href.replace('../', '')))) {
+      if (href && href !== '/' && href !== '#' && (path.endsWith(href) || path.includes(href.replace('../', '')))) {
         link.classList.add('active');
       }
     });

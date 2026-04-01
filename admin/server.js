@@ -488,7 +488,7 @@ app.post('/admin/api/upload', requireAuth, (req, res, next) => {
    CONTENT SECTIONS — branches, programs, digital_resources, site, staff, etc.
    ================================================================ */
 const ALLOWED_SECTIONS = new Set([
-  'site', 'staff', 'branches', 'programs', 'digital_resources', 'services', 'memorial_program', 'hosting', 'holiday_closures', 'homepage_features'
+  'site', 'staff', 'branches', 'programs', 'digital_resources', 'services', 'memorial_program', 'hosting', 'holiday_closures', 'homepage_features', 'jobs'
 ]);
 
 function sanitiseContentSection(section, data) {
@@ -638,6 +638,26 @@ function sanitiseContentSection(section, data) {
         style:      VALID_STYLES.has(f.style) ? f.style : 'default',
       }));
     }
+    case 'jobs': {
+      if (!Array.isArray(data)) throw new Error('jobs must be an array');
+      const VALID_STATUSES = new Set(['active', 'closed']);
+      const VALID_TYPES = new Set(['Full-Time', 'Part-Time', 'Seasonal', 'Temporary', 'Volunteer']);
+      return data.slice(0, 20).map(j => ({
+        id:              str(j.id || crypto.randomBytes(4).toString('hex'), 40),
+        title:           str(j.title || '', 120),
+        status:          VALID_STATUSES.has(j.status) ? j.status : 'active',
+        type:            VALID_TYPES.has(j.type) ? j.type : 'Full-Time',
+        hours:           str(j.hours || '', 80),
+        salary:          str(j.salary || '', 80),
+        location:        str(j.location || '', 120),
+        summary:         str(j.summary || '', 3000),
+        duties:          Array.isArray(j.duties) ? j.duties.slice(0, 50).map(d => str(d, 500)).filter(Boolean) : [],
+        requirements:    Array.isArray(j.requirements) ? j.requirements.slice(0, 30).map(r => str(r, 500)).filter(Boolean) : [],
+        compensation:    Array.isArray(j.compensation) ? j.compensation.slice(0, 20).map(c => str(c, 200)).filter(Boolean) : [],
+        how_to_apply:    str(j.how_to_apply || '', 2000),
+        application_url: str(j.application_url || '', 500),
+      }));
+    }
     default:
       throw new Error('Unknown section');
   }
@@ -723,6 +743,24 @@ app.delete('/admin/api/content/homepage_features/:idx', requireAuth, writeLimite
     auditLog(req, 'delete_homepage_feature', `idx=${idx} title=${removed.title || ''}`);
     res.json({ ok: true });
   } catch (_) { res.status(500).json({ error: 'Could not delete feature.' }); }
+});
+
+/* ---- Individual DELETE for jobs (soft-delete → recycle bin) ---- */
+app.delete('/admin/api/content/jobs/:idx', requireAuth, writeLimiter, (req, res) => {
+  try {
+    const idx = parseInt(req.params.idx, 10);
+    if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
+    const data = readJSON('content.json');
+    const jobs = Array.isArray(data.jobs) ? data.jobs : [];
+    if (idx >= jobs.length) return res.status(404).json({ error: 'Job posting not found.' });
+    const removed = jobs.splice(idx, 1)[0];
+    data.jobs = jobs;
+    autoBackup('content.json');
+    writeJSON('content.json', data);
+    addToBin('job_posting', removed.title || `Job #${idx}`, removed);
+    auditLog(req, 'delete_job', `idx=${idx} title=${removed.title || ''}`);
+    res.json({ ok: true });
+  } catch (_) { res.status(500).json({ error: 'Could not delete job posting.' }); }
 });
 
 /* ---- Homepage Images ---- */
@@ -850,6 +888,11 @@ app.post('/admin/api/recycle-bin/:binId/restore', requireAuth, writeLimiter, (re
       const cData = readJSON('content.json');
       if (!Array.isArray(cData.homepage_features)) cData.homepage_features = [];
       cData.homepage_features.push(item.data);
+      writeJSON('content.json', cData);
+    } else if (item.type === 'job_posting') {
+      const cData = readJSON('content.json');
+      if (!Array.isArray(cData.jobs)) cData.jobs = [];
+      cData.jobs.push(item.data);
       writeJSON('content.json', cData);
     } else {
       return res.status(400).json({ error: 'Unknown item type.' });
@@ -1008,8 +1051,9 @@ app.post('/admin/api/analytics/event', (req, res) => {
 /**
  * GET /admin/api/analytics/summary
  * Get analytics summary (requires auth)
+ * Query: ?period=24h|7d|30d|90d|1y|all  (default: 24h)
  */
-app.get('/admin/api/analytics/summary', requireAuth, (_req, res) => {
+app.get('/admin/api/analytics/summary', requireAuth, (req, res) => {
   try {
     let analytics = { pageviews: [], events: [], last_updated: new Date().toISOString() };
     try {
@@ -1020,7 +1064,19 @@ app.get('/admin/api/analytics/summary', requireAuth, (_req, res) => {
     const now = new Date();
     const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-    // Count pageviews in last 24h
+    // Determine period window from query param
+    const periodParam = (req.query.period || '24h').toLowerCase();
+    let periodStart;
+    switch (periodParam) {
+      case '7d':   periodStart = new Date(now.getTime() - 7  * 24 * 60 * 60 * 1000); break;
+      case '30d':  periodStart = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000); break;
+      case '90d':  periodStart = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000); break;
+      case '1y':   periodStart = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000); break;
+      case 'all':  periodStart = new Date(0); break;
+      default:     periodStart = last24h; // 24h default
+    }
+
+    // Count pageviews in last 24h (always computed for dashboard cards)
     const pv24h = (analytics.pageviews || []).filter(pv => {
       try { return new Date(pv.timestamp) > last24h; } catch (_) { return false; }
     }).length;
@@ -1030,48 +1086,107 @@ app.get('/admin/api/analytics/summary', requireAuth, (_req, res) => {
       try { return new Date(ev.timestamp) > last24h; } catch (_) { return false; }
     }).length;
 
-    // Top pages (last 24h)
+    // Filter pageviews and events for the selected period
+    const periodPV = (analytics.pageviews || []).filter(pv => {
+      try { return new Date(pv.timestamp) >= periodStart; } catch (_) { return false; }
+    });
+    const periodEV = (analytics.events || []).filter(ev => {
+      try { return new Date(ev.timestamp) >= periodStart; } catch (_) { return false; }
+    });
+
+    // Top pages for selected period
     const pageMap = {};
-    (analytics.pageviews || []).forEach(pv => {
-      try {
-        if (new Date(pv.timestamp) > last24h) {
-          const key = pv.url || 'unknown';
-          pageMap[key] = (pageMap[key] || 0) + 1;
-        }
-      } catch (_) {}
+    periodPV.forEach(pv => {
+      const key = pv.url || 'unknown';
+      pageMap[key] = (pageMap[key] || 0) + 1;
     });
     const topPages = Object.entries(pageMap)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([url, count]) => ({ url, count }));
 
-    // Top events (last 24h)
+    // Top events for selected period
     const eventMap = {};
-    (analytics.events || []).forEach(ev => {
-      try {
-        if (new Date(ev.timestamp) > last24h) {
-          const key = ev.event_type || 'unknown';
-          eventMap[key] = (eventMap[key] || 0) + 1;
-        }
-      } catch (_) {}
+    periodEV.forEach(ev => {
+      const key = ev.event_type || 'unknown';
+      eventMap[key] = (eventMap[key] || 0) + 1;
     });
     const topEvents = Object.entries(eventMap)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([type, count]) => ({ type, count }));
 
+    // Monthly breakdown (always last 12 months regardless of period)
+    const monthlyMap = {};
+    const last12mo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+    (analytics.pageviews || []).forEach(pv => {
+      try {
+        const d = new Date(pv.timestamp);
+        if (d >= last12mo) {
+          const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+          monthlyMap[key] = (monthlyMap[key] || 0) + 1;
+        }
+      } catch (_) {}
+    });
+    const monthlyBreakdown = Object.entries(monthlyMap)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([month, count]) => ({ month, count }));
+
     res.json({
       pageviews_24h: pv24h,
       events_24h: ev24h,
+      period_pageviews: periodPV.length,
+      period_events: periodEV.length,
+      period: periodParam,
       total_pageviews: (analytics.pageviews || []).length,
       total_events: (analytics.events || []).length,
       top_pages: topPages,
       top_events: topEvents,
+      monthly_breakdown: monthlyBreakdown,
       last_updated: analytics.last_updated,
     });
   } catch (e) {
     console.error('[analytics/summary]', e.message);
     res.status(500).json({ error: 'Could not generate summary' });
+  }
+});
+
+/**
+ * DELETE /admin/api/analytics/prune
+ * Delete analytics entries older than N days (requires auth)
+ * Query: ?days=90  (default: 90)
+ */
+app.delete('/admin/api/analytics/prune', requireAuth, (req, res) => {
+  try {
+    const days = Math.max(1, Math.min(3650, parseInt(req.query.days || '90', 10)));
+    const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+    let analytics = { pageviews: [], events: [], last_updated: new Date().toISOString() };
+    try {
+      const existing = readJSON('analytics.json');
+      if (existing && typeof existing === 'object') analytics = existing;
+    } catch (_) {}
+
+    const beforePV = (analytics.pageviews || []).length;
+    const beforeEV = (analytics.events || []).length;
+
+    analytics.pageviews = (analytics.pageviews || []).filter(pv => {
+      try { return new Date(pv.timestamp) >= cutoff; } catch (_) { return true; }
+    });
+    analytics.events = (analytics.events || []).filter(ev => {
+      try { return new Date(ev.timestamp) >= cutoff; } catch (_) { return true; }
+    });
+
+    const removedPV = beforePV - analytics.pageviews.length;
+    const removedEV = beforeEV - analytics.events.length;
+    analytics.last_updated = new Date().toISOString();
+    writeJSON('analytics.json', analytics);
+
+    console.log(`[analytics/prune] Removed ${removedPV} pageviews and ${removedEV} events older than ${days} days`);
+    res.json({ ok: true, removed_pageviews: removedPV, removed_events: removedEV, cutoff_date: cutoff.toISOString() });
+  } catch (e) {
+    console.error('[analytics/prune]', e.message);
+    res.status(500).json({ error: 'Could not prune analytics data' });
   }
 });
 

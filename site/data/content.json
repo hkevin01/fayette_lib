@@ -498,5 +498,59 @@
       "link_label": "See schedule \u2192",
       "style": "blue"
     }
+  ],
+  "jobs": [
+    {
+      "id": "job-bookmobile-driver",
+      "title": "Bookmobile Driver",
+      "status": "active",
+      "type": "Full-Time",
+      "hours": "40 hrs/week",
+      "salary": "$25,000/year",
+      "location": "Fayette County, WV",
+      "summary": "Under the general supervision of the Assistant Director, the Bookmobile Driver drives the library's bookmobiles and assists the other bookmobile driver at schools, community stops, and fills in at branch libraries throughout the county. The library operates both a mid-size and a large bookmobile serving all of Fayette County.",
+      "duties": [
+        "Drive the bookmobiles to specified locations on a predetermined schedule",
+        "Assist the other bookmobile driver when needed",
+        "Greet patrons and assist them in the use of the bookmobile",
+        "Assist patrons in locating library materials, including reader's advisory, interlibrary loan, and new materials requests",
+        "Perform general circulation routines: check-in, check-out, renewal of materials, collect fines and fees",
+        "Process applications for and issue new library cards following appropriate procedures",
+        "Process new materials before adding to the bookmobile collection; shelve and maintain materials",
+        "Weed the collection; read shelves to keep them neat and orderly; rotate bookmobile inventory regularly",
+        "Maintain knowledge of available materials and patron reading preferences, especially at school stops",
+        "Work at branch libraries when needed and on short notice",
+        "Assist with programming (Summer Reading Program, Fayette County Adventure Days) and outreach (homebound deliveries, Head Start, parades)",
+        "Deliver materials to branch locations in Fayette County and the Raleigh County Public Library",
+        "Maintain familiarity with technologies: online catalog, digital devices, Microsoft Windows, Internet, and email",
+        "Keep the bookmobile clean inside and out \u2014 vacuuming, shampooing carpets, dusting shelves, and washing the exterior",
+        "Perform daily vehicle inspections, refuel the vehicle, and track oil changes for the generator and engine",
+        "Report any mechanical issues to the Director or Assistant Director promptly",
+        "Respect the confidentiality of library users and records",
+        "Other duties as assigned by the Director"
+      ],
+      "requirements": [
+        "High school diploma or GED required; some college preferred",
+        "Must possess a valid West Virginia Driver's License and proof of auto insurance",
+        "Clean driving record required",
+        "May be required to obtain a Class D driver's license to operate the larger bookmobile",
+        "Ability to read, follow, and understand maps and GPS navigation systems",
+        "Ability to safely operate library vehicles in varied driving conditions (weather, traffic, road hazards)",
+        "Understanding of basic mechanical systems of the bookmobile",
+        "Must be able to sit, stand, stoop, stretch, climb, lift, carry, and retrieve materials \u2014 generally not exceeding 50 lbs",
+        "Ability to learn and follow library procedures and the library computer system; proficiency with a laptop computer",
+        "Excellent customer service skills or willingness to develop them"
+      ],
+      "compensation": [
+        "Salary: $25,000/year",
+        "Health insurance",
+        "Life insurance",
+        "Retirement plan",
+        "22 board-approved holidays per year",
+        "Vacation and sick leave"
+      ],
+      "how_to_apply": "Download the Job Application (PDF), complete it, and submit in person or by mail to:\n\nFayette County Public Libraries\n531 Summit St, Oak Hill, WV 25901\nAttn: Library Director\n\nQuestions? Call 304-465-0121.",
+      "application_url": "https://fayette.lib.wv.us/wp-content/uploads/2021/07/job-application-form-template-download-standard-20170814-1.pdf"
+    }
   ]
 }
