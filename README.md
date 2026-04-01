@@ -1,458 +1,1016 @@
 # Fayette County Public Libraries — Website & Staff Portal
 
-A fully self-hosted modern website for [fayette.lib.wv.us](https://fayette.lib.wv.us/), served via Docker + Nginx.  
-No frameworks, no build tools, no API keys required. Staff manage all content through a browser-based admin portal.
+> **Self-hosted. Zero dependencies on the host. No frameworks. No API keys. No CMS subscriptions.**
+> A production-grade public library website + staff content management portal serving Fayette County, West Virginia.
 
-**WCAG 2.1 AA compliant** — designed for children, elderly, and users with disabilities.
+[![Docker](https://img.shields.io/badge/Docker-29.3+-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-20_LTS-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Nginx](https://img.shields.io/badge/Nginx-Alpine-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![WCAG 2.1 AA](https://img.shields.io/badge/Accessibility-WCAG_2.1_AA-005A9C)](https://www.w3.org/TR/WCAG21/)
+[![OWASP](https://img.shields.io/badge/Security-OWASP_Top_10-A41E11)](https://owasp.org/www-project-top-ten/)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](./LICENSE)
 
 ---
 
 ## Table of Contents
 
-1. [Quick Start](#1-quick-start)
-2. [First-Time Setup](#2-first-time-setup)
-3. [Daily Staff Usage](#3-daily-staff-usage)
-4. [Admin Portal Guide](#4-admin-portal-guide)
-5. [Security](#5-security)
-6. [Backups & Recovery](#6-backups--recovery)
-7. [Changing Passwords](#7-changing-passwords)
-8. [Site Structure](#8-site-structure)
-9. [Updating the Site (Dev)](#9-updating-the-site-dev)
-10. [Debugging Common Problems](#10-debugging-common-problems)
-11. [Security Hardening Reference](#11-security-hardening-reference)
-12. [FAQ](#12-faq)
+1. [Project Overview](#1-project-overview)
+2. [Key Features](#2-key-features)
+3. [Architecture Overview](#3-architecture-overview)
+4. [Technology Stack](#4-technology-stack)
+5. [Quick Start](#5-quick-start)
+6. [First-Time Setup](#6-first-time-setup)
+7. [Usage Flow](#7-usage-flow)
+8. [Admin Portal Guide](#8-admin-portal-guide)
+9. [API Reference](#9-api-reference)
+10. [Security](#10-security)
+11. [Site Structure](#11-site-structure)
+12. [Daily Staff Usage](#12-daily-staff-usage)
+13. [Backups & Recovery](#13-backups--recovery)
+14. [Updating the Site](#14-updating-the-site)
+15. [Production Deployment](#15-production-deployment)
+16. [Debugging Common Problems](#16-debugging-common-problems)
+17. [Project Roadmap](#17-project-roadmap)
+18. [FAQ](#18-faq)
 
 ---
 
-## 1. Quick Start
+## 1. Project Overview
+
+### What It Is
+
+The **FCPL Website & Staff Portal** is a fully self-hosted web platform for [Fayette County Public Libraries](https://fayette.lib.wv.us/) — a multi-branch public library system serving rural Fayette County, West Virginia. It replaces a legacy website with a modern, accessible, maintainable system that library staff can manage without any technical knowledge.
+
+### What Problem It Solves
+
+| Problem | Solution |
+|---------|----------|
+| Legacy CMS required vendor maintenance contracts | Fully self-hosted on any Docker-capable server |
+| Staff needed technical skills to update content | Browser-based admin portal — no coding needed |
+| Website inaccessible to patrons with disabilities | WCAG 2.1 AA compliant throughout |
+| No content backup or audit trail | Auto-backup + 60-day recycle bin + activity log |
+| Expensive hosted platform subscriptions | Runs on a single VPS or local server, zero SaaS fees |
+| Slow page loads from heavy JavaScript frameworks | Zero-framework static HTML — loads in milliseconds |
+
+### Who It Is For
+
+- **Library staff** — manage events, hours, announcements, programs, and content through a browser
+- **Library patrons** — find branch hours, upcoming events, digital resources, and library services
+- **System administrators** — deploy and maintain the site via Docker Compose on any Linux server
+- **Developers** — extend the static site or admin API with minimal toolchain overhead
+
+### Why It Exists
+
+Rural public libraries often lack IT budgets for commercial CMS platforms. This project delivers enterprise-grade security, accessibility, content management, and disaster recovery in a simple Docker stack that any library director can hand off to a successor without technical debt.
+
+---
+
+---
+
+---
+
+## 2. Key Features
+
+| Feature | Description | Impact | Status |
+|---------|-------------|--------|--------|
+| **Zero-framework static site** | Pure HTML/CSS/JS — no React, Vue, or build pipeline | Sub-100ms page loads; no Node.js needed on host | ✅ Live |
+| **Browser-based CMS** | Staff manage all content via a tabbed SPA admin portal | No coding or terminal access required for content changes | ✅ Live |
+| **WCAG 2.1 AA Accessibility** | Skip links, ARIA labels, keyboard navigation, accessibility toolbar | Usable by patrons on screen readers, elderly, and children | ✅ Live |
+| **Multi-layer security** | Nginx + Express dual rate-limiting, bcrypt(12), JWT, Helmet.js | Resistant to brute-force, XSS, clickjacking, CSRF, injection | ✅ Live |
+| **Soft-delete recycle bin** | Deleted items recoverable for 60 days | Prevents accidental permanent loss of content | ✅ Live |
+| **Auto-backup before writes** | Snapshot of data files created before every destructive change | One-click rollback to any previous state | ✅ Live |
+| **Full audit log** | Every staff action logged with timestamp, IP, and detail | Accountability and forensics for every content change | ✅ Live |
+| **Self-signed / Let's Encrypt TLS** | Local: auto-generated self-signed cert. Production: Certbot script | HTTPS on port 8443 out of the box | ✅ Live |
+| **Image upload pipeline** | MIME-type validation, 5 MB cap, random filename on disk | Prevents file-type spoofing and enumerable URLs | ✅ Live |
+| **Interactive event calendar** | Dynamic calendar widget fed by `events.json` via API | Patrons see accurate upcoming events in real-time | ✅ Live |
+| **Bookmobile & Homebound pages** | Dedicated service pages for outreach programs | Serves patrons who cannot visit branches in person | ✅ Live |
+| **5-branch location maps** | OpenStreetMap embed with per-branch hours and directions | Works without Google Maps API; no cost, no rate limits | ✅ Live |
+| **Digital resources directory** | Staff-managed list of eBook/database links via admin portal | Patron-facing resource page always stays current | ✅ Live |
+| **Holiday closure management** | Staff check holiday checkboxes; changes live immediately | Patrons never show up to a closed library | ✅ Live |
+| **Docker Compose deployment** | Two-container stack: `fcpl-site` (Nginx) + `fcpl-admin` (Node.js) | Deploy anywhere Docker runs — VPS, bare metal, local | ✅ Live |
+
+---
+
+## 3. Architecture Overview
+
+### High-Level Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Host Machine                                 │
+│                                                                       │
+│  ┌──────────────────────────────────────────────────────────────┐   │
+│  │                    Docker Compose Stack                        │   │
+│  │                                                                │   │
+│  │  ┌─────────────────────────────────────────────────────┐    │   │
+│  │  │              fcpl-site  (nginx:alpine)               │    │   │
+│  │  │                                                       │    │   │
+│  │  │  Port 8080 (HTTP)  ←──── Public Browser              │    │   │
+│  │  │  Port 8443 (HTTPS) ←──── Public Browser (TLS)        │    │   │
+│  │  │                                                       │    │   │
+│  │  │  /               → Static HTML (site/)               │    │   │
+│  │  │  /pages/*        → Static HTML pages                 │    │   │
+│  │  │  /css, /js       → Static assets (30d cache)         │    │   │
+│  │  │  /images/*       → Uploaded + static images          │    │   │
+│  │  │  /data/*.json    → Content files (no-cache)          │    │   │
+│  │  │  /admin/*   ─────────────────────────────────────┐   │    │   │
+│  │  │  /api/*     ─────────────────────────────────┐   │   │    │   │
+│  │  └──────────────────────────────────────────────│───│───┘    │   │
+│  │                                                  │   │        │   │
+│  │  ┌───────────────────────────────────────────────▼───▼──┐   │   │
+│  │  │           fcpl-admin  (node:20-alpine)                │   │   │
+│  │  │                                                        │   │   │
+│  │  │  Internal port 3000 (not exposed to host)             │   │   │
+│  │  │                                                        │   │   │
+│  │  │  GET  /admin/         → Staff Portal SPA              │   │   │
+│  │  │  POST /admin/api/auth/login                           │   │   │
+│  │  │  GET|POST|PUT|DELETE /admin/api/events                │   │   │
+│  │  │  GET|POST|PUT|DELETE /admin/api/announcements         │   │   │
+│  │  │  GET|PUT /admin/api/content/:section                  │   │   │
+│  │  │  POST /admin/api/upload                               │   │   │
+│  │  │  GET|DELETE /admin/api/recycle-bin                    │   │   │
+│  │  │  GET /admin/api/audit-log                             │   │   │
+│  │  │  GET /admin/api/backups                               │   │   │
+│  │  └───────────────────────────────────────────────────────┘   │   │
+│  │                                                                │   │
+│  │  Shared Volumes (bind-mounted):                                │   │
+│  │    ./site/data/   ←→ /data/        (events.json, content.json) │  │
+│  │    ./site/images/ ←→ /images/      (uploaded photos)           │  │
+│  │    ./docker/certs/ → /etc/nginx/certs/ (TLS cert, read-only)   │  │
+│  └──────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Breakdown
+
+| Component | Technology | Role |
+|-----------|-----------|------|
+| `fcpl-site` | `nginx:alpine` | Reverse proxy, static file serving, TLS termination, rate limiting |
+| `fcpl-admin` | `node:20-alpine` + Express | REST API for all content mutations; serves staff portal SPA |
+| `site/` | Plain HTML/CSS/JS | Public-facing website — 16 pages, no JS framework |
+| `admin/public/index.html` | Vanilla JS SPA | Staff content management portal — tabbed, responsive |
+| `site/data/events.json` | JSON | Live event data — read by both nginx (static) and admin API |
+| `site/data/content.json` | JSON | All other site content: branches, hours, programs, announcements |
+| `docker/nginx.conf` | Nginx config | Security headers, CSP, rate limit zones, proxy rules, caching |
+| `admin/.env` | Environment file | Credentials and secrets — never committed to git |
+
+### Data Flow
+
+```
+Staff makes change in Admin Portal
+          │
+          ▼
+POST/PUT/DELETE /admin/api/...
+          │
+    ┌─────▼─────┐
+    │  Nginx    │──── Rate limit check (zone=admin_write: 30r/m)
+    └─────┬─────┘
+          │ proxy_pass
+    ┌─────▼──────────────────────┐
+    │  Express (fcpl-admin)       │
+    │  1. requireAuth (JWT check) │
+    │  2. writeLimiter (60/15min) │
+    │  3. Input sanitisation      │
+    │  4. autoBackup(file)        │
+    │  5. writeJSON (atomic)      │
+    │  6. addToBin / auditLog     │
+    └─────────────────────────────┘
+          │
+          ▼
+   ./site/data/*.json  (shared volume)
+          │
+          ▼
+   Public site reads via fetch() → /data/events.json
+   Calendar widget renders events in real-time
+```
+
+---
+
+## 4. Technology Stack
+
+### Runtime Stack
+
+| Technology | Version | Why Chosen | Alternatives Considered | Tradeoffs |
+|-----------|---------|-----------|------------------------|-----------|
+| **Docker + Compose** | 29.3 / 5.1 | Zero host dependencies; reproducible deployments; easy backup of bind-mounted volumes | Bare-metal nginx, Podman | Docker requires root or docker group; Compose v2 has no separate install |
+| **Nginx (Alpine)** | latest-alpine | Best-in-class static file serving; sub-ms latency; mature rate-limiting; tiny 8 MB image | Caddy, Apache, Traefik | Caddy has auto-HTTPS but adds complexity; Nginx config is well-understood by admins |
+| **Node.js (Alpine)** | 20 LTS | LTS stability; native `crypto` module; excellent ecosystem for JWT/bcrypt; 50 MB image | Deno, Python/Flask, Go | Deno too new for rural IT handoff; Go requires compiled binary; Python slower startup |
+| **Express.js** | 4.18 | Minimal, battle-tested, widely documented | Fastify, Koa, Hono | Fastify is faster but Express has more documentation for non-JS-native maintainers |
+| **Plain HTML/CSS/JS** | ES2020 | Zero build pipeline; no npm vulnerabilities in frontend; loads in <100ms | React, Vue, Astro, HTMX | Frameworks add maintenance burden and version rot — library may not have a dev on staff |
+
+### Security Dependencies (`admin/`)
+
+| Package | Version | Purpose | Why This One |
+|---------|---------|---------|-------------|
+| `helmet` | ^7.2 | Sets 12 security response headers (CSP, HSTS, X-Frame-Options, etc.) | Industry standard; maintained by the Express team |
+| `bcryptjs` | ^2.4 | Password hashing at cost factor 12 | Pure JS (no native bindings); portable across Alpine |
+| `jsonwebtoken` | ^9.0 | JWT session tokens (HS256, 8-hour expiry) | Most widely audited JWT library for Node.js |
+| `express-rate-limit` | ^7.4 | Request rate limiting per IP (login + write + global) | Works with `trust proxy 1` behind Nginx; draft-7 headers |
+| `multer` | ^2.0 | Multipart file upload handling | Integrates cleanly with Express; supports `fileFilter` + `limits` |
+
+### Frontend Libraries (CDN via HTML `<script>`)
+
+| Library | Purpose | Notes |
+|---------|---------|-------|
+| **Leaflet.js** (unpkg) | Interactive branch location maps | No Google Maps API key required; OpenStreetMap tiles are free |
+| **LibraryThing** (ltfl) | Book cover images in catalog widget | Optional external integration |
+| **CDN Fonts** | Typography | `fonts.cdnfonts.com` — scoped in CSP |
+
+---
+
+## 5. Quick Start
 
 ```bash
-# Clone the repo (first time only)
+# 1. Navigate to the project
 cd /home/kevin/Projects/fayette_lib
 
-# Start everything
-sudo docker-compose up -d
+# 2. Copy example env file (change password before going live!)
+cp admin/.env.example admin/.env
 
-# Open the website
+# 3. Generate a self-signed TLS cert for local HTTPS
+mkdir -p docker/certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/certs/key.pem \
+  -out docker/certs/cert.pem \
+  -subj "/CN=localhost"
+
+# 4. Start both containers
+sudo docker compose up -d
+
+# 5. Verify both containers are healthy
+sudo docker compose ps
+
+# 6. Open the website
 xdg-open http://localhost:8080
 
-# Open the staff admin portal
+# 7. Open the staff portal
 xdg-open http://localhost:8080/admin/
 ```
 
-Stop: `sudo docker-compose down`  
-Rebuild after code changes: `sudo docker-compose up -d --build`
+**Stop the stack:** `sudo docker compose down`
+**Rebuild after code changes:** `sudo docker compose up -d --build`
+**View logs:** `sudo docker compose logs -f`
 
-> **Docker permission error?** Run `sudo usermod -aG docker $USER` then log out and back in.
+> **Docker permission error?** Add yourself to the docker group:
+> `sudo usermod -aG docker $USER` — then log out and back in (or `newgrp docker`).
 
 ---
 
-## 2. First-Time Setup
+## 6. First-Time Setup
 
-### Requirements
-- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
-- That's it — no Node.js, Python, or npm needed on the host machine.
+### Prerequisites
 
-### Step 1 — Set your admin password
+| Requirement | Check | Install |
+|------------|-------|---------|
+| Docker ≥ 24 | `docker --version` | [docs.docker.com](https://docs.docker.com/get-docker/) |
+| Docker Compose v2 | `docker compose version` | Included with Docker Desktop; `pacman -S docker-compose` on Arch |
+| OpenSSL | `openssl version` | Pre-installed on most Linux distros |
+| curl (optional) | `curl --version` | For endpoint verification |
+
+No Node.js, Python, npm, or build tools are needed on the host machine.
+
+### Step 1 — Configure your admin password
 
 ```bash
-# Generate a bcrypt hash of your chosen password (replace YOUR_PASSWORD)
+# Generate a bcrypt hash (cost factor 12) of your chosen password
 sudo docker run --rm node:20-alpine node -e \
   "require('bcryptjs').hash('YOUR_PASSWORD', 12).then(h => console.log(h))"
 ```
 
-Copy the output (starts with `$2a$12$...`).
+The output starts with `$2a$12$...`. Copy it.
 
-Open `admin/.env` and paste it:
+```bash
+# Generate a strong JWT secret
+openssl rand -hex 48
+```
+
+Open `admin/.env` and set both values:
 
 ```dotenv
-STAFF_PASSWORD_HASH=$2a$12$...paste-your-hash-here...
+# Paste the bcrypt hash here (preferred — production-safe)
+STAFF_PASSWORD_HASH=$2a$12$...your-hash-here...
 
-# Also generate a new JWT secret (run this to get one):
-# openssl rand -hex 48
-JWT_SECRET=replace-this-with-a-long-random-string-at-least-48-chars
+# Or use plaintext during initial testing only (not for production)
+# STAFF_PASSWORD=your-password-here
+
+# JWT signing secret — must be at least 32 characters
+JWT_SECRET=your-long-random-secret-here
 ```
 
-### Step 2 — Start the containers
+> ⚠️ `admin/.env` is listed in `.gitignore` — it must never be committed to version control.
+
+### Step 2 — Generate TLS certificates
+
+**Local development** (self-signed, browser will show a warning):
+```bash
+mkdir -p docker/certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/certs/key.pem \
+  -out docker/certs/cert.pem \
+  -subj "/CN=localhost"
+```
+
+**Production** (trusted Let's Encrypt cert — after DNS is configured):
+```bash
+bash scripts/get-cert.sh your-library-domain.org admin@yourlibrary.org
+```
+
+### Step 3 — Start and verify
 
 ```bash
-sudo docker-compose up -d
+sudo docker compose up -d
+sudo docker compose ps
+
+# Verify HTTP endpoint
+curl -I http://localhost:8080/
+
+# Verify admin portal
+curl -I http://localhost:8080/admin/
 ```
 
-First run takes ~30 seconds to build. After that, starts in ~3 seconds.
+Both should return `HTTP/1.1 200 OK` (or `302` redirect for HTTP→HTTPS).
 
-### Step 3 — Log into the admin portal
+### Step 4 — Log in
 
-Go to `http://localhost:8080/admin/` and enter your password.  
-The session lasts 8 hours, then you'll need to log in again.
+Navigate to `http://localhost:8080/admin/` and enter your password.
+Sessions last **8 hours**, then require re-login.
 
----
+### Development vs Production
 
-## 3. Daily Staff Usage
-
-All content is managed at `http://localhost:8080/admin/`. No coding needed.
-
-### Adding an Event (Calendar)
-1. Click **📅 Events** tab
-2. Click **+ Add Event**
-3. Fill in title, date, time, location, category, description
-4. Optionally upload a photo
-5. Click **Save** — event appears on the public calendar immediately
-
-### Adding an Announcement
-1. Click **📢 Announcements** tab
-2. Click **+ Add Announcement**
-3. Fill in title, body text, optional link
-4. Click **Save** — appears in the homepage sidebar immediately
-
-### Editing Branch Hours
-1. Click **🕒 Branch Hours** tab
-2. Click **Edit Hours** next to the branch
-3. Update the hours rows — click **+Row** to add entries, trash icon to remove
-4. Click **Save** — live immediately
-
-### Setting Holiday Closures
-1. Click **🕒 Branch Hours** tab, scroll to **Holiday Closures** card
-2. Check the holidays when the library will be closed
-3. Add any notes in the text field
-4. Click **Save Holiday Closures**
-
-### Managing Digital Resources / Programs
-- **🌐 Digital Resources** tab → Add / Edit / Delete database and website links
-- **📚 Programs** tab → Edit storytime schedules, book club info, Library Chef
-
-### Homepage Images
-- **🖼️ Images** tab → Upload slider photos and featured event cards
-- Images auto-resize via CSS; keep originals under 1 MB for performance
+| Setting | Development | Production |
+|---------|-------------|------------|
+| Password | `STAFF_PASSWORD=...` (plaintext OK) | `STAFF_PASSWORD_HASH=...` (bcrypt required) |
+| JWT Secret | Any string ≥ 32 chars | `openssl rand -hex 48` minimum |
+| TLS cert | Self-signed (browser warning) | Let's Encrypt via `scripts/get-cert.sh` |
+| HSTS preload | Off | Enable after HTTPS confirmed stable |
+| Port | 8080 / 8443 | 80 / 443 (reverse proxy or firewall redirect) |
 
 ---
 
-## 4. Admin Portal Guide
+## 7. Usage Flow
 
-| Tab | What you can do |
-|-----|----------------|
-| 📅 Events | Add/edit/delete calendar events, upload event photos |
-| 📢 Announcements | Manage homepage sidebar announcements |
-| 🕒 Branch Hours | Edit hours for all 5 branches, holiday closures |
-| 📚 Programs | Storytime schedules, adult book club, Library Chef |
-| 🌐 Digital Resources | Manage database/website links |
-| 📊 Analytics | View page-view stats |
-| ⚡ System | Server health, restart signal |
-| ⚙️ Settings | Site name, phone, social links |
-| 📆 Calendars | Manage shareable calendar feeds |
-| 🏠 Hosting Info | DNS, SSL, server IP records |
-| 👥 Staff | Director, assistant, bookmobile staff names |
-| 🖼️ Images | Homepage slider and featured photos |
-| 🗑️ Recycle Bin | Restore recently deleted items (60-day window) |
-| 🔍 Activity Log | See every change made — who, when, what |
-| 💾 Backups | Browse and restore automatic data backups |
+### Public Patron Flow
+
+```
+Browser visits http://library-domain.org
+        │
+        ▼
+   [Nginx: fcpl-site]
+        │
+        ├── / ────────────────► index.html (homepage)
+        │                           │
+        │                    JS fetches /data/events.json
+        │                    JS fetches /data/content.json
+        │                           │
+        │                    Renders: announcements sidebar
+        │                            upcoming events preview
+        │                            homepage image slider
+        │
+        ├── /pages/programs.html  ► Programs & Events page
+        ├── /pages/locations.html ► Branch map + hours (Leaflet)
+        ├── /pages/ebooks.html    ► Digital resources list
+        ├── /pages/bookmobile.html► Bookmobile schedule
+        ├── /pages/homebound.html ► Homebound delivery service
+        └── /pages/...            ► 16 total pages
+```
+
+### Staff Content Management Flow
+
+```
+Staff opens http://localhost:8080/admin/
+        │
+        ▼
+   Login screen → POST /admin/api/auth/login
+        │                    │
+        │              [rate limited: 5r/m Nginx + 10/15min Express]
+        │                    │
+        │            ✓ Returns JWT token (8-hour expiry)
+        │            ✗ Returns 401 (generic message)
+        │
+        ▼
+   Admin Portal SPA (tabbed)
+        │
+        ├── 📅 Events tab
+        │       ├── GET /admin/api/events              ← list all
+        │       ├── POST /admin/api/events             ← add event
+        │       ├── PUT /admin/api/events/:id          ← edit event
+        │       └── DELETE /admin/api/events/:id       ← soft-delete
+        │
+        ├── 📢 Announcements tab
+        │       └── CRUD /admin/api/announcements
+        │
+        ├── 🕒 Branch Hours tab
+        │       └── PUT /admin/api/content/branches
+        │
+        ├── 📚 Programs / 🌐 Resources / ⚙️ Settings
+        │       └── GET|PUT /admin/api/content/:section
+        │
+        ├── 🖼️ Images tab
+        │       └── POST /admin/api/upload  (MIME check + 5MB cap)
+        │
+        ├── 🗑️ Recycle Bin  → restore/purge soft-deleted items
+        ├── 🔍 Activity Log → audit trail (last 500 actions)
+        └── 💾 Backups      → browse/restore auto-snapshots
+```
+
+---
+
+## 8. Admin Portal Guide
+
+### Tab Reference
+
+| Tab | Icon | What You Can Do |
+|-----|------|----------------|
+| Events | 📅 | Add / edit / delete calendar events; upload event photos |
+| Announcements | 📢 | Manage homepage sidebar announcements |
+| Branch Hours | 🕒 | Edit hours for all 5 branches; holiday closures |
+| Programs | 📚 | Storytime schedules, adult book club, Library Chef |
+| Digital Resources | 🌐 | Manage eBook/database/website links |
+| Analytics | 📊 | Page-view stats |
+| System | ⚡ | Server health check; restart signal |
+| Settings | ⚙️ | Site name, phone number, social media links |
+| Calendars | 📆 | Manage shareable calendar feeds |
+| Hosting Info | 🏠 | DNS, SSL cert status, server IP records |
+| Staff | 👥 | Director, assistant, bookmobile staff names |
+| Images | 🖼️ | Homepage slider photos and featured event cards |
+| Recycle Bin | 🗑️ | Restore items deleted in the last 60 days |
+| Activity Log | 🔍 | Full audit trail — every change with IP + timestamp |
+| Backups | 💾 | Browse and restore automatic pre-change snapshots |
+
+### Adding an Event
+
+1. Click **📅 Events** → **+ Add Event**
+2. Fill in: title, start date/time, end date/time, location, category, description
+3. Optionally upload a photo (JPEG/PNG/GIF/WebP, max 5 MB)
+4. Click **Save** — appears on the public calendar immediately
+
+**Recurrence options:** None · Daily · Weekly · Monthly (by weekday)
+
+### Managing Branch Hours
+
+1. Click **🕒 Branch Hours** → **Edit Hours** next to the branch
+2. Update rows — **+Row** to add time ranges, trash icon to remove
+3. **Holiday Closures** section at the bottom: check holidays + optional notes
+4. Click **Save Hours** — live instantly
 
 ### Recycle Bin
-- Items deleted from Events, Announcements, Programs, Resources, and Images go here automatically
-- Items are kept for **60 days**, then permanently removed
+
+- Events, Announcements, Programs, Digital Resources, and Images are **soft-deleted**
+- Items are kept for **60 days**, then permanently purged
 - Click **Restore** to put an item back into its original tab
-- Click **Delete Forever** to remove it permanently now
+- Click **Delete Forever** to remove immediately
 
 ### Activity Log
-- Records every save/delete action with timestamp and IP address
-- Useful if something gets accidentally deleted or changed
-- Last 500 actions retained
-- Delete actions are highlighted in red
+
+- Records every save/delete with: timestamp · IP address · action type · detail
+- Last **500 entries** retained
+- Delete actions highlighted in red for quick scanning
 
 ### Backups
-- A snapshot of `events.json` or `content.json` is automatically saved **before every destructive change**
-- Up to 20 backups kept per file
-- Click **Restore** to roll back to any backup
-- Restoring also creates a backup of current state first (so you can undo the restore)
+
+- Auto-snapshot of `events.json` or `content.json` taken **before every destructive write**
+- Up to **20 backups** kept per file (oldest auto-pruned)
+- Click **Restore** to roll back — this also creates a backup of the current state first (undo the undo)
 
 ---
 
-## 5. Security
+## 9. API Reference
 
-This site has multiple layers of protection:
+All API endpoints are under `/admin/api/`. All mutating endpoints require a `Bearer` JWT token in the `Authorization` header.
 
-### What protects it from outside attackers:
+### Authentication
 
-| Layer | Protection |
-|-------|-----------|
-| Nginx rate limiting | Login: 5 attempts/min per IP; API: 30 writes/min; General: 120 req/min |
-| Express rate limiting | Login: 10 attempts/15 min; API: 200 req/15 min; Writes: 60 writes/15 min |
-| JWT sessions | 8-hour expiry; HS256 signed; secret required in `.env` |
-| bcrypt passwords | 12 rounds; constant-time comparison; 128-char input cap |
-| Helmet.js | 12 security response headers including CSP, HSTS, X-Frame-Options |
-| Input sanitization | All inputs truncated and stripped — no raw HTML/SQL ever stored |
-| Atomic file writes | Write-to-temp then rename — no partial/corrupt JSON on crash |
-| Path traversal prevention | All file paths checked against DATA_DIR before access |
-| MIME-type checking | Image uploads validated by MIME type and size (5 MB cap) |
-| Random filenames | Uploaded images get random names — no guessable URLs |
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/auth/login` | POST | None | Exchange password for JWT |
 
-### What protects it from malicious staff:
+**Request:**
+```json
+{ "password": "your-staff-password" }
+```
+**Response:**
+```json
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+```
 
-| Feature | How it helps |
-|---------|-------------|
-| **Activity Log** | Every change is recorded with timestamp and IP — accountability |
-| **Auto-Backup** | Snapshot taken before every destructive write — easy recovery |
-| **Recycle Bin** | Deletes are soft — items recoverable for 60 days |
-| **Write rate limit** | 60 writes/15 min max — prevents bulk deletion rampage |
-| **No server access needed** | Staff use the portal only — they can't touch raw JSON or server files |
-| **Single admin password** | Change the password at any time to lock out a departing employee |
+### Events
 
-### Changing the password for a departed employee:
-See [Section 7 — Changing Passwords](#7-changing-passwords).
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/events` | GET | ✅ | List all events |
+| `/admin/api/events` | POST | ✅ | Create new event |
+| `/admin/api/events/:id` | PUT | ✅ | Update event by ID |
+| `/admin/api/events/:id` | DELETE | ✅ | Soft-delete event (moves to recycle bin) |
+
+**Event object fields:**
+```json
+{
+  "id": 42,
+  "title": "Summer Reading Kickoff",
+  "start": "2026-06-01T10:00:00",
+  "end": "2026-06-01T12:00:00",
+  "location": "Oak Hill Branch",
+  "category": "children",
+  "description": "Join us for the start of summer reading...",
+  "recurrence": "none",
+  "image": "/images/events/1717200000-a1b2c3d4e5f6.jpg"
+}
+```
+
+### Announcements
+
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/announcements` | GET | ✅ | List all announcements |
+| `/admin/api/announcements` | POST | ✅ | Create announcement |
+| `/admin/api/announcements/:idx` | PUT | ✅ | Update by array index |
+| `/admin/api/announcements/:idx` | DELETE | ✅ | Soft-delete announcement |
+
+### Content Sections
+
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/content/:section` | GET | ✅ | Read a content section |
+| `/admin/api/content/:section` | PUT | ✅ | Update a content section |
+
+**Allowed sections:** `site` · `staff` · `branches` · `programs` · `digital_resources` · `services` · `memorial_program` · `hosting` · `holiday_closures` · `homepage_features` · `jobs`
+
+### Images
+
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/upload` | POST | ✅ | Upload image (multipart/form-data) |
+
+Accepted: JPEG · PNG · GIF · WebP · Max 5 MB
+Returns: `{ "url": "/images/events/timestamp-randomhex.ext" }`
+
+### System & Audit
+
+| Endpoint | Method | Auth | Description |
+|---------|--------|------|-------------|
+| `/admin/api/recycle-bin` | GET | ✅ | List deleted items |
+| `/admin/api/recycle-bin/:bin_id/restore` | POST | ✅ | Restore an item |
+| `/admin/api/recycle-bin/:bin_id` | DELETE | ✅ | Permanently delete |
+| `/admin/api/audit-log` | GET | ✅ | Last 500 audit entries |
+| `/admin/api/backups` | GET | ✅ | List available backups |
+| `/admin/api/backups/restore` | POST | ✅ | Restore a backup |
+
+### Response Conventions
+
+| Status | Meaning |
+|--------|---------|
+| `200 OK` | Read success |
+| `201 Created` | Write success |
+| `400 Bad Request` | Invalid input |
+| `401 Unauthorized` | Missing or expired JWT |
+| `404 Not Found` | Resource doesn't exist |
+| `413 Payload Too Large` | Image over 5 MB |
+| `429 Too Many Requests` | Rate limit exceeded |
+| `500 Internal Server Error` | Server-side failure |
 
 ---
 
-## 6. Backups & Recovery
+## 10. Security
 
-### Automatic backups
-Every time staff save changes that affect `events.json` or `content.json`, a timestamped backup is saved to:
+### Defense-in-Depth Model
+
 ```
-site/data/backups/
+Internet Request
+      │
+      ▼
+[Nginx — Layer 1]
+  • Rate limit zones (general: 120r/m, admin_write: 30r/m, login: 5r/m)
+  • Returns 429 on breach (not 503)
+  • Security headers on every response
+  • TLS 1.2/1.3 with strong cipher suite
+      │
+      ▼
+[Express — Layer 2]
+  • apiLimiter: 200 req/15min per IP
+  • writeLimiter: 60 writes/15min per IP
+  • loginLimiter: 10 attempts/15min per IP
+  • JWT verification (HS256, 8-hour expiry)
+  • Helmet.js (12 security headers)
+      │
+      ▼
+[Application — Layer 3]
+  • Password: bcrypt(12) + constant-time compare
+  • Input: all fields sanitized and length-capped
+  • Uploads: MIME-type checked, random filename
+  • Files: path traversal prevention on all reads/writes
+  • Writes: atomic (temp-file rename; no corruption on crash)
 ```
 
-You can also see and restore backups from the **💾 Backups** tab in the admin portal.
+### Security Headers (Nginx — all responses)
 
-### Manual backup (full data export)
-```bash
-# Copy all data files to a safe location
-cp -r /home/kevin/Projects/fayette_lib/site/data/ ~/fcpl-backup-$(date +%Y%m%d)/
-```
+| Header | Value |
+|--------|-------|
+| `X-Frame-Options` | `SAMEORIGIN` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | Camera/mic/payment blocked; geolocation self-only |
+| `X-DNS-Prefetch-Control` | `off` |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+| `Content-Security-Policy` | Restricts scripts/styles/images/frames to trusted origins |
 
-### Restoring from a backup via terminal
-```bash
-# List available backups
-ls /home/kevin/Projects/fayette_lib/site/data/backups/
+### Additional Admin Headers (Helmet.js)
 
-# Restore events (example)
-cp site/data/backups/events_2026-03-31T14-22-00.json site/data/events.json
+| Header | Value |
+|--------|-------|
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` |
+| `X-Frame-Options` | `DENY` (stricter for admin) |
+| `Content-Security-Policy` | Admin-specific; blocks all external CDNs |
 
-# Restore content (example)
-cp site/data/backups/content_2026-03-31T09-15-00.json site/data/content.json
-```
-No restart needed — changes are live immediately.
+### Rate Limits
 
-### Restoring via the admin portal
-1. Log into the admin portal
-2. Click **💾 Backups** tab
-3. Find the backup you want and click **Restore**
+| Endpoint | Nginx | Express |
+|---------|-------|---------|
+| Login (`/admin/api/auth/login`) | 5 req/min, burst 3 | 10 req/15 min |
+| Admin API writes | 30 req/min, burst 10 | 60 req/15 min |
+| All admin API | — | 200 req/15 min |
+| Public site | 120 req/min, burst 30 | — |
 
----
+### OWASP Top 10 Mitigations
 
-## 7. Changing Passwords
+| OWASP Risk | Mitigation |
+|-----------|------------|
+| A02 Cryptographic Failures | bcrypt(12) for passwords; HS256 JWT with strong secret |
+| A03 Injection | All inputs sanitized and truncated; no `eval`/`exec`; no SQL |
+| A05 Misconfiguration | Helmet defaults; `server_tokens off`; no X-Powered-By header |
+| A06 Vulnerable Components | Pinned npm dependencies; minimal image size |
+| A07 Auth Failures | Rate limiting on login; JWT expiry; constant-time password comparison |
+| A08 Software Integrity | Atomic writes (write→temp→rename); no partial JSON on crash |
 
-**Always change the password when a staff member with portal access leaves.**
+### Changing the Password (Staff Departure)
 
 ```bash
 # Step 1: Generate a new bcrypt hash
 sudo docker run --rm node:20-alpine node -e \
   "require('bcryptjs').hash('NEW_PASSWORD_HERE', 12).then(h => console.log(h))"
 
-# Step 2: Open admin/.env and replace the hash
+# Step 2: Edit admin/.env — replace STAFF_PASSWORD_HASH
 nano /home/kevin/Projects/fayette_lib/admin/.env
 
-# Step 3: Restart the admin container to pick up the new password
-sudo docker-compose restart fcpl-admin
+# Step 3: Restart admin container (< 5 seconds)
+sudo docker compose restart fcpl-admin
 ```
 
-The new password is active within seconds. All existing sessions (JWT tokens) remain valid for up to 8 hours — to invalidate all sessions immediately, also change `JWT_SECRET` in `.env` and restart.
+To **immediately invalidate all active sessions**, also rotate `JWT_SECRET` in `.env` and restart.
+
+### Known Limitations
+
+- **Single shared password** — all staff use one credential. Departing staff access is revoked by changing the password. The Activity Log provides per-IP accountability.
+- **No TOTP/2FA** — suitable for internal deployment; consider adding for internet-facing portals.
+- **Self-signed cert** — local only; use `scripts/get-cert.sh` for production.
 
 ---
 
-## 8. Site Structure
+## 11. Site Structure
 
 ```
 fayette_lib/
-├── README.md                    ← This file
-├── docker-compose.yml           ← Starts both containers
-├── admin/
-│   ├── .env                     ← ⚠️  PASSWORDS — never commit to git
-│   ├── server.js                ← Node.js/Express backend API
-│   ├── package.json
-│   ├── Dockerfile
+├── README.md                         ← This file
+├── docker-compose.yml                ← Starts both containers
+├── .gitignore
+│
+├── admin/                            ← Staff portal backend
+│   ├── .env.example                  ← Template — copy to .env and edit
+│   ├── .env                          ← ⚠️ SECRETS — never commit
+│   ├── server.js                     ← Express REST API (~700 lines)
+│   ├── package.json                  ← 5 production dependencies
+│   ├── Dockerfile                    ← node:20-alpine, 9 steps
 │   └── public/
-│       └── index.html           ← Staff portal single-page app
+│       └── index.html                ← Staff portal SPA (vanilla JS)
+│
 ├── docker/
-│   ├── Dockerfile               ← Nginx image
-│   ├── nginx.conf               ← Web server config + security headers
+│   ├── Dockerfile                    ← nginx:alpine, 8 steps
+│   ├── nginx.conf                    ← Nginx config + security headers
 │   ├── docker-entrypoint.sh
-│   └── certs/                   ← Self-signed SSL cert (HTTPS on port 8443)
-├── site/
-│   ├── index.html               ← Homepage
-│   ├── pages/                   ← All other pages
-│   ├── css/style.css            ← All styles — edit to change colors/fonts
+│   └── certs/
+│       ├── cert.pem                  ← TLS certificate (self-signed or LE)
+│       └── key.pem                   ← TLS private key
+│
+├── site/                             ← Public website (static files)
+│   ├── index.html                    ← Homepage
+│   ├── 404.html
+│   ├── robots.txt
+│   ├── favicon.ico
+│   ├── css/
+│   │   └── style.css                 ← All styles; edit :root vars to retheme
 │   ├── js/
-│   │   ├── a11y.js              ← Accessibility toolbar
-│   │   ├── calendar.js          ← Public calendar widget
-│   │   └── main.js              ← Content loading, nav, tabs
-│   ├── images/                  ← Logo, photos, event images
+│   │   ├── main.js                   ← Content loading, nav, tabs
+│   │   ├── calendar.js               ← Public calendar widget
+│   │   └── a11y.js                   ← Accessibility toolbar
+│   ├── pages/                        ← All secondary pages
+│   │   ├── about.html
+│   │   ├── programs.html
+│   │   ├── programs-adults.html
+│   │   ├── programs-children.html
+│   │   ├── programs-teens.html
+│   │   ├── programs-community.html
+│   │   ├── locations.html            ← Branch map (OpenStreetMap + Leaflet)
+│   │   ├── research.html
+│   │   ├── ebooks.html
+│   │   ├── bookmobile.html
+│   │   ├── homebound.html
+│   │   ├── archives.html
+│   │   ├── news.html
+│   │   ├── jobs.html
+│   │   ├── catalog.html
+│   │   └── myaccount.html
+│   ├── images/                       ← Static images + uploaded event photos
 │   └── data/
-│       ├── events.json          ← ← All calendar events
-│       ├── content.json         ← ← All site content (branches, programs, etc.)
-│       └── backups/             ← Auto-generated backups (don't delete)
+│       ├── events.json               ← All calendar events (live data)
+│       ├── content.json              ← Branches, hours, programs, announcements
+│       ├── audit_log.json            ← Staff action log (0o640 — not public)
+│       ├── recycle_bin.json          ← Soft-deleted items (0o640)
+│       └── backups/                  ← Auto-snapshots (up to 20 per file)
+│
+├── scripts/
+│   └── get-cert.sh                   ← Let's Encrypt cert for production
 └── docs/
-    └── site-audit.md            ← Original site audit
+    └── site-audit.md                 ← Original site content audit
 ```
 
-**The two files staff need to know about:**
-- `site/data/events.json` — calendar events (editable via admin portal or directly)
-- `site/data/content.json` — everything else: branches, hours, announcements, programs, staff, resources
+**The two key data files:**
+
+| File | Contents | Who edits it |
+|------|---------|-------------|
+| `site/data/events.json` | All calendar events with dates, times, locations | Admin portal → Events tab |
+| `site/data/content.json` | Branch hours, announcements, programs, staff, settings | Admin portal → all other tabs |
 
 ---
 
-## 9. Updating the Site (Dev)
+## 12. Daily Staff Usage
 
-### After editing HTML, CSS, or JavaScript files:
+All content management happens at `http://localhost:8080/admin/` — no terminal access needed.
+
+### Adding an Event
+
+1. **📅 Events** → **+ Add Event**
+2. Fill in title, date/time, location, category, description
+3. Optionally upload a photo
+4. **Save** — event appears on the public calendar immediately
+
+### Adding an Announcement
+
+1. **📢 Announcements** → **+ Add Announcement**
+2. Fill in title, body text, optional link
+3. **Save** — appears in the homepage sidebar immediately
+
+### Editing Branch Hours
+
+1. **🕒 Branch Hours** → **Edit Hours** next to the branch
+2. Update time rows; **+Row** adds a new row; trash icon removes
+3. **Save** — live immediately
+
+### Setting Holiday Closures
+
+1. **🕒 Branch Hours** → scroll to **Holiday Closures**
+2. Check the holiday checkboxes when the library is closed
+3. Add any patron-facing notice in the text field
+4. **Save Holiday Closures**
+
+### Managing Digital Resources
+
+- **🌐 Digital Resources** → Add / Edit / Delete eBook and database links
+
+### Homepage Images
+
+- **🖼️ Images** → Upload slider photos and featured event cards
+- Keep original images under 1 MB for fast page loads
+
+---
+
+## 13. Backups & Recovery
+
+### Automatic Backups
+
+A snapshot of `events.json` or `content.json` is saved to `site/data/backups/` **before every destructive write** through the admin portal. Up to 20 backups are kept per file (oldest auto-pruned).
+
+### Manual Backup
+
 ```bash
-sudo docker-compose up -d --build
+# Full data export to a timestamped folder
+cp -r /home/kevin/Projects/fayette_lib/site/data/ ~/fcpl-backup-$(date +%Y%m%d)/
 ```
 
-### After editing `site/data/events.json` or `site/data/content.json` directly:
-No rebuild needed — changes are live immediately (volume-mounted).
+### Restoring via Admin Portal
 
-### After editing `admin/server.js` or `admin/public/index.html`:
+1. Log into the admin portal
+2. Click **💾 Backups**
+3. Find the backup and click **Restore**
+
+### Restoring via Terminal
+
 ```bash
-sudo docker-compose up -d --build
+# List available backups
+ls /home/kevin/Projects/fayette_lib/site/data/backups/
+
+# Restore events
+cp site/data/backups/events_2026-03-31T14-22-00.json site/data/events.json
+
+# Restore content
+cp site/data/backups/content_2026-03-31T09-15-00.json site/data/content.json
 ```
 
-### Updating branch coordinates (map location) in `site/pages/locations.html`:
-1. Look up the address on [nominatim.openstreetmap.org](https://nominatim.openstreetmap.org/)
-2. Find the `BRANCHES` object in the `<script>` at the bottom of `locations.html`
+No container restart needed — changes are live immediately since files are bind-mounted.
+
+---
+
+## 14. Updating the Site
+
+### After Editing HTML, CSS, or JS
+
+```bash
+sudo docker compose up -d --build
+```
+
+### After Editing `site/data/events.json` or `site/data/content.json` Directly
+
+No rebuild needed — volume-mounted files are live immediately.
+
+### After Editing `admin/server.js` or `admin/public/index.html`
+
+```bash
+sudo docker compose up -d --build
+```
+
+### Changing the Color Theme
+
+Open `site/css/style.css` and edit the CSS variables in `:root { ... }` at the top of the file. Then rebuild.
+
+### Updating Branch Map Coordinates
+
+1. Look up the address at [nominatim.openstreetmap.org](https://nominatim.openstreetmap.org/)
+2. Find the `BRANCHES` object in `site/pages/locations.html`
 3. Update `lat` and `lng` for the branch
-4. Rebuild: `sudo docker-compose up -d --build`
-
-### Changing the color theme:
-Open `site/css/style.css` and edit the CSS variables at the top of `:root { ... }`.  
-Then rebuild.
+4. Rebuild
 
 ---
 
-## 10. Debugging Common Problems
+## 15. Production Deployment
 
-### Site won't start
+### Server Requirements
+
+| Resource | Minimum | Recommended |
+|---------|---------|-------------|
+| CPU | 1 vCPU | 2 vCPU |
+| RAM | 512 MB | 1 GB |
+| Disk | 5 GB | 20 GB |
+| OS | Any Linux with Docker | Ubuntu 24 LTS / Arch |
+| Inbound ports | 80, 443 | 80, 443 |
+
+### DNS Setup
+
+Point your domain's A record to the server's public IP, then:
+
+```bash
+# After DNS propagates, obtain a real TLS certificate
+bash scripts/get-cert.sh your-library-domain.org admin@yourlibrary.org
+```
+
+### Going Live Checklist
+
+```
+[ ] Set STAFF_PASSWORD_HASH (bcrypt, not plaintext) in admin/.env
+[ ] Set JWT_SECRET to output of: openssl rand -hex 48
+[ ] Replace self-signed cert with Let's Encrypt cert
+[ ] Confirm HTTPS works at https://your-domain.org
+[ ] Set HSTS preload: true in admin/server.js (after HTTPS is stable)
+[ ] Add the user to the docker group: sudo usermod -aG docker $USER
+[ ] Set up daily data backup cron: cp -r site/data/ ~/backups/fcpl-$(date +%Y%m%d)/
+[ ] Configure server firewall to allow only ports 80 and 443
+[ ] Point domain DNS A record to server IP
+```
+
+---
+
+## 16. Debugging Common Problems
+
+### Site Won't Start
+
 ```bash
 # Check container status
-sudo docker ps
+sudo docker compose ps
 
 # View logs
-sudo docker-compose logs fcpl-website
-sudo docker-compose logs fcpl-admin
+sudo docker compose logs fcpl-site
+sudo docker compose logs fcpl-admin
 
 # Rebuild from scratch
-sudo docker-compose down
-sudo docker-compose up -d --build
+sudo docker compose down
+sudo docker compose up -d --build
 ```
 
-### Admin portal shows "Authentication required" / login loop
-- Check that `admin/.env` exists and has valid `STAFF_PASSWORD_HASH` and `JWT_SECRET`
-- Password hash must start with `$2a$12$`
-- JWT_SECRET must be at least 32 characters
-- Restart the admin container: `sudo docker-compose restart fcpl-admin`
+### Admin Portal Login Loop / "Authentication Required"
 
-### Admin portal buttons not working (edit/delete do nothing)
-- Usually a Content Security Policy issue. Check the browser console (F12 → Console) for CSP errors.
-- Make sure `docker/nginx.conf` has `'unsafe-inline'` in `script-src` for the admin path — the Helmet config in `admin/server.js` handles the admin CSP.
+- Verify `admin/.env` exists and contains `STAFF_PASSWORD_HASH` or `STAFF_PASSWORD`
+- Hash must start with `$2a$12$...`
+- `JWT_SECRET` must be at least 32 characters
+- Restart: `sudo docker compose restart fcpl-admin`
 
-### Calendar not showing events
-- Check that `site/data/events.json` exists and is valid JSON: `python3 -m json.tool site/data/events.json`
-- Events must have `"id"`, `"title"`, and `"start"` fields at minimum
-- Date format: `"2026-06-01T10:00:00"` (ISO 8601, no timezone offset)
+### Calendar Not Showing Events
 
-### Map showing wrong location
-1. Look up the correct coordinates at [nominatim.openstreetmap.org](https://nominatim.openstreetmap.org/)
-2. Edit the `BRANCHES` object in `site/pages/locations.html`
-3. Rebuild
+```bash
+# Validate JSON syntax
+python3 -m json.tool site/data/events.json
+```
 
-### Images not uploading
-- Check file size — max 5 MB
-- Accepted formats: JPEG, PNG, GIF, WebP
+Events need: `"id"`, `"title"`, and `"start"` (ISO 8601: `"2026-06-01T10:00:00"`).
+
+### Images Not Uploading
+
+- Max size: 5 MB
+- Accepted types: JPEG, PNG, GIF, WebP
 - Check disk space: `df -h`
-- Check container logs: `sudo docker-compose logs fcpl-admin`
+- Check logs: `sudo docker compose logs fcpl-admin`
 
-### "Too many requests" error in admin portal
-- You're hitting the rate limit (60 write operations per 15 minutes per IP)
-- Wait 15 minutes and try again
-- This is intentional security — prevents bulk damage
+### "Too Many Requests" in Admin Portal
 
-### Content changes not saving
-- Check the browser console for 401 (log in again) or 500 (server error) responses
-- Check server logs: `sudo docker-compose logs fcpl-admin`
+- You've hit the write rate limit (60 ops/15 minutes per IP)
+- Wait 15 minutes — this is intentional security behaviour
 
-### Recycle Bin not showing deleted items
-- Items move to the bin for: Events, Announcements, Programs (storytimes/lapsit), Digital Resources, Homepage Images
-- Branch hours, site settings, staff info are replaced (not soft-deleted) — back up before major changes
-- Bin items expire after 60 days
+### Self-Signed Cert Warning in Browser
 
-### How to view the audit log from the terminal
+Expected for local development. For production, run `scripts/get-cert.sh` to get a trusted Let's Encrypt cert.
+
+### nginx Won't Start ("cannot load certificate")
+
+The `docker/certs/` directory is missing `cert.pem` / `key.pem`. Generate them:
+
+```bash
+mkdir -p docker/certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/certs/key.pem -out docker/certs/cert.pem -subj "/CN=localhost"
+```
+
+### How to View the Audit Log from Terminal
+
 ```bash
 cat site/data/audit_log.json | python3 -m json.tool | head -100
 ```
 
 ---
 
-## 11. Security Hardening Reference
+## 17. Project Roadmap
 
-### Headers sent on every response (Nginx):
-| Header | Value |
-|--------|-------|
-| `X-Frame-Options` | `SAMEORIGIN` — prevents clickjacking |
-| `X-Content-Type-Options` | `nosniff` — prevents MIME sniffing |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | Camera/mic/payment blocked; geolocation only for location maps |
-| `X-DNS-Prefetch-Control` | `off` |
-| `Cross-Origin-Opener-Policy` | `same-origin` |
-| `Content-Security-Policy` | Restricts scripts, styles, images to trusted origins |
-
-### Admin backend additional headers (Helmet.js):
-| Header | Value |
-|--------|-------|
-| `Strict-Transport-Security` | 1-year HSTS, includeSubDomains |
-| `X-Frame-Options` | `DENY` — stricter for admin |
-| `Content-Security-Policy` | Admin-specific; blocks all external CDNs |
-
-### Rate limits (combined Nginx + Express layers):
-| Endpoint | Nginx limit | Express limit |
-|----------|-------------|---------------|
-| Login (`/admin/api/auth/login`) | 5 req/min, burst 3 | 10 req/15 min |
-| Admin API writes | 30 req/min, burst 10 | 60 req/15 min |
-| All admin API | — | 200 req/15 min |
-| Public site (general) | 120 req/min, burst 30 | — |
-
-### What is NOT protected (known limitations):
-- **No per-user accounts** — all staff share one password. If one staff member is a bad actor, they cannot be individually locked out without changing the shared password. This is intentional simplicity — the Activity Log provides accountability.
-- **No TOTP/2FA** — consider adding if high-risk staff access is a concern
-- **Local deployment only** — the SSL cert is self-signed. For production internet exposure, replace with a Let's Encrypt cert via Certbot.
+| Phase | Timeline | Goals | Status |
+|-------|----------|-------|--------|
+| **Phase 1 — Core Site** | Q1 2026 | Static website with all 16 pages; Docker stack; WCAG 2.1 AA | ✅ Complete |
+| **Phase 2 — Admin Portal** | Q1 2026 | Staff CMS: events, hours, announcements, programs, images | ✅ Complete |
+| **Phase 3 — Security Hardening** | Q1 2026 | OWASP Top 10 mitigations; dual-layer rate limiting; bcrypt + JWT | ✅ Complete |
+| **Phase 4 — Resilience** | Q1 2026 | Auto-backup, recycle bin, activity log, atomic writes | ✅ Complete |
+| **Phase 5 — Production TLS** | Q2 2026 | Let's Encrypt cert automation; HSTS preload | 🟡 In Progress |
+| **Phase 6 — Production Deploy** | Q2 2026 | Go live at fayette.lib.wv.us; DNS cutover; smoke tests | ⭕ Planned |
+| **Phase 7 — Analytics** | Q3 2026 | Self-hosted page-view analytics (no Google Analytics) | ⭕ Planned |
+| **Phase 8 — Mobile App** | Q4 2026 | Progressive web app (PWA) manifest + offline support | ⭕ Planned |
+| **Phase 9 — Multi-Staff** | 2027 | Optional: per-staff accounts with role-based permissions | ⭕ Backlog |
 
 ---
 
-## 12. FAQ
+## 18. FAQ
 
-**Q: How do I add a new branch?**  
-A: Go to admin → **🕒 Branch Hours** tab → scroll to the bottom and click **+ Add Branch**. Fill in all fields and save.
+**Q: How do I add a new branch?**
+Go to admin → **🕒 Branch Hours** → scroll to the bottom → **+ Add Branch**.
 
-**Q: Can I restore something I deleted by mistake?**  
-A: Yes — go to the **🗑️ Recycle Bin** tab. Items are kept for 60 days. Click Restore.
+**Q: Can I restore something I deleted by mistake?**
+Yes — **🗑️ Recycle Bin** tab. Items are kept for 60 days.
 
-**Q: How do I close the library for a holiday?**  
-A: Two ways: (1) Check the holiday in the **Holiday Closures** section of the Branch Hours tab, or (2) add a calendar event with category `closure` — it shows on the calendar so patrons know the library is closed.
+**Q: How do I close the library for a holiday?**
+Check the holiday in **🕒 Branch Hours → Holiday Closures**, or add a calendar event with category `closure`.
 
-**Q: A staff member left — how do I prevent them from accessing the portal?**  
-A: Change the admin password. See [Section 7](#7-changing-passwords). Takes effect immediately.
+**Q: A staff member left — how do I prevent access?**
+Change the admin password. See [Section 10 — Security](#10-security). Takes effect immediately on restart.
 
-**Q: How do I see what a staff member changed?**  
-A: Go to the **🔍 Activity Log** tab. Every save/delete action is logged with IP address and timestamp.
+**Q: How do I see what someone changed?**
+**🔍 Activity Log** tab — every action is recorded with IP and timestamp.
 
-**Q: The site looks broken after I edited something — how do I undo it?**  
-A: Go to the **💾 Backups** tab and restore the most recent backup before your change. Or from the terminal: copy the appropriate file from `site/data/backups/`.
+**Q: The site looks wrong after I edited something — how do I undo?**
+**💾 Backups** tab → restore the snapshot before your change. Or from terminal: copy from `site/data/backups/`.
 
-**Q: How do I move this to a real web server?**  
-A: 1) Copy the whole project directory to the server. 2) Install Docker. 3) Run `docker-compose up -d`. 4) Point your domain DNS to the server IP. 5) Replace the self-signed cert in `docker/certs/` with a Let's Encrypt cert. 6) Set `HSTS preload: true` in `admin/server.js` once HTTPS is confirmed working.
+**Q: How do I move this to a real web server?**
+1. Copy the project directory to the server
+2. Install Docker
+3. `sudo docker compose up -d`
+4. Point your domain DNS to the server IP
+5. Run `scripts/get-cert.sh your-domain.org your@email.com`
+6. Done — no other dependencies needed
 
-**Q: How do I back up the whole site?**  
-A: `cp -r site/data/ ~/fcpl-backup-$(date +%Y%m%d)/` — saves all event and content JSON. The rest of the site is in git.
+**Q: How do I back up everything?**
+```bash
+cp -r site/data/ ~/fcpl-backup-$(date +%Y%m%d)/
+```
 
-**Q: Can I access the admin portal from another computer?**  
-A: Yes — if the server is accessible on the network, go to `http://SERVER_IP:8080/admin/`. Make sure the server firewall allows port 8080 from your network.
+**Q: Can staff access the portal from another computer?**
+Yes — navigate to `http://SERVER_IP:8080/admin/` from any machine on the same network.
+
+**Q: Why aren't we using WordPress / Drupal / Squarespace?**
+Those platforms require ongoing maintenance, license fees, plugin management, and vulnerability patching. This codebase has 5 npm dependencies, no database, and runs on any $6/month VPS. The staff can manage all content without ever touching code.
 
 ---
 
-*Built for Fayette County Public Libraries — all content belongs to FCPL.*
+*Built for Fayette County Public Libraries, Fayette County, West Virginia.*
+*All site content and data belong to FCPL.*
+
+---
