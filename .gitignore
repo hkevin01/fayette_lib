@@ -5,6 +5,7 @@ docker/certs/cert.pem
 
 # Auto-generated data (populated at runtime)
 site/data/audit_log.json
+site/data/recycle_bin.json
 site/data/backups/
 
 # Dependencies
