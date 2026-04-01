@@ -133,6 +133,12 @@
           container.parentElement.style.display = 'none';
         }
       }
+
+      try {
+        renderFeatureBanners();
+      } catch(e) {
+        console.error('Failed to render feature banners:', e);
+      }
       
       try {
         renderHoursBar();
@@ -202,24 +208,89 @@
       </div>`).join('');
   }
 
+  /* ---- Homepage Feature Banners ---- */
+  function renderFeatureBanners() {
+    const container = document.getElementById('featureBannersContainer');
+    if (!container || !siteData) return;
+    const features = siteData.homepage_features || [];
+    if (!features.length) { container.style.display = 'none'; return; }
+
+    const styleMap = {
+      default: '',
+      blue:    'background:linear-gradient(135deg,var(--blue-50,#dbeafe),var(--white,#fff));border-color:var(--blue-100,#bfdbfe)',
+      green:   'background:linear-gradient(135deg,#dcfce7,var(--white,#fff));border-color:#bbf7d0',
+      gold:    'background:linear-gradient(135deg,#fef3c7,var(--white,#fff));border-color:#fde68a',
+      red:     'background:linear-gradient(135deg,#fee2e2,var(--white,#fff));border-color:#fecaca',
+    };
+
+    container.innerHTML = features.map(f => {
+      const extraStyle = styleMap[f.style || 'default'] || '';
+      const isExt = f.link && f.link.startsWith('http');
+      const linkHtml = f.link
+        ? `<a href="${f.link}"${isExt ? ' target="_blank" rel="noopener"' : ''}>${f.link_label || f.link}</a>`
+        : '';
+      return `
+        <div class="feature-banner"${extraStyle ? ` style="${extraStyle}"` : ''}>
+          <div class="feature-icon">${f.icon || '📌'}</div>
+          <div>
+            <h2>${f.title || ''}</h2>
+            ${f.body ? `<p>${f.body}${linkHtml ? ' ' + linkHtml : ''}</p>` : (linkHtml ? `<p>${linkHtml}</p>` : '')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
   /* ---- Hours Bar ---- */
   function renderHoursBar() {
     const bar = document.getElementById('hoursBar');
     if (!bar || !siteData) return;
-    const branch = siteData.branches ? siteData.branches[0] : null;
+    // Use the main Oak Hill branch (id: oak-hill) or fall back to first branch
+    const branches = siteData.branches || [];
+    const branch = branches.find(b => b.id === 'oak-hill') || branches.find(b => b.id !== 'admin') || branches[0];
     if (!branch) return;
+
     const now = new Date();
-    const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-    const today = days[now.getDay()];
-    const hours = branch.hours ? branch.hours[today] : null;
-    if (hours && hours !== 'Closed') {
+    // Day abbreviations matching the "Mon–Fri", "Sat", "Sun" format in content.json
+    const dayAbbr = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][now.getDay()];
+
+    // Find the hours entry whose "days" range covers today
+    let openTime = null, closeTime = null, isClosedToday = false;
+    const hoursList = Array.isArray(branch.hours) ? branch.hours : [];
+    for (const entry of hoursList) {
+      const days = entry.days || '';
+      // Match ranges like "Mon–Fri", "Mon-Fri", single days "Sat", "Sun", "Sat–Sun"
+      const parts = days.split(/[–\-]/).map(s => s.trim());
+      const abbrs = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const startIdx = abbrs.findIndex(a => parts[0].startsWith(a));
+      const endIdx   = parts[1] ? abbrs.findIndex(a => parts[1].startsWith(a)) : startIdx;
+      const todayIdx = now.getDay();
+      const inRange  = startIdx !== -1 && (
+        startIdx <= endIdx
+          ? todayIdx >= startIdx && todayIdx <= endIdx
+          : todayIdx >= startIdx || todayIdx <= endIdx  // wraps around (e.g. Fri–Sun)
+      );
+      if (inRange) {
+        if (entry.open === 'Closed' || entry.close === 'Closed') {
+          isClosedToday = true;
+        } else {
+          openTime  = entry.open;
+          closeTime = entry.close;
+        }
+        break;
+      }
+    }
+
+    const branchName = branch.name || 'Library';
+    const locLink    = `<a href="${pageBase()}locations.html" class="text-sm">View all locations →</a>`;
+
+    if (openTime && closeTime && !isClosedToday) {
       bar.innerHTML = `<span class="open-badge">Open Today</span>
-        <p><strong>${branch.name}</strong> is open <strong>${hours}</strong> today.</p>
-        <a href="${pageBase()}locations.html" class="text-sm">View all locations →</a>`;
+        <p><strong>${branchName}</strong> is open <strong>${openTime} – ${closeTime}</strong> today.</p>
+        ${locLink}`;
     } else {
       bar.innerHTML = `<span class="open-badge closed">Closed Today</span>
-        <p><strong>${branch.name}</strong> is closed today.</p>
-        <a href="${pageBase()}locations.html" class="text-sm">View all locations →</a>`;
+        <p><strong>${branchName}</strong> is closed today.</p>
+        ${locLink}`;
     }
   }
 

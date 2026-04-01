@@ -130,6 +130,7 @@
     <button class="tab-btn" data-tab="announcements">📢 Announcements</button>
     <button class="tab-btn" data-tab="hours">🕒 Branch Hours</button>
     <button class="tab-btn" data-tab="programs">📚 Programs</button>
+    <button class="tab-btn" data-tab="homepage-features">🏠 Homepage Features</button>
     <button class="tab-btn" data-tab="resources">🌐 Digital Resources</button>
     <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
     <button class="tab-btn" data-tab="system">⚡ System</button>
@@ -256,6 +257,25 @@
             <textarea id="lc-features" rows="6" placeholder="Interactive cooking classes&#10;Learn anytime, anywhere"></textarea>
           </div>
           <button class="btn btn-primary btn-sm" onclick="saveLibraryChef()">Save Library Chef</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HOMEPAGE FEATURES TAB ===== -->
+    <div class="tab-pane" id="tab-homepage-features">
+      <div class="card">
+        <div class="card-head">
+          <h2>Homepage Feature Banners</h2>
+          <button class="btn btn-success btn-sm" onclick="openFeatureModal(null)">+ Add Banner</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These banners appear prominently on the homepage between the photo highlights and the events calendar. Drag to reorder using the ↕ handle.</p>
+          <div id="featuresList"></div>
+        </div>
+      </div>
+      <div class="card" style="background:#f0f9ff;border:1px solid #bfdbfe">
+        <div class="card-body" style="font-size:.85rem;color:#1e40af">
+          <strong>💡 Tips:</strong> Use the <em>Style</em> field to change the banner's background color. Keep body text short — 1–2 sentences works best. Links can be internal (e.g. <code>pages/programs.html</code>) or external URLs.
         </div>
       </div>
     </div>
@@ -482,6 +502,15 @@
           <button class="btn btn-success btn-sm" onclick="addBookmobileStaff()">+ Add Person</button>
         </div>
         <div class="card-body" id="bookmobile-staff-list"></div>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <div class="card-head">
+          <h2>Branch Staff</h2>
+          <button class="btn btn-success btn-sm" onclick="addBranchStaff()">+ Add Branch Staff</button>
+        </div>
+        <div class="card-body" id="branch-staff-list">
+          <p style="color:#6b7280;font-size:.9rem">Loading branch staff…</p>
+        </div>
       </div>
       <button class="btn btn-primary" id="saveStaffBtn" style="margin-top:.5rem">Save Staff Info</button>
     </div>
@@ -725,6 +754,45 @@
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closeImgModal()">Cancel</button>
       <button class="btn btn-primary" id="imgUploadSaveBtn" onclick="submitImgUpload()">Upload &amp; Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     HOMEPAGE FEATURE BANNER MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="featureModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="featureModalTitle">Add Feature Banner</h3>
+      <button class="close-btn" onclick="closeFeatureModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="feat-idx">
+      <div class="form-row">
+        <div class="fg"><label>Icon (emoji)</label><input type="text" id="feat-icon" maxlength="10" placeholder="👩‍🍳"></div>
+        <div class="fg">
+          <label>Style</label>
+          <select id="feat-style">
+            <option value="default">Default (cream/orange)</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="gold">Gold</option>
+            <option value="red">Red</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Title *</label><input type="text" id="feat-title" maxlength="120" required placeholder="e.g. Introducing Library Chef!"></div>
+      <div class="fg"><label>Body Text</label><textarea id="feat-body" rows="3" maxlength="500" placeholder="Short description — 1 or 2 sentences."></textarea></div>
+      <div class="form-row">
+        <div class="fg"><label>Link URL <span style="font-weight:400;color:var(--gray-600)">(optional)</span></label><input type="text" id="feat-link" maxlength="500" placeholder="https://… or pages/programs.html"></div>
+        <div class="fg"><label>Link Label <span style="font-weight:400;color:var(--gray-600)">(optional)</span></label><input type="text" id="feat-link-label" maxlength="120" placeholder="See schedule →"></div>
+      </div>
+      <p class="err" id="featErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeFeatureModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveFeature()">Save Banner</button>
     </div>
   </div>
 </div>
@@ -1188,6 +1256,7 @@
     loadSiteSettings();
     loadStaff();
     loadHomepageImages();
+    loadHomepageFeatures();
     loadRecycleBin();
   }
 
@@ -1195,6 +1264,9 @@
   document.querySelectorAll('.tab-btn').forEach(btn => {
     if (btn.dataset.tab === 'homepage-images') {
       btn.addEventListener('click', loadHomepageImages, { once: false });
+    }
+    if (btn.dataset.tab === 'homepage-features') {
+      btn.addEventListener('click', loadHomepageFeatures, { once: false });
     }
     if (btn.dataset.tab === 'recyclebin') {
       btn.addEventListener('click', loadRecycleBin, { once: false });
@@ -1571,6 +1643,7 @@
       if (!item || item.type === 'program')              loadPrograms();
       if (!item || item.type === 'digital_resource')     loadResources();
       if (!item || item.type === 'homepage_image')       loadHomepageImages();
+      if (!item || item.type === 'homepage_feature')     loadHomepageFeatures();
     } catch (e) { toast('Error: ' + e.message); }
   };
 
@@ -1895,6 +1968,119 @@
   };
 
   /* ================================================================
+     HOMEPAGE FEATURES
+     ================================================================ */
+  let homepageFeatures = [];
+
+  function loadHomepageFeatures() {
+    api('GET', '/api/content/homepage_features').then(res => {
+      homepageFeatures = Array.isArray(res.data) ? res.data : [];
+      renderHomepageFeatures();
+    }).catch(() => toast('Could not load homepage features.'));
+  }
+
+  const FEATURE_STYLES = {
+    default: 'background:linear-gradient(135deg,#fef9c3,#fff);border:1px solid #fde68a',
+    blue:    'background:linear-gradient(135deg,#dbeafe,#fff);border:1px solid #bfdbfe',
+    green:   'background:linear-gradient(135deg,#dcfce7,#fff);border:1px solid #bbf7d0',
+    gold:    'background:linear-gradient(135deg,#fef3c7,#fff);border:1px solid #fde68a',
+    red:     'background:linear-gradient(135deg,#fee2e2,#fff);border:1px solid #fecaca',
+  };
+
+  function renderHomepageFeatures() {
+    const container = document.getElementById('featuresList');
+    if (!container) return;
+    if (!homepageFeatures.length) {
+      container.innerHTML = '<p class="empty">No feature banners yet. Click "+ Add Banner" to create one.</p>';
+      return;
+    }
+    container.innerHTML = homepageFeatures.map((f, i) => `
+      <div style="display:flex;align-items:flex-start;gap:1rem;padding:.875rem;border-radius:10px;margin-bottom:.75rem;${FEATURE_STYLES[f.style || 'default'] || FEATURE_STYLES.default}">
+        <span style="font-size:1.75rem;flex-shrink:0">${esc(f.icon || '📌')}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:.95rem;color:var(--navy);margin-bottom:.2rem">${esc(f.title)}</div>
+          <div style="font-size:.85rem;color:var(--gray-600);margin-bottom:.35rem">${esc(f.body || '')}</div>
+          ${f.link ? `<div style="font-size:.8rem;color:var(--blue)">${esc(f.link_label || f.link)}</div>` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.4rem;flex-shrink:0">
+          <button class="btn btn-outline btn-sm" onclick="openFeatureModal(${i})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteFeature(${i})">Delete</button>
+          ${i > 0 ? `<button class="btn btn-outline btn-sm" onclick="moveFeature(${i}, -1)" title="Move up">↑</button>` : ''}
+          ${i < homepageFeatures.length - 1 ? `<button class="btn btn-outline btn-sm" onclick="moveFeature(${i}, 1)" title="Move down">↓</button>` : ''}
+        </div>
+      </div>`).join('');
+  }
+
+  window.openFeatureModal = function(idx) {
+    const f = idx !== null ? homepageFeatures[idx] : {};
+    document.getElementById('feat-idx').value = idx !== null ? idx : '';
+    document.getElementById('feat-icon').value = f.icon || '';
+    document.getElementById('feat-title').value = f.title || '';
+    document.getElementById('feat-body').value = f.body || '';
+    document.getElementById('feat-link').value = f.link || '';
+    document.getElementById('feat-link-label').value = f.link_label || '';
+    document.getElementById('feat-style').value = f.style || 'default';
+    document.getElementById('featureModalTitle').textContent = idx !== null ? 'Edit Feature Banner' : 'Add Feature Banner';
+    showErr('featErr', '');
+    document.getElementById('featureModal').classList.add('open');
+  };
+
+  window.closeFeatureModal = function() {
+    document.getElementById('featureModal').classList.remove('open');
+  };
+
+  window.saveFeature = async function() {
+    const title = document.getElementById('feat-title').value.trim();
+    if (!title) { showErr('featErr', 'Title is required.'); return; }
+    const entry = {
+      id:         (homepageFeatures[Number(document.getElementById('feat-idx').value)] || {}).id
+                  || ('feat-' + Date.now()),
+      icon:       document.getElementById('feat-icon').value.trim(),
+      title,
+      body:       document.getElementById('feat-body').value.trim(),
+      link:       document.getElementById('feat-link').value.trim(),
+      link_label: document.getElementById('feat-link-label').value.trim(),
+      style:      document.getElementById('feat-style').value,
+    };
+    const idxStr = document.getElementById('feat-idx').value;
+    const idx = idxStr !== '' ? Number(idxStr) : null;
+    const list = [...homepageFeatures];
+    if (idx !== null) {
+      list[idx] = entry;
+    } else {
+      list.push(entry);
+    }
+    try {
+      await api('PUT', '/api/content/homepage_features', list);
+      homepageFeatures = list;
+      renderHomepageFeatures();
+      closeFeatureModal();
+      toast(idx !== null ? 'Banner updated!' : 'Banner added!');
+    } catch (e) { showErr('featErr', 'Error: ' + e.message); }
+  };
+
+  window.deleteFeature = async function(idx) {
+    if (!confirm('Delete this feature banner? It will go to the Recycle Bin.')) return;
+    try {
+      await api('DELETE', '/api/content/homepage_features/' + idx);
+      loadHomepageFeatures();
+      toast('Feature deleted.');
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.moveFeature = async function(idx, dir) {
+    const list = [...homepageFeatures];
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= list.length) return;
+    [list[idx], list[newIdx]] = [list[newIdx], list[idx]];
+    try {
+      await api('PUT', '/api/content/homepage_features', list);
+      homepageFeatures = list;
+      renderHomepageFeatures();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  /* ================================================================
      DIGITAL RESOURCES
      ================================================================ */
   let allResources = [];
@@ -2023,7 +2209,8 @@
       document.getElementById('st-asst_director').value = staffData.assistant_director || '';
       document.getElementById('st-asst_email').value  = staffData.assistant_director_email || '';
       renderBookmobileStaff(staffData.bookmobile_staff || []);
-    }).catch(() => toast('Could not load staff info.'));
+      renderBranchStaff(staffData.branch_staff || []);
+    }).catch(() => toast('Could not load staff info. Try refreshing or log out and back in.'));
   }
 
   function renderBookmobileStaff(list) {
@@ -2060,14 +2247,62 @@
     if (el) el.closest('div').remove();
   };
 
+  function renderBranchStaff(list) {
+    const container = document.getElementById('branch-staff-list');
+    if (!list.length) {
+      container.innerHTML = '<p style="color:#6b7280;font-size:.9rem">No branch staff listed. Click "+ Add Branch Staff" to add one.</p>';
+      return;
+    }
+    container.innerHTML = list.map((s, i) => `
+      <div class="branch-staff-row" style="display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr auto;gap:.5rem;margin-bottom:.5rem;align-items:center">
+        <input type="text" value="${esc(s.branch)}" data-bs-branch="${i}" placeholder="Branch name" style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+        <input type="text" value="${esc(s.name)}"   data-bs-name="${i}"   placeholder="Staff name"  style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+        <input type="text" value="${esc(s.role)}"   data-bs-role="${i}"   placeholder="Role"        style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="100">
+        <input type="tel"  value="${esc(s.phone)}"  data-bs-phone="${i}"  placeholder="Phone"       style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="40">
+        <button class="btn btn-danger btn-sm" data-action="remove-bs" data-bs-idx="${i}">✕</button>
+      </div>`).join('');
+    container.querySelectorAll('button[data-action="remove-bs"]').forEach(btn => {
+      btn.addEventListener('click', () => btn.closest('.branch-staff-row').remove());
+    });
+  }
+
+  window.addBranchStaff = function() {
+    const container = document.getElementById('branch-staff-list');
+    // Remove empty state message if present
+    const empty = container.querySelector('p');
+    if (empty) empty.remove();
+    const i = container.querySelectorAll('.branch-staff-row').length;
+    const div = document.createElement('div');
+    div.className = 'branch-staff-row';
+    div.style.cssText = 'display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr auto;gap:.5rem;margin-bottom:.5rem;align-items:center';
+    div.innerHTML = `
+      <input type="text" data-bs-branch="${i}" placeholder="Branch name"  style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+      <input type="text" data-bs-name="${i}"   placeholder="Staff name"   style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+      <input type="text" data-bs-role="${i}"   placeholder="Role"         style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="100">
+      <input type="tel"  data-bs-phone="${i}"  placeholder="Phone"        style="padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="40">
+      <button class="btn btn-danger btn-sm" data-action="remove-bs">✕</button>`;
+    div.querySelector('button').addEventListener('click', () => div.remove());
+    container.appendChild(div);
+  };
+
   document.getElementById('saveStaffBtn').addEventListener('click', async () => {
     const bookmobile_staff = [...document.querySelectorAll('[data-bm]')]
       .map(el => el.value.trim()).filter(Boolean);
+    const branchRows = document.querySelectorAll('.branch-staff-row');
+    const branch_staff = [];
+    branchRows.forEach((row, i) => {
+      const branch = (row.querySelector(`[data-bs-branch]`) || {}).value || '';
+      const name   = (row.querySelector(`[data-bs-name]`)   || {}).value || '';
+      const role   = (row.querySelector(`[data-bs-role]`)   || {}).value || '';
+      const phone  = (row.querySelector(`[data-bs-phone]`)  || {}).value || '';
+      if (branch.trim()) branch_staff.push({ branch: branch.trim(), name: name.trim(), role: role.trim(), phone: phone.trim() });
+    });
     const body = {
       director:                 document.getElementById('st-director').value.trim(),
       assistant_director:       document.getElementById('st-asst_director').value.trim(),
       assistant_director_email: document.getElementById('st-asst_email').value.trim(),
       bookmobile_staff,
+      branch_staff,
     };
     try {
       await api('PUT', '/api/content/staff', body);
@@ -2532,6 +2767,7 @@
     loadCalendars();
     loadHostingInfo();
     loadHomepageImages();
+    loadHomepageFeatures();
     loadRecycleBin();
     loadAnalyticsData();
     loadSystemHealth();

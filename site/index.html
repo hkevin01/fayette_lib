@@ -86,23 +86,8 @@
         <div class="featured-photo-grid" id="featuredPhotoGrid"></div>
       </div>
 
-      <!-- Feature: Library Chef -->
-      <div class="feature-banner">
-        <div class="feature-icon">👩‍🍳</div>
-        <div>
-          <h2>Introducing Library Chef!</h2>
-          <p>Access thousands of recipes and build your own cookbook — free with your library card. <a href="https://app.librarychef.com/" target="_blank" rel="noopener">Visit Library Chef →</a></p>
-        </div>
-      </div>
-
-      <!-- Feature: Adult Book Club -->
-      <div class="feature-banner" style="background:linear-gradient(135deg,var(--blue-50),var(--white));border-color:var(--blue-100);">
-        <div class="feature-icon">📖</div>
-        <div>
-          <h2>Adult Book Club</h2>
-          <p>Join us at the Oak Hill Branch! Monthly meetings with great reads and great people. <a href="pages/programs.html">See schedule →</a></p>
-        </div>
-      </div>
+      <!-- Feature Banners — rendered dynamically from content.json -->
+      <div id="featureBannersContainer"></div>
 
       <!-- Upcoming Events Preview -->
       <div class="card" id="upcomingEventsCard">
@@ -151,6 +136,29 @@
               <span>Read Now →</span>
             </a>
           </div>
+        </div>
+      </div>
+
+      <!-- New Materials Widget -->
+      <div class="card">
+        <div class="card-header"><span class="icon">📚</span> New Books &amp; Materials</div>
+        <div class="card-body" style="padding:.75rem">
+          <p class="text-sm text-muted" style="margin-bottom:.75rem">Browse the latest additions to the FCPL collection.</p>
+          <div style="width:100%;overflow:hidden;border-radius:6px;line-height:0">
+            <iframe
+              src="https://ltfl.librarything.com/forlibraries/run_ltfl_widget.php?lsa_id=7332&id=33235"
+              title="Fayette County Public Libraries — New Materials"
+              width="100%"
+              height="200"
+              style="border:none;display:block;width:100%;height:200px"
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              aria-label="Scrolling new materials book covers">
+            </iframe>
+          </div>
+          <p class="text-sm" style="margin-top:.75rem">
+            <a href="https://mlnapp.raleigh.lib.wv.us/search~S16?/ftlistbib28%2C1%2C0%2C722/mode=2" target="_blank" rel="noopener">View full new materials list →</a>
+          </p>
         </div>
       </div>
 

@@ -25,6 +25,38 @@
       "Tim Meadows",
       "Kathy Kemmish",
       "Chip Tinder"
+    ],
+    "branch_staff": [
+      {
+        "branch": "Oak Hill Public Library",
+        "name": "",
+        "role": "Branch Librarian",
+        "phone": "304-465-0121"
+      },
+      {
+        "branch": "Ansted Public Library",
+        "name": "",
+        "role": "Branch Librarian",
+        "phone": "304-658-5731"
+      },
+      {
+        "branch": "Fayetteville Public Library",
+        "name": "",
+        "role": "Branch Librarian",
+        "phone": "304-574-4514"
+      },
+      {
+        "branch": "Montgomery Public Library",
+        "name": "",
+        "role": "Branch Librarian",
+        "phone": "304-442-5544"
+      },
+      {
+        "branch": "Mt. Hope Public Library",
+        "name": "",
+        "role": "Branch Librarian",
+        "phone": "304-877-6144"
+      }
     ]
   },
   "branches": [
@@ -37,17 +69,17 @@
       "fax": "304-465-5664",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
       ],
-      "note": "Book Sale: Mon–Fri 9–5 in the Administration Building behind the Oak Hill Library."
+      "note": "Book Sale: Mon\u2013Fri 9\u20135 in the Administration Building behind the Oak Hill Library."
     },
     {
       "id": "ansted",
@@ -58,12 +90,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
@@ -79,12 +111,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
@@ -100,12 +132,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
@@ -121,12 +153,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
@@ -142,12 +174,12 @@
       "fax": "304-465-5664",
       "hours": [
         {
-          "days": "Mon–Fri",
+          "days": "Mon\u2013Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat–Sun",
+          "days": "Sat\u2013Sun",
           "open": "Closed",
           "close": ""
         }
@@ -174,21 +206,21 @@
       "id": 3,
       "date": "2026-03-01",
       "title": "Book Sale Refreshed",
-      "body": "The Book Sale has been refreshed. Monday thru Friday 9–5 in the Administration Building behind the Oak Hill Library.",
+      "body": "The Book Sale has been refreshed. Monday thru Friday 9\u20135 in the Administration Building behind the Oak Hill Library.",
       "link": ""
     },
     {
       "id": 4,
       "date": "2026-03-01",
       "title": "New Book Review",
-      "body": "NEW book review by one of your librarians — The Correspondent by Virginia Evans. Click to read.",
+      "body": "NEW book review by one of your librarians \u2014 The Correspondent by Virginia Evans. Click to read.",
       "link": "https://fayette.lib.wv.us/wp-content/uploads/2026/03/Book-Review-The-Correspondent.docx"
     },
     {
       "id": 5,
       "date": "2026-04-08",
       "title": "Board of Trustees Meeting",
-      "body": "Board of Trustees Meeting — 2nd Tuesday of each quarter at 3:00 PM at the Fayette County Public Library Administration Building, 531 Summit Street, Oak Hill.",
+      "body": "Board of Trustees Meeting \u2014 2nd Tuesday of each quarter at 3:00 PM at the Fayette County Public Library Administration Building, 531 Summit Street, Oak Hill.",
       "link": ""
     }
   ],
@@ -215,44 +247,44 @@
       {
         "branch": "Ansted",
         "schedule": "Thursdays at 4:00 PM",
-        "ages": "3–6"
+        "ages": "3\u20136"
       },
       {
         "branch": "Fayetteville",
         "schedule": "Wednesdays at 11:00 AM",
-        "ages": "3–6"
+        "ages": "3\u20136"
       },
       {
         "branch": "Mt. Hope",
         "schedule": "Fridays at 12:00 PM",
-        "ages": "3–6"
+        "ages": "3\u20136"
       },
       {
         "branch": "Oak Hill",
         "schedule": "Fridays at 11:00 AM",
-        "ages": "3–6"
+        "ages": "3\u20136"
       },
       {
         "branch": "Montgomery",
         "schedule": "Wednesdays at 5:00 PM",
-        "ages": "3–6"
+        "ages": "3\u20136"
       }
     ],
     "baby_lapsit": [
       {
         "branch": "Oak Hill",
         "schedule": "1st Tuesday at 3:00 PM",
-        "ages": "6–35 months"
+        "ages": "6\u201335 months"
       },
       {
         "branch": "Fayetteville",
         "schedule": "Every Wednesday at 11:00 AM",
-        "ages": "6–35 months"
+        "ages": "6\u201335 months"
       },
       {
         "branch": "Mt. Hope",
         "schedule": "1st and 3rd Wednesday at 11:00 AM",
-        "ages": "6–35 months"
+        "ages": "6\u201335 months"
       }
     ],
     "adult_book_club": {
@@ -260,7 +292,7 @@
       "schedule": "2nd Tuesday of each month at 1:00 PM"
     },
     "library_chef": {
-      "description": "Library Chef offers cooking and kitchen skills for adults of all levels. On-demand access — cook and learn at your own pace, anytime, from any device. No Zoom required!",
+      "description": "Library Chef offers cooking and kitchen skills for adults of all levels. On-demand access \u2014 cook and learn at your own pace, anytime, from any device. No Zoom required!",
       "url": "https://fayette.librarychef.com",
       "features": [
         "Interactive cooking classes",
@@ -281,7 +313,7 @@
     {
       "name": "Libby / OverDrive",
       "url": "https://libbyapp.com/library/wvdeli",
-      "description": "eBooks and audiobooks — free with your library card"
+      "description": "eBooks and audiobooks \u2014 free with your library card"
     },
     {
       "name": "Hoopla Digital",
@@ -296,7 +328,7 @@
     {
       "name": "Library Chef",
       "url": "https://fayette.librarychef.com",
-      "description": "Cooking and kitchen skills classes — free with library card"
+      "description": "Cooking and kitchen skills classes \u2014 free with library card"
     },
     {
       "name": "TumbleBooks",
@@ -386,35 +418,35 @@
       "id": "f1",
       "src": "images/bob.jpeg",
       "alt": "Bob, our library cat",
-      "caption": "Bob, our library cat — Happy New Year! 🐱",
+      "caption": "Bob, our library cat \u2014 Happy New Year! \ud83d\udc31",
       "type": "featured"
     },
     {
       "id": "f2",
       "src": "images/story-trail.jpeg",
       "alt": "White Oak Story Trail",
-      "caption": "🌿 New for Spring — White Oak Story Trail!",
+      "caption": "\ud83c\udf3f New for Spring \u2014 White Oak Story Trail!",
       "type": "featured"
     },
     {
       "id": "f3",
       "src": "images/book-sale.jpg",
       "alt": "Book Sale",
-      "caption": "📚 Book Sale refreshed — Mon–Fri 9–5 at Oak Hill Admin Building",
+      "caption": "\ud83d\udcda Book Sale refreshed \u2014 Mon\u2013Fri 9\u20135 at Oak Hill Admin Building",
       "type": "featured"
     },
     {
       "id": "f4",
       "src": "images/march-programs.jpg",
       "alt": "March Programs Flyer",
-      "caption": "📅 March Programs — see our full calendar",
+      "caption": "\ud83d\udcc5 March Programs \u2014 see our full calendar",
       "type": "featured"
     },
     {
       "id": "f5",
       "src": "images/hoopla-logo.png",
-      "alt": "Hoopla Digital — borrow free video, music, comics and audiobooks",
-      "caption": "🎬 Hoopla — Free movies, music & more with your library card",
+      "alt": "Hoopla Digital \u2014 borrow free video, music, comics and audiobooks",
+      "caption": "\ud83c\udfac Hoopla \u2014 Free movies, music & more with your library card",
       "type": "featured",
       "link": "https://www.hoopladigital.com/register?page=REGISTRATION_WELCOME",
       "link_label": "Sign up for Hoopla"
@@ -422,8 +454,8 @@
     {
       "id": "f6",
       "src": "images/libby-reads.png",
-      "alt": "Libby Reads — free community reading program",
-      "caption": "📖 Libby Reads — Check out featured titles community-wide with no waitlists!",
+      "alt": "Libby Reads \u2014 free community reading program",
+      "caption": "\ud83d\udcd6 Libby Reads \u2014 Check out featured titles community-wide with no waitlists!",
       "type": "featured",
       "link": "https://libbyapp.com/library/wvdeli",
       "link_label": "Download Libby"
@@ -431,8 +463,8 @@
     {
       "id": "f7",
       "src": "images/library-chef-cooking.png",
-      "alt": "Library Chef — free cooking classes for adults and kids",
-      "caption": "👨‍🍳 Library Chef — Free cooking classes for adults and children!",
+      "alt": "Library Chef \u2014 free cooking classes for adults and kids",
+      "caption": "\ud83d\udc68\u200d\ud83c\udf73 Library Chef \u2014 Free cooking classes for adults and children!",
       "type": "featured",
       "link": "https://fayette.librarychef.com",
       "link_label": "Start Cooking"
@@ -440,11 +472,31 @@
     {
       "id": "f8",
       "src": "images/libanywhere.jpg",
-      "alt": "LibAnywhere — Mobile catalog search for your library card",
-      "caption": "📱 LibAnywhere — Search our catalog on your mobile device",
+      "alt": "LibAnywhere \u2014 Mobile catalog search for your library card",
+      "caption": "\ud83d\udcf1 LibAnywhere \u2014 Search our catalog on your mobile device",
       "type": "featured",
       "link": "https://www.libanywhere.com/m/#1HKgRREtUrRu",
       "link_label": "Search Catalog"
+    }
+  ],
+  "homepage_features": [
+    {
+      "id": "library-chef",
+      "icon": "\ud83d\udc69\u200d\ud83c\udf73",
+      "title": "Introducing Library Chef!",
+      "body": "Access thousands of recipes and build your own cookbook \u2014 free with your library card.",
+      "link": "https://fayette.librarychef.com",
+      "link_label": "Visit Library Chef \u2192",
+      "style": "default"
+    },
+    {
+      "id": "adult-book-club",
+      "icon": "\ud83d\udcd6",
+      "title": "Adult Book Club",
+      "body": "Join us at the Oak Hill Branch! Monthly meetings with great reads and great people.",
+      "link": "pages/programs.html",
+      "link_label": "See schedule \u2192",
+      "style": "blue"
     }
   ]
 }

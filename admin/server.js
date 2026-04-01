@@ -191,13 +191,13 @@ function readJSON(file) {
   return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
 
-function writeJSON(file, data) {
+function writeJSON(file, data, mode = 0o644) {
   const base = path.resolve(DATA_DIR);
   const fullPath = path.resolve(base, file);
   if (!fullPath.startsWith(base + path.sep)) throw new Error('Invalid file path');
   const tmp = fullPath + '.tmp.' + crypto.randomBytes(4).toString('hex');
   // Write to temp, then atomically rename (prevents corruption on crash)
-  fs.writeFileSync(tmp, JSON.stringify(data, null, 2), { encoding: 'utf8', mode: 0o640 });
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2), { encoding: 'utf8', mode });
   fs.renameSync(tmp, fullPath);
 }
 
@@ -226,6 +226,7 @@ function auditLog(req, action, detail) {
     const tmp = fullPath + '.tmp.' + crypto.randomBytes(4).toString('hex');
     fs.writeFileSync(tmp, JSON.stringify(log, null, 2), { encoding: 'utf8', mode: 0o640 });
     fs.renameSync(tmp, fullPath);
+    // audit_log.json stays 0o640 (not world-readable — contains IP addresses)
   } catch (_) { /* audit must never crash the request */ }
 }
 
@@ -261,7 +262,7 @@ function autoBackup(file) {
    ================================================================ */
 function ensureBinFile() {
   try { readJSON('recycle_bin.json'); }
-  catch (_) { writeJSON('recycle_bin.json', { items: [] }); }
+  catch (_) { writeJSON('recycle_bin.json', { items: [] }, 0o640); }
 }
 
 function addToBin(type, label, data) {
@@ -279,7 +280,7 @@ function addToBin(type, label, data) {
     expires_at: expires.toISOString(),
     data,
   });
-  writeJSON('recycle_bin.json', bin);
+  writeJSON('recycle_bin.json', bin, 0o640);
 }
 
 function purgeBin(bin) {
@@ -487,7 +488,7 @@ app.post('/admin/api/upload', requireAuth, (req, res, next) => {
    CONTENT SECTIONS — branches, programs, digital_resources, site, staff, etc.
    ================================================================ */
 const ALLOWED_SECTIONS = new Set([
-  'site', 'staff', 'branches', 'programs', 'digital_resources', 'services', 'memorial_program', 'hosting', 'holiday_closures'
+  'site', 'staff', 'branches', 'programs', 'digital_resources', 'services', 'memorial_program', 'hosting', 'holiday_closures', 'homepage_features'
 ]);
 
 function sanitiseContentSection(section, data) {
@@ -516,11 +517,20 @@ function sanitiseContentSection(section, data) {
       const bookmobileStaff = Array.isArray(data.bookmobile_staff)
         ? data.bookmobile_staff.slice(0, 20).map(s => str(s, 120)).filter(Boolean)
         : [];
+      const branchStaff = Array.isArray(data.branch_staff)
+        ? data.branch_staff.slice(0, 30).map(b => ({
+            branch: str(b.branch, 120),
+            name:   str(b.name   || '', 120),
+            role:   str(b.role   || '', 100),
+            phone:  str(b.phone  || '', 40),
+          })).filter(b => b.branch)
+        : [];
       return {
         director:                 str(data.director, 120),
         assistant_director:       str(data.assistant_director, 120),
         assistant_director_email: str(data.assistant_director_email, 200),
         bookmobile_staff:         bookmobileStaff,
+        branch_staff:             branchStaff,
       };
     }
     case 'branches': {
@@ -615,6 +625,19 @@ function sanitiseContentSection(section, data) {
         extra_notes: str(data.extra_notes || '', 600),
       };
     }
+    case 'homepage_features': {
+      if (!Array.isArray(data)) throw new Error('homepage_features must be an array');
+      const VALID_STYLES = new Set(['default', 'blue', 'green', 'gold', 'red']);
+      return data.slice(0, 20).map(f => ({
+        id:         str(f.id || crypto.randomBytes(4).toString('hex'), 40),
+        icon:       str(f.icon || '', 10),
+        title:      str(f.title || '', 120),
+        body:       str(f.body || '', 500),
+        link:       f.link ? str(f.link, 500) : '',
+        link_label: f.link_label ? str(f.link_label, 120) : '',
+        style:      VALID_STYLES.has(f.style) ? f.style : 'default',
+      }));
+    }
     default:
       throw new Error('Unknown section');
   }
@@ -682,6 +705,24 @@ app.delete('/admin/api/content/programs/:key/:idx', requireAuth, writeLimiter, (
     auditLog(req, 'delete_program', `key=${key} branch=${removed.branch || ''}`);
     res.json({ ok: true });
   } catch (_) { res.status(500).json({ error: 'Could not delete program entry.' }); }
+});
+
+/* ---- Individual DELETE for homepage_features (soft-delete → recycle bin) ---- */
+app.delete('/admin/api/content/homepage_features/:idx', requireAuth, writeLimiter, (req, res) => {
+  try {
+    const idx = parseInt(req.params.idx, 10);
+    if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
+    const data = readJSON('content.json');
+    const features = Array.isArray(data.homepage_features) ? data.homepage_features : [];
+    if (idx >= features.length) return res.status(404).json({ error: 'Feature not found.' });
+    const removed = features.splice(idx, 1)[0];
+    data.homepage_features = features;
+    autoBackup('content.json');
+    writeJSON('content.json', data);
+    addToBin('homepage_feature', removed.title || `Feature #${idx}`, removed);
+    auditLog(req, 'delete_homepage_feature', `idx=${idx} title=${removed.title || ''}`);
+    res.json({ ok: true });
+  } catch (_) { res.status(500).json({ error: 'Could not delete feature.' }); }
 });
 
 /* ---- Homepage Images ---- */
@@ -760,7 +801,7 @@ app.get('/admin/api/recycle-bin', requireAuth, (_req, res) => {
   try {
     ensureBinFile();
     const bin = purgeBin(readJSON('recycle_bin.json'));
-    writeJSON('recycle_bin.json', bin);
+    writeJSON('recycle_bin.json', bin, 0o640);
     res.json({ items: bin.items });
   } catch (_) { res.status(500).json({ error: 'Could not read recycle bin.' }); }
 });
@@ -805,12 +846,17 @@ app.post('/admin/api/recycle-bin/:binId/restore', requireAuth, writeLimiter, (re
       if (!Array.isArray(cData.homepage_images)) cData.homepage_images = [];
       cData.homepage_images.push(item.data);
       writeJSON('content.json', cData);
+    } else if (item.type === 'homepage_feature') {
+      const cData = readJSON('content.json');
+      if (!Array.isArray(cData.homepage_features)) cData.homepage_features = [];
+      cData.homepage_features.push(item.data);
+      writeJSON('content.json', cData);
     } else {
       return res.status(400).json({ error: 'Unknown item type.' });
     }
 
     bin.items.splice(idx, 1);
-    writeJSON('recycle_bin.json', bin);
+    writeJSON('recycle_bin.json', bin, 0o640);
     res.json({ ok: true });
   } catch (_) { res.status(500).json({ error: 'Could not restore item.' }); }
 });
@@ -824,7 +870,7 @@ app.delete('/admin/api/recycle-bin/:binId', requireAuth, writeLimiter, (req, res
     const before = (bin.items || []).length;
     bin.items    = (bin.items || []).filter(i => i.bin_id !== binId);
     if (bin.items.length === before) return res.status(404).json({ error: 'Item not found.' });
-    writeJSON('recycle_bin.json', bin);
+    writeJSON('recycle_bin.json', bin, 0o640);
     res.json({ ok: true });
   } catch (_) { res.status(500).json({ error: 'Could not delete item.' }); }
 });
