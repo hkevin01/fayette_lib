@@ -620,6 +620,73 @@
     fb.appendChild(link);
   }
 
+  /* ---- New Materials Book Strip ---- */
+  async function loadNewMaterials() {
+    const container = document.getElementById('newMaterialsStrip');
+    if (!container) return;
+
+    const LT_URL = 'https://ltfl.librarything.com/forlibraries/run_ltfl_widget.php?lsa_id=7332&id=33235';
+    const FALLBACK_HREF = 'https://mlnapp.raleigh.lib.wv.us/search~S16?/ftlistbib28%2C1%2C0%2C722/mode=2';
+
+    try {
+      const resp = await fetch(LT_URL);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const html = await resp.text();
+
+      // Parse widget HTML for book entries
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const anchors = doc.querySelectorAll('li a.LTFL_Book');
+      if (!anchors.length) throw new Error('no books found');
+
+      const books = [];
+      anchors.forEach(a => {
+        const img = a.querySelector('img');
+        if (!img || !img.src) return;
+        const rawUrl = a.dataset.url || '';
+        books.push({
+          title:  a.dataset.title  || img.alt || 'New Book',
+          author: a.dataset.author || '',
+          img:    img.src,
+          href:   rawUrl ? decodeURIComponent(rawUrl) : FALLBACK_HREF,
+        });
+      });
+      if (!books.length) throw new Error('empty book list');
+
+      // Pre-load every image so there are no layout shifts after scroll starts
+      await Promise.allSettled(books.map(b => new Promise(res => {
+        const i = new Image();
+        i.onload = i.onerror = res;
+        i.src = b.img;
+        // Don't wait more than 4 s per image
+        setTimeout(res, 4000);
+      })));
+
+      // Build the marquee — duplicate the list for a seamless infinite loop
+      const makeItem = b =>
+        `<a class="book-cover-item" href="${b.href}" target="_blank" rel="noopener noreferrer"
+            title="${b.title.replace(/"/g, '&quot;')}${b.author ? ' — ' + b.author.replace(/"/g, '&quot;') : ''}">
+          <img src="${b.img}" alt="${b.title.replace(/"/g, '&quot;')}" width="73" height="110" loading="eager">
+        </a>`;
+
+      const trackHtml = [...books, ...books].map(makeItem).join('');
+      container.innerHTML = `<div class="book-strip-track" role="list">${trackHtml}</div>`;
+
+      // Set scroll duration: ~1.4 s per book, minimum 60 s, maximum 180 s
+      const dur = Math.min(180, Math.max(60, books.length * 1.4));
+      container.querySelector('.book-strip-track').style.setProperty('--book-scroll-dur', dur + 's');
+      container.querySelector('.book-strip-track').style.animationDuration = dur + 's';
+
+    } catch (err) {
+      console.warn('New materials strip failed, falling back to iframe:', err.message);
+      container.innerHTML =
+        `<iframe src="${LT_URL}"
+          class="book-strip-iframe" title="Fayette County Public Libraries — New Materials"
+          sandbox="allow-scripts allow-same-origin allow-popups"
+          aria-label="Scrolling new materials book covers"></iframe>`;
+    }
+  }
+
   /* ---- DOMContentLoaded ---- */
   document.addEventListener('DOMContentLoaded', () => {
     setActiveNav();
@@ -645,6 +712,11 @@
       if (page.includes('research')) renderResources('resourceGrid', r => r.type !== 'ebooks');
       if (page.includes('ebooks')) renderResources('resourceGrid');
     });
+
+    // New materials book strip — fires in parallel with loadContent
+    if (document.getElementById('newMaterialsStrip')) {
+      loadNewMaterials();
+    }
 
     // Calendar: init if container present
     if (document.getElementById('calContainer') && typeof FCPLCalendar !== 'undefined') {

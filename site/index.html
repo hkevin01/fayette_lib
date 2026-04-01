@@ -144,17 +144,10 @@
         <div class="card-header"><span class="icon">📚</span> New Books &amp; Materials</div>
         <div class="card-body" style="padding:.75rem">
           <p class="text-sm text-muted" style="margin-bottom:.75rem">Browse the latest additions to the FCPL collection.</p>
-          <div style="width:100%;overflow:hidden;border-radius:6px;line-height:0">
-            <iframe
-              src="https://ltfl.librarything.com/forlibraries/run_ltfl_widget.php?lsa_id=7332&id=33235"
-              title="Fayette County Public Libraries — New Materials"
-              width="100%"
-              height="200"
-              style="border:none;display:block;width:100%;height:200px"
-              loading="lazy"
-              sandbox="allow-scripts allow-same-origin allow-popups"
-              aria-label="Scrolling new materials book covers">
-            </iframe>
+          <div class="book-strip-wrap" aria-label="Scrolling new materials book covers" role="region">
+            <div id="newMaterialsStrip" class="book-strip-container">
+              <div class="book-strip-skeleton">Loading new materials…</div>
+            </div>
           </div>
           <p class="text-sm" style="margin-top:.75rem">
             <a href="https://mlnapp.raleigh.lib.wv.us/search~S16?/ftlistbib28%2C1%2C0%2C722/mode=2" target="_blank" rel="noopener">View full new materials list →</a>
