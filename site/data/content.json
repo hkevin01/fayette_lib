@@ -5,7 +5,7 @@
     "tagline_author": "Ray Bradbury",
     "phone_main": "304-465-0121",
     "phone_alt": "304-465-5664",
-    "fax": "304-465-5664",
+    "fax": "304-465-5306",
     "email": "fcpl_director@mail.mln.lib.wv.us",
     "address": "531 Summit Street, Oak Hill, WV 25901",
     "catalog_url": "https://mlnapp.raleigh.lib.wv.us/search~S16",
@@ -20,7 +20,7 @@
   "staff": {
     "director": "Becky Kellum",
     "assistant_director": "Kim Massey",
-    "assistant_director_email": "fcpl_director@mail.mln.lib.wv.us",
+    "assistant_director_email": "kim.massey@wvlc.lib.wv.us",
     "bookmobile_staff": [
       "Tim Meadows",
       "Kathy Kemmish",
@@ -69,17 +69,17 @@
       "fax": "304-465-5664",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
       ],
-      "note": "Book Sale: Mon\u2013Fri 9\u20135 in the Administration Building behind the Oak Hill Library."
+      "note": "Book Sale: Mon–Fri 9–5 in the Administration Building behind the Oak Hill Library."
     },
     {
       "id": "ansted",
@@ -90,12 +90,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
@@ -111,12 +111,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
@@ -132,12 +132,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
@@ -153,12 +153,12 @@
       "fax": "",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
@@ -174,12 +174,12 @@
       "fax": "304-465-5664",
       "hours": [
         {
-          "days": "Mon\u2013Fri",
+          "days": "Mon–Fri",
           "open": "9:00 AM",
           "close": "5:00 PM"
         },
         {
-          "days": "Sat\u2013Sun",
+          "days": "Sat–Sun",
           "open": "Closed",
           "close": ""
         }
@@ -206,21 +206,21 @@
       "id": 3,
       "date": "2026-03-01",
       "title": "Book Sale Refreshed",
-      "body": "The Book Sale has been refreshed. Monday thru Friday 9\u20135 in the Administration Building behind the Oak Hill Library.",
+      "body": "The Book Sale has been refreshed. Monday thru Friday 9–5 in the Administration Building behind the Oak Hill Library.",
       "link": ""
     },
     {
       "id": 4,
       "date": "2026-03-01",
       "title": "New Book Review",
-      "body": "NEW book review by one of your librarians \u2014 The Correspondent by Virginia Evans. Click to read.",
+      "body": "NEW book review by one of your librarians — The Correspondent by Virginia Evans. Click to read.",
       "link": "https://fayette.lib.wv.us/wp-content/uploads/2026/03/Book-Review-The-Correspondent.docx"
     },
     {
       "id": 5,
       "date": "2026-04-08",
       "title": "Board of Trustees Meeting",
-      "body": "Board of Trustees Meeting \u2014 2nd Tuesday of each quarter at 3:00 PM at the Fayette County Public Library Administration Building, 531 Summit Street, Oak Hill.",
+      "body": "Board of Trustees Meeting — 2nd Tuesday of each quarter at 3:00 PM at the Fayette County Public Library Administration Building, 531 Summit Street, Oak Hill.",
       "link": ""
     }
   ],
@@ -247,44 +247,44 @@
       {
         "branch": "Ansted",
         "schedule": "Thursdays at 4:00 PM",
-        "ages": "3\u20136"
+        "ages": "3–6"
       },
       {
         "branch": "Fayetteville",
         "schedule": "Wednesdays at 11:00 AM",
-        "ages": "3\u20136"
+        "ages": "3–6"
       },
       {
         "branch": "Mt. Hope",
         "schedule": "Fridays at 12:00 PM",
-        "ages": "3\u20136"
+        "ages": "3–6"
       },
       {
         "branch": "Oak Hill",
         "schedule": "Fridays at 11:00 AM",
-        "ages": "3\u20136"
+        "ages": "3–6"
       },
       {
         "branch": "Montgomery",
         "schedule": "Wednesdays at 5:00 PM",
-        "ages": "3\u20136"
+        "ages": "3–6"
       }
     ],
     "baby_lapsit": [
       {
         "branch": "Oak Hill",
         "schedule": "1st Tuesday at 3:00 PM",
-        "ages": "6\u201335 months"
+        "ages": "6–35 months"
       },
       {
         "branch": "Fayetteville",
         "schedule": "Every Wednesday at 11:00 AM",
-        "ages": "6\u201335 months"
+        "ages": "6–35 months"
       },
       {
         "branch": "Mt. Hope",
         "schedule": "1st and 3rd Wednesday at 11:00 AM",
-        "ages": "6\u201335 months"
+        "ages": "6–35 months"
       }
     ],
     "adult_book_club": {
@@ -292,7 +292,7 @@
       "schedule": "2nd Tuesday of each month at 1:00 PM"
     },
     "library_chef": {
-      "description": "Library Chef offers cooking and kitchen skills for adults of all levels. On-demand access \u2014 cook and learn at your own pace, anytime, from any device. No Zoom required!",
+      "description": "Library Chef offers cooking and kitchen skills for adults of all levels. On-demand access — cook and learn at your own pace, anytime, from any device. No Zoom required!",
       "url": "https://fayette.librarychef.com",
       "features": [
         "Interactive cooking classes",
@@ -313,7 +313,7 @@
     {
       "name": "Libby / OverDrive",
       "url": "https://libbyapp.com/library/wvdeli",
-      "description": "eBooks and audiobooks \u2014 free with your library card"
+      "description": "eBooks and audiobooks — free with your library card"
     },
     {
       "name": "Hoopla Digital",
@@ -328,7 +328,7 @@
     {
       "name": "Library Chef",
       "url": "https://fayette.librarychef.com",
-      "description": "Cooking and kitchen skills classes \u2014 free with library card"
+      "description": "Cooking and kitchen skills classes — free with library card"
     },
     {
       "name": "TumbleBooks",
@@ -418,35 +418,35 @@
       "id": "f1",
       "src": "images/bob.jpeg",
       "alt": "Bob, our library cat",
-      "caption": "Bob, our library cat \u2014 Happy New Year! \ud83d\udc31",
+      "caption": "Bob, our library cat — Happy New Year! 🐱",
       "type": "featured"
     },
     {
       "id": "f2",
       "src": "images/story-trail.jpeg",
       "alt": "White Oak Story Trail",
-      "caption": "\ud83c\udf3f New for Spring \u2014 White Oak Story Trail!",
+      "caption": "🌿 New for Spring — White Oak Story Trail!",
       "type": "featured"
     },
     {
       "id": "f3",
       "src": "images/book-sale.jpg",
       "alt": "Book Sale",
-      "caption": "\ud83d\udcda Book Sale refreshed \u2014 Mon\u2013Fri 9\u20135 at Oak Hill Admin Building",
+      "caption": "📚 Book Sale refreshed — Mon–Fri 9–5 at Oak Hill Admin Building",
       "type": "featured"
     },
     {
       "id": "f4",
       "src": "images/march-programs.jpg",
       "alt": "March Programs Flyer",
-      "caption": "\ud83d\udcc5 March Programs \u2014 see our full calendar",
+      "caption": "📅 March Programs — see our full calendar",
       "type": "featured"
     },
     {
       "id": "f5",
       "src": "images/hoopla-logo.png",
-      "alt": "Hoopla Digital \u2014 borrow free video, music, comics and audiobooks",
-      "caption": "\ud83c\udfac Hoopla \u2014 Free movies, music & more with your library card",
+      "alt": "Hoopla Digital — borrow free video, music, comics and audiobooks",
+      "caption": "🎬 Hoopla — Free movies, music & more with your library card",
       "type": "featured",
       "link": "https://www.hoopladigital.com/register?page=REGISTRATION_WELCOME",
       "link_label": "Sign up for Hoopla"
@@ -454,8 +454,8 @@
     {
       "id": "f6",
       "src": "images/libby-reads.png",
-      "alt": "Libby Reads \u2014 free community reading program",
-      "caption": "\ud83d\udcd6 Libby Reads \u2014 Check out featured titles community-wide with no waitlists!",
+      "alt": "Libby Reads — free community reading program",
+      "caption": "📖 Libby Reads — Check out featured titles community-wide with no waitlists!",
       "type": "featured",
       "link": "https://libbyapp.com/library/wvdeli",
       "link_label": "Download Libby"
@@ -463,8 +463,8 @@
     {
       "id": "f7",
       "src": "images/library-chef-cooking.png",
-      "alt": "Library Chef \u2014 free cooking classes for adults and kids",
-      "caption": "\ud83d\udc68\u200d\ud83c\udf73 Library Chef \u2014 Free cooking classes for adults and children!",
+      "alt": "Library Chef — free cooking classes for adults and kids",
+      "caption": "👨‍🍳 Library Chef — Free cooking classes for adults and children!",
       "type": "featured",
       "link": "https://fayette.librarychef.com",
       "link_label": "Start Cooking"
@@ -472,8 +472,8 @@
     {
       "id": "f8",
       "src": "images/libanywhere.jpg",
-      "alt": "LibAnywhere \u2014 Mobile catalog search for your library card",
-      "caption": "\ud83d\udcf1 LibAnywhere \u2014 Search our catalog on your mobile device",
+      "alt": "LibAnywhere — Mobile catalog search for your library card",
+      "caption": "📱 LibAnywhere — Search our catalog on your mobile device",
       "type": "featured",
       "link": "https://www.libanywhere.com/m/#1HKgRREtUrRu",
       "link_label": "Search Catalog"
@@ -482,20 +482,20 @@
   "homepage_features": [
     {
       "id": "library-chef",
-      "icon": "\ud83d\udc69\u200d\ud83c\udf73",
+      "icon": "👩‍🍳",
       "title": "Introducing Library Chef!",
-      "body": "Access thousands of recipes and build your own cookbook \u2014 free with your library card.",
+      "body": "Access thousands of recipes and build your own cookbook — free with your library card.",
       "link": "https://fayette.librarychef.com",
-      "link_label": "Visit Library Chef \u2192",
+      "link_label": "Visit Library Chef →",
       "style": "default"
     },
     {
       "id": "adult-book-club",
-      "icon": "\ud83d\udcd6",
+      "icon": "📖",
       "title": "Adult Book Club",
       "body": "Join us at the Oak Hill Branch! Monthly meetings with great reads and great people.",
       "link": "pages/programs.html",
-      "link_label": "See schedule \u2192",
+      "link_label": "See schedule →",
       "style": "blue"
     }
   ],
@@ -523,7 +523,7 @@
         "Assist with programming (Summer Reading Program, Fayette County Adventure Days) and outreach (homebound deliveries, Head Start, parades)",
         "Deliver materials to branch locations in Fayette County and the Raleigh County Public Library",
         "Maintain familiarity with technologies: online catalog, digital devices, Microsoft Windows, Internet, and email",
-        "Keep the bookmobile clean inside and out \u2014 vacuuming, shampooing carpets, dusting shelves, and washing the exterior",
+        "Keep the bookmobile clean inside and out — vacuuming, shampooing carpets, dusting shelves, and washing the exterior",
         "Perform daily vehicle inspections, refuel the vehicle, and track oil changes for the generator and engine",
         "Report any mechanical issues to the Director or Assistant Director promptly",
         "Respect the confidentiality of library users and records",
@@ -537,7 +537,7 @@
         "Ability to read, follow, and understand maps and GPS navigation systems",
         "Ability to safely operate library vehicles in varied driving conditions (weather, traffic, road hazards)",
         "Understanding of basic mechanical systems of the bookmobile",
-        "Must be able to sit, stand, stoop, stretch, climb, lift, carry, and retrieve materials \u2014 generally not exceeding 50 lbs",
+        "Must be able to sit, stand, stoop, stretch, climb, lift, carry, and retrieve materials — generally not exceeding 50 lbs",
         "Ability to learn and follow library procedures and the library computer system; proficiency with a laptop computer",
         "Excellent customer service skills or willingness to develop them"
       ],
@@ -552,5 +552,11 @@
       "how_to_apply": "Download the Job Application (PDF), complete it, and submit in person or by mail to:\n\nFayette County Public Libraries\n531 Summit St, Oak Hill, WV 25901\nAttn: Library Director\n\nQuestions? Call 304-465-0121.",
       "application_url": "https://fayette.lib.wv.us/wp-content/uploads/2021/07/job-application-form-template-download-standard-20170814-1.pdf"
     }
-  ]
+  ],
+  "holiday_closures": {
+    "observed": [
+      "new_years_day"
+    ],
+    "extra_notes": ""
+  }
 }

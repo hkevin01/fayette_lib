@@ -125,6 +125,12 @@
       
       // Try to render each component, gracefully handling failures
       try {
+        renderHeroQuote();
+      } catch(e) {
+        console.error('Failed to render hero quote:', e);
+      }
+
+      try {
         renderAnnouncements();
       } catch(e) {
         console.error('Failed to render announcements:', e);
@@ -191,6 +197,22 @@
         mainContent.insertBefore(errorDiv, mainContent.firstChild);
       }
     }
+  }
+
+  /* ---- Hero Quote Strip ---- */
+  function renderHeroQuote() {
+    const strip = document.getElementById('heroQuoteStrip');
+    const text  = document.getElementById('heroQuoteText');
+    if (!strip || !text || !siteData) return;
+    const site   = siteData.site || {};
+    const quote  = site.tagline  || '';
+    const author = site.tagline_author || '';
+    if (!quote) return;
+    text.innerHTML =
+      '<span class="hero-quote-mark" aria-hidden="true">\u201c</span>' +
+      quote +
+      '<span class="hero-quote-mark" aria-hidden="true">\u201d</span>' +
+      (author ? '<cite class="hero-quote-author">\u2014 ' + author + '</cite>' : '');
   }
 
   /* ---- Announcements ---- */
