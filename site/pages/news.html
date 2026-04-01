@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Latest news and announcements from Fayette County Public Libraries.">
+  <title>News &amp; Announcements | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/" aria-label="Fayette County Public Libraries home">
+        <img src="../images/logo.png" alt="FCPL Logo" width="120">
+      </a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link active" href="news.html" aria-current="page">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap full-width" id="main">
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+        <span aria-current="page">News &amp; Announcements</span>
+      </nav>
+
+      <div class="page-heading">
+        <h1>📰 News &amp; Announcements</h1>
+        <p>The latest updates, notices, and announcements from Fayette County Public Libraries.</p>
+      </div>
+
+      <!-- Announcements loaded from content.json -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">📢</span> Current Announcements</div>
+        <div class="card-body">
+          <div id="announcements" class="announcement-list" aria-live="polite" aria-label="Library announcements">
+            <p class="text-muted text-sm">Loading announcements…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Blog Posts -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">✍️</span> Recent Posts</div>
+        <div class="card-body">
+          <article class="announcement-item" aria-labelledby="post2-title">
+            <h2 id="post2-title" style="font-size:1.05rem">
+              <a href="jobs.html">Job Opportunity — See the Jobs Page for Details</a>
+            </h2>
+            <p>Check the <a href="jobs.html">Jobs tab</a> for the current job description and application.</p>
+            <p class="meta">
+              <time datetime="2026-02-09">February 9, 2026</time> · Posted by Library Staff
+            </p>
+          </article>
+
+          <article class="announcement-item" aria-labelledby="post1-title">
+            <h2 id="post1-title" style="font-size:1.05rem">
+              Board of Trustees Meeting — May 13 at 3:00 PM
+            </h2>
+            <p>The Board of Trustees will meet at 3:00 PM at the Fayette County Public Library Administration Building. The public is welcome to attend.</p>
+            <p class="meta">
+              <time datetime="2021-07-07">July 7, 2021</time> · Posted by Library Staff
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Subscribe to Updates -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">📧</span> Stay Informed — New Materials Alert</div>
+        <div class="card-body">
+          <p style="margin-bottom:1rem">
+            Sign up for <strong>Wowbrary</strong> to receive weekly email alerts when new books and materials arrive at any Fayette County branch.
+          </p>
+          <form id="subscribeForm" novalidate>
+            <div class="form-group">
+              <label for="subscribeEmail">Your email address</label>
+              <input type="email" id="subscribeEmail" name="email"
+                     placeholder="you@example.com"
+                     autocomplete="email"
+                     aria-describedby="emailHint"
+                     required>
+              <span id="emailHint" class="text-sm text-muted" style="display:block;margin-top:.25rem">
+                We'll redirect you to Wowbrary to complete signup. We never share your email.
+              </span>
+            </div>
+            <button type="submit" class="btn btn-primary">Subscribe to New Materials</button>
+            <p class="subscribe-msg text-sm text-muted mt-1" style="display:none" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Social / Stay Connected -->
+      <div class="info-box info">
+        <span class="ib-icon" aria-hidden="true">📣</span>
+        <div>
+          <strong>Stay Connected</strong> — Follow the library on social media or visit any branch for the latest news.
+          Have a question? Call us at <a href="tel:+13044650121">304-465-0121</a> or
+          <a href="locations.html">visit a branch near you</a>.
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries — serving our community since 1935.</p>
+        <p class="mt-1"><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="locations.html#ansted">Ansted Branch</a></li>
+          <li><a href="locations.html#fayetteville">Fayetteville Branch</a></li>
+          <li><a href="locations.html#montgomery">Montgomery Branch</a></li>
+          <li><a href="locations.html#mthope">Mt. Hope Branch</a></li>
+          <li><a href="locations.html#oakhill">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="ebooks.html">eBooks &amp; Audiobooks</a></li>
+          <li><a href="research.html">Research Databases</a></li>
+          <li><a href="bookmobile.html">Bookmobile</a></li>
+          <li><a href="homebound.html">Homebound Program</a></li>
+          <li><a href="programs.html">Programs &amp; Events</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="archives.html">Archives &amp; Genealogy</a></li>
+          <li><a href="news.html">News &amp; Announcements</a></li>
+          <li><a href="jobs.html">Job Openings</a></li>
+          <li><a href="about.html#board">Board of Directors</a></li>
+          <li><a href="about.html#faq">FAQ</a></li>
+          <li><a href="https://fayette.lib.wv.us/" target="_blank" rel="noopener">Original Site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footerYear"></span> Fayette County Public Libraries &middot; 531 Summit St, Oak Hill, WV 25901 &middot;
+      <a href="tel:+13044650121">304-465-0121</a>
+    </div>
+  </footer>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

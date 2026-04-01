@@ -1,0 +1,41 @@
+services:
+  fcpl-site:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: fcpl-website
+    ports:
+      - "8080:80"    # HTTP  → direct access fallback
+      - "8443:443"   # HTTPS → access at https://localhost:8443
+    restart: unless-stopped
+    depends_on:
+      - fcpl-admin
+    volumes:
+      - ./site/data:/usr/share/nginx/html/data
+      - ./site/images:/usr/share/nginx/html/images
+      - ./docker/certs:/etc/nginx/certs:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsk", "--max-time", "3", "https://127.0.0.1/", "-o", "/dev/null"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+  fcpl-admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: fcpl-admin
+    restart: unless-stopped
+    env_file:
+      - ./admin/.env
+    environment:
+      - DATA_DIR=/data
+      - IMAGES_DIR=/images/events
+      - GENERAL_IMAGES_DIR=/images
+    volumes:
+      - ./site/data:/data
+      - ./site/images:/images
+    expose:
+      - "3000"
+

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Page not found — Fayette County Public Libraries">
+  <title>Page Not Found | FCPL</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="/images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="/pages/about.html">About Us</a></li>
+        <li><a class="nav-link" href="/pages/programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="/pages/locations.html">Locations</a></li>
+        <li><a class="nav-link" href="/pages/research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="/pages/ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="/pages/bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="/pages/homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="/pages/archives.html">Archives</a></li>
+        <li><a class="nav-link" href="/pages/news.html">News</a></li>
+        <li><a class="nav-link" href="/pages/jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="/pages/catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="/pages/myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap" id="main">
+    <main>
+      <div class="page-heading" style="text-align:center; padding: 3rem 1rem;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;" aria-hidden="true">📚</div>
+        <h1>Page Not Found</h1>
+        <p style="font-size: 1.15rem; color: var(--gray-600); max-width: 480px; margin: 0 auto 2rem;">
+          We couldn't find that page. It may have moved, or the link might be incorrect.
+        </p>
+        <div style="display:flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="/" class="btn btn-primary">Go to Homepage</a>
+          <a href="/pages/catalog.html" class="btn btn-outline">Search the Catalog</a>
+          <a href="/pages/locations.html" class="btn btn-outline">Find a Branch</a>
+        </div>
+      </div>
+
+      <div class="card" style="max-width: 640px; margin: 0 auto 2rem;">
+        <div class="card-header"><span class="icon">🔍</span> Looking for something?</div>
+        <div class="card-body">
+          <ul>
+            <li><a href="/pages/programs.html">Programs &amp; Events Calendar</a></li>
+            <li><a href="/pages/ebooks.html">eBooks, Movies &amp; Digital Media</a></li>
+            <li><a href="/pages/research.html">Research &amp; Homework Help</a></li>
+            <li><a href="/pages/bookmobile.html">Bookmobile Schedule</a></li>
+            <li><a href="/pages/archives.html">Archives &amp; Genealogy</a></li>
+            <li><a href="/pages/homebound.html">Homebound Delivery Service</a></li>
+            <li><a href="/pages/jobs.html">Job Openings</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align:center; color: var(--gray-500); font-size:.9rem; margin-bottom: 2rem;">
+        Need help? Call us: <a href="tel:+13044650121" style="font-weight:600;">304-465-0121</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>&copy; <span id="yr"></span> Fayette County Public Libraries. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <a href="tel:+13044650121" class="help-float" aria-label="Call the library for help">
+    📞 Need Help? Call Us
+  </a>
+
+  <script src="/js/a11y.js"></script>
+  <script src="/js/main.js"></script>
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

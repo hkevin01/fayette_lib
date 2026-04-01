@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fayette County Public Libraries — Your public library serving all of Fayette County, West Virginia.">
+  <title>Fayette County Public Libraries</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/" aria-label="Fayette County Public Libraries home">
+        <img src="images/logo.png" alt="FCPL Logo" width="120">
+      </a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li class="nav-item"><a class="nav-link active" href="/" data-page="home" aria-current="page">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/about.html">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/programs.html">Programs &amp; Events</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/locations.html">Locations</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/research.html">Research &amp; Homework</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/ebooks.html">eBooks</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/bookmobile.html">Bookmobile</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/homebound.html">Homebound</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/archives.html">Archives</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/news.html">News</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/jobs.html">Jobs</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/catalog.html">Catalog Search</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO IMAGE SLIDER -->
+  <div class="img-slider" id="imgSlider" aria-label="Library photo slideshow" role="region">
+    <div class="img-slider-track" id="imgSliderTrack">
+      <!-- slides injected by JS; fallback shown until images load -->
+      <div class="img-slider-fallback">
+        <h1>Your Community Library</h1>
+        <p>Free resources, programs, and services for every resident of Fayette County, WV.</p>
+        <p class="hero-quote">"Without libraries what have we? We have no past and no future." — Ray Bradbury</p>
+      </div>
+    </div>
+    <button class="slider-prev" id="sliderPrev" aria-label="Previous slide">&#8249;</button>
+    <button class="slider-next" id="sliderNext" aria-label="Next slide">&#8250;</button>
+    <div class="slider-dots" id="sliderDots" aria-hidden="true"></div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-wrap" id="main">
+    <main>
+      <!-- Hours Bar -->
+      <div class="hours-bar" id="hoursBar">
+        <span class="open-badge">Hours</span>
+        <p>Loading today's hours…</p>
+      </div>
+
+      <!-- Quick Links -->
+      <h2 class="section-heading">🔗 Quick Links</h2>
+      <div class="quick-links" id="quickLinks"></div>
+
+      <!-- Featured Photos (Bob the cat, events, story trail, etc.) -->
+      <div id="featuredPhotosSection">
+        <h2 class="section-heading">📸 Featured Highlights</h2>
+        <div class="featured-photo-grid" id="featuredPhotoGrid"></div>
+      </div>
+
+      <!-- Feature: Library Chef -->
+      <div class="feature-banner">
+        <div class="feature-icon">👩‍🍳</div>
+        <div>
+          <h2>Introducing Library Chef!</h2>
+          <p>Access thousands of recipes and build your own cookbook — free with your library card. <a href="https://app.librarychef.com/" target="_blank" rel="noopener">Visit Library Chef →</a></p>
+        </div>
+      </div>
+
+      <!-- Feature: Adult Book Club -->
+      <div class="feature-banner" style="background:linear-gradient(135deg,var(--blue-50),var(--white));border-color:var(--blue-100);">
+        <div class="feature-icon">📖</div>
+        <div>
+          <h2>Adult Book Club</h2>
+          <p>Join us at the Oak Hill Branch! Monthly meetings with great reads and great people. <a href="pages/programs.html">See schedule →</a></p>
+        </div>
+      </div>
+
+      <!-- Upcoming Events Preview -->
+      <div class="card" id="upcomingEventsCard">
+        <div class="card-header"><span class="icon">📅</span> Upcoming Events</div>
+        <div class="card-body">
+          <div class="calendar-wrap">
+            <div class="cal-header">
+              <button class="cal-nav-btn" id="calPrev" aria-label="Previous month">&#8592;</button>
+              <h2 id="calMonthLabel"></h2>
+              <button class="cal-nav-btn" id="calNext" aria-label="Next month">&#8594;</button>
+            </div>
+            <div class="cal-legend" id="calLegend"></div>
+            <div class="cal-filter" id="calFilter"></div>
+            <div class="cal-view-tabs">
+              <button class="cal-view-btn active" data-view="month">Month</button>
+              <button class="cal-view-btn" data-view="list">List</button>
+            </div>
+            <div id="calContainer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Services Strip -->
+      <div class="card">
+        <div class="card-header"><span class="icon">📱</span> Free Digital Services</div>
+        <div class="card-body">
+          <div class="resource-grid">
+            <a class="resource-card" href="https://libbyapp.com/" target="_blank" rel="noopener">
+              <h3>📚 Libby by OverDrive</h3>
+              <p>Thousands of eBooks and audiobooks — borrow free on any device.</p>
+              <span>Get Libby →</span>
+            </a>
+            <a class="resource-card" href="https://www.hoopladigital.com/" target="_blank" rel="noopener">
+              <h3>🎬 Hoopla Digital</h3>
+              <p>Stream movies, music, comics, audiobooks — unlimited borrows.</p>
+              <span>Visit Hoopla →</span>
+            </a>
+            <a class="resource-card" href="https://www.wvinfodepot.org/" target="_blank" rel="noopener">
+              <h3>🔍 WV Info Depot</h3>
+              <p>West Virginia's statewide library catalog and research databases.</p>
+              <span>Search Now →</span>
+            </a>
+            <a class="resource-card" href="https://www.tumblebooklibrary.com/" target="_blank" rel="noopener">
+              <h3>🎒 TumbleBooks</h3>
+              <p>Animated talking books for children — perfect for young readers.</p>
+              <span>Read Now →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memorial Book Program -->
+      <div class="info-box info">
+        <span class="ib-icon">📖</span>
+        <div>
+          <strong>Memorial &amp; Honorary Book Program</strong><br>
+          Honor a loved one with a book donation to the library. Contact us at
+          <a href="tel:+13044650121">304-465-0121</a> or visit the Oak Hill Branch to learn more.
+        </div>
+      </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Quick links sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📢 Announcements</div>
+        <div class="widget-body">
+          <div id="announcements" class="announcement-list">
+            <p class="text-muted text-sm">Loading announcements…</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-title">🔗 Explore</div>
+        <div class="widget-body" id="sidebarLinks"></div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-title">📧 New Materials Alert</div>
+        <div class="widget-body">
+          <p class="text-sm" style="margin-bottom:.75rem">Get notified when new books arrive. Sign up for <strong>Wowbrary</strong> alerts.</p>
+          <form id="subscribeForm">
+            <div class="form-group">
+              <label for="subscribeEmail">Your Email</label>
+              <input type="email" id="subscribeEmail" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Subscribe</button>
+            <p class="subscribe-msg text-sm text-muted mt-1" style="display:none"></p>
+          </form>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-title">📞 Contact Us</div>
+        <div class="widget-body">
+          <p class="text-sm"><strong>Main Office / Oak Hill</strong></p>
+          <p class="text-sm"><a href="tel:+13044650121">304-465-0121</a></p>
+          <p class="text-sm mt-1"><strong>Address:</strong><br>531 Summit St, Oak Hill, WV 25901</p>
+          <p class="text-sm mt-1"><strong>Hours:</strong><br>Mon–Fri 9:00 AM – 5:00 PM</p>
+          <a class="btn btn-secondary mt-2" href="pages/locations.html" style="font-size:.875rem">All Locations →</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div class="event-modal-overlay" id="eventModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="event-modal">
+      <div class="event-modal-header">
+        <h3 id="modalTitle"></h3>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="event-modal-body">
+        <div class="event-modal-meta">
+          <p><span class="mm-icon"></span><span id="modalDate"></span></p>
+          <p><span class="mm-icon"></span><span id="modalTime"></span></p>
+          <p><span class="mm-icon"></span><span id="modalLocation"></span></p>
+          <p><strong id="modalCat" style="font-size:.8rem;text-transform:uppercase;letter-spacing:.05em"></strong></p>
+        </div>
+        <p class="event-modal-desc" id="modalDesc"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+          <a class="gcal-btn" id="gcalBtn" href="#" target="_blank" rel="noopener">
+            📅 Add to Google Calendar
+          </a>
+          <button class="ics-btn" id="icsDownloadBtn">
+            ⬇ Download .ics
+          </button>
+          <button class="ics-btn" id="appleCalendarBtn" title="Import to Apple Calendar or iCloud">
+            🍎 Apple Calendar
+          </button>
+          <button class="ics-btn" id="outlookBtn" title="Add to Microsoft Outlook">
+            📧 Outlook
+          </button>
+          <button class="ics-btn" id="yahooBtn" title="Add to Yahoo Calendar">
+            🔶 Yahoo Calendar
+          </button>
+          <button class="ics-btn" id="iphoneBtn" title="Add to iPhone Calendar">
+            📱 iPhone
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries — serving our community since 1935.</p>
+        <p class="mt-1"><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="pages/locations.html#ansted">Ansted Branch</a></li>
+          <li><a href="pages/locations.html#fayetteville">Fayetteville Branch</a></li>
+          <li><a href="pages/locations.html#montgomery">Montgomery Branch</a></li>
+          <li><a href="pages/locations.html#mthope">Mt. Hope Branch</a></li>
+          <li><a href="pages/locations.html#oakhill">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="pages/ebooks.html">eBooks &amp; Audiobooks</a></li>
+          <li><a href="pages/research.html">Research Databases</a></li>
+          <li><a href="pages/bookmobile.html">Bookmobile</a></li>
+          <li><a href="pages/homebound.html">Homebound Program</a></li>
+          <li><a href="pages/programs.html">Programs &amp; Events</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="pages/about.html">About Us</a></li>
+          <li><a href="pages/archives.html">Archives &amp; Genealogy</a></li>
+          <li><a href="pages/news.html">News &amp; Announcements</a></li>
+          <li><a href="pages/jobs.html">Job Openings</a></li>
+          <li><a href="pages/about.html#board">Board of Directors</a></li>
+          <li><a href="pages/about.html#faq">FAQ</a></li>
+          <li><a href="https://fayette.lib.wv.us/" target="_blank" rel="noopener">Original Site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footerYear"></span> Fayette County Public Libraries · 531 Summit St, Oak Hill, WV 25901 ·
+      <a href="tel:+13044650121">304-465-0121</a>
+    </div>
+  </footer>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+  <!-- Image lightbox (shared by slider) -->
+  <div class="img-lightbox" id="imgLightbox" role="dialog" aria-modal="true" aria-label="Full size photo">
+    <button class="img-lightbox-close" id="lbClose" aria-label="Close photo">&times;</button>
+    <img id="lbImg" src="" alt="">
+    <div class="img-lightbox-caption" id="lbCaption"></div>
+  </div>
+
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="js/a11y.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+  /* ── Homepage image slider ───────────────────────────────────────── */
+  (function () {
+    const track   = document.getElementById('imgSliderTrack');
+    const dotsEl  = document.getElementById('sliderDots');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    const SLIDE_INTERVAL_MS = 12000;
+    let slides = [], cur = 0, timer = null;
+
+    /* ── Lightbox ── */
+    const lb     = document.getElementById('imgLightbox');
+    const lbImg  = document.getElementById('lbImg');
+    const lbCap  = document.getElementById('lbCaption');
+    const lbClose= document.getElementById('lbClose');
+    function openLightbox(src, alt, caption) {
+      lbImg.src = src; lbImg.alt = alt || '';
+      lbCap.textContent = caption || '';
+      lb.classList.add('open');
+      stopAuto();
+      lbClose.focus();
+    }
+    function closeLightbox() {
+      lb.classList.remove('open');
+      lbImg.src = '';
+      startAuto();
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLightbox(); });
+
+    function goTo(n) {
+      cur = (n + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dotsEl.querySelectorAll('.slider-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === cur);
+      });
+    }
+    function startAuto() {
+      stopAuto();
+      if (slides.length <= 1) return;
+      if (document.hidden) return;
+      if (lb.classList.contains('open')) return;
+      timer = setInterval(() => goTo(cur + 1), SLIDE_INTERVAL_MS);
+    }
+    function stopAuto()  {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function buildSlider(images) {
+      // Validate input
+      if (!Array.isArray(images) || images.length === 0) {
+        console.warn('buildSlider: No valid images provided');
+        return;
+      }
+
+      // Filter out invalid images before building
+      const validImages = images.filter(img => {
+        if (!img || typeof img !== 'object') return false;
+        if (!img.src || typeof img.src !== 'string') return false;
+        return true;
+      });
+
+      if (validImages.length === 0) {
+        console.warn('buildSlider: No valid images after filtering');
+        return;
+      }
+
+      try {
+        track.innerHTML = '';
+        slides = validImages;
+        
+        slides.forEach((img, idx) => {
+          try {
+            const slide = document.createElement('div');
+            slide.className = 'img-slide';
+            slide.setAttribute('role', 'button');
+            slide.setAttribute('tabindex', '0');
+            slide.setAttribute('aria-label', (img.alt || 'Photo ' + (idx+1)) + ' — click to enlarge');
+            const el = document.createElement('img');
+            el.src = img.src; 
+            el.alt = img.alt || '';
+            el.loading = idx === 0 ? 'eager' : 'lazy';
+            // Handle image load errors gracefully
+            el.onerror = function() {
+              console.warn(`Slider image failed to load: ${img.src}`);
+              // Keep slide but mark as failed
+              this.parentElement.classList.add('image-failed');
+            };
+            slide.appendChild(el);
+            
+            // Caption bar
+            if (img.caption && typeof img.caption === 'string') {
+              const cap = document.createElement('div');
+              cap.className = 'img-slide-caption';
+              cap.textContent = img.caption;
+              slide.appendChild(cap);
+            }
+            
+            // "Tap/click to enlarge" hint — or link label if navigating
+            const hint = document.createElement('div');
+            hint.className = 'img-slide-hint';
+            hint.setAttribute('aria-hidden','true');
+            hint.textContent = img.link ? ('🔗 ' + (img.link_label || 'Click to visit')) : '🔍 Click to enlarge';
+            slide.appendChild(hint);
+            
+            // If image has a link, navigate on click; otherwise open lightbox
+            const openThis = img.link && typeof img.link === 'string'
+              ? () => window.open(img.link, '_blank', 'noopener,noreferrer')
+              : () => openLightbox(img.src, img.alt, img.caption);
+            slide.setAttribute('aria-label', (img.alt || 'Photo ' + (idx+1)) + (img.link ? ' — click to visit' : ' — click to enlarge'));
+            slide.addEventListener('click', openThis);
+            slide.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openThis(); }});
+            track.appendChild(slide);
+          } catch (imgErr) {
+            console.error(`Error building slide ${idx}:`, imgErr);
+            // Continue with next image if one fails
+          }
+        });
+
+        // Build dots
+        dotsEl.innerHTML = '';
+        slides.forEach((_, i) => {
+          try {
+            const dot = document.createElement('button');
+            dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+            dot.onclick = e => { e.stopPropagation(); stopAuto(); goTo(i); startAuto(); };
+            dotsEl.appendChild(dot);
+          } catch (dotErr) {
+            console.error(`Error building dot ${i}:`, dotErr);
+          }
+        });
+
+        // Show/hide navigation buttons
+        prevBtn.style.display = slides.length > 1 ? '' : 'none';
+        nextBtn.style.display = slides.length > 1 ? '' : 'none';
+        goTo(0);
+        
+        if (slides.length > 1) startAuto();
+      } catch (err) {
+        console.error('Critical error in buildSlider:', err);
+        track.innerHTML = ''; // Clear any partial builds
+        slides = [];
+      }
+    }
+
+    function buildFeatured(images) {
+      const sect = document.getElementById('featuredPhotosSection');
+      const grid = document.getElementById('featuredPhotoGrid');
+      if (!images.length) return;
+      grid.innerHTML = images.map(img => {
+        if (img.link) {
+          // Linked card — opens URL in new tab
+          return `<a class="featured-photo-card featured-photo-card--link" href="${img.link}" target="_blank" rel="noopener noreferrer"
+               aria-label="${(img.alt||'Photo')} — ${img.link_label || 'Visit link'}">
+            <img src="${img.src}" alt="${img.alt || ''}" loading="lazy">
+            ${img.caption ? '<div class="featured-photo-caption">' + img.caption + '</div>' : ''}
+            <div class="featured-photo-linkbtn">${img.link_label || 'Learn More'} →</div>
+          </a>`;
+        }
+        // Non-linked card — opens lightbox
+        return `<div class="featured-photo-card" role="button" tabindex="0"
+             aria-label="${(img.alt||'Photo')} — click to enlarge"
+             onclick="document.getElementById('imgLightbox').classList.add('open');document.getElementById('lbImg').src='${img.src}';document.getElementById('lbImg').alt='${img.alt||''}';document.getElementById('lbCaption').textContent='${(img.caption||'').replace(/'/g,'&#39;')}';"
+             onkeydown="if(event.key==='Enter'||event.key===' '){this.click();}">
+          <img src="${img.src}" alt="${img.alt || ''}" loading="lazy">
+          ${img.caption ? '<div class="featured-photo-caption">' + img.caption + '</div>' : ''}
+        </div>`;
+      }).join('');
+      sect.style.display = '';
+    }
+
+    // Keep slider moving consistently; pause only for lightbox/hidden tab
+    const slider = document.getElementById('imgSlider');
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); stopAuto(); goTo(cur - 1); startAuto(); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); stopAuto(); goTo(cur + 1); startAuto(); });
+    slider.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  { stopAuto(); goTo(cur - 1); startAuto(); }
+      if (e.key === 'ArrowRight') { stopAuto(); goTo(cur + 1); startAuto(); }
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAuto();
+      else startAuto();
+    });
+
+    // Load images from content.json with error handling
+    fetch('data/content.json')
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}: Failed to fetch content`);
+        return r.json();
+      })
+      .then(data => {
+        try {
+          if (!data || typeof data !== 'object') throw new Error('Invalid data format');
+          
+          const all = Array.isArray(data.homepage_images) ? data.homepage_images : [];
+          const sliderImgs   = all.filter(i => i && i.type === 'slider');
+          const featuredImgs = all.filter(i => i && i.type === 'featured');
+          
+          // Only build slider if we have valid images
+          if (sliderImgs.length > 0) {
+            try {
+              buildSlider(sliderImgs);
+            } catch (sliderErr) {
+              console.error('Slider build failed:', sliderErr);
+              // Keep fallback hero visible if slider build fails
+            }
+          }
+          
+          // Build featured cards, handling any individual failures
+          if (featuredImgs.length > 0) {
+            try {
+              buildFeatured(featuredImgs);
+            } catch (featErr) {
+              console.error('Featured images failed:', featErr);
+              // Still show the page even if featured section fails
+            }
+          }
+        } catch (parseErr) {
+          console.error('Error processing image data:', parseErr);
+          // Keep fallback hero and continue loading rest of page
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load content.json:', err);
+        // Keep fallback static hero visible if data loading fails
+        // Page continues to function with other components
+      });
+  })();
+  </script>
+
+  <!-- COOKIE CONSENT BANNER -->
+  <div class="cookie-consent" id="cookieConsent" role="banner">
+    <div class="cookie-consent-content">
+      <div class="cookie-icon" aria-hidden="true">🍪</div>
+      <div class="cookie-text">
+        <h3>We use cookies to improve your experience</h3>
+        <p>We use cookies to help you navigate, analyze site traffic, and remember your preferences (like which branch you're visiting). No personal information is stored.</p>
+      </div>
+      <div class="cookie-actions">
+        <button class="btn btn-secondary" id="cookieReject">Don't Allow</button>
+        <button class="btn btn-primary" id="cookieAccept">Accept Cookies</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ---- Cookie Management & Analytics ---- */
+  (function() {
+    const COOKIE_CONSENT_KEY = 'fcpl_cookie_consent';
+    const COOKIE_EXPIRE_DAYS = 365;
+
+    function getStorage() {
+      try {
+        localStorage.setItem('__fcpl_cookie_test__', '1');
+        localStorage.removeItem('__fcpl_cookie_test__');
+        return localStorage;
+      } catch (_) {
+        try {
+          sessionStorage.setItem('__fcpl_cookie_test__', '1');
+          sessionStorage.removeItem('__fcpl_cookie_test__');
+          return sessionStorage;
+        } catch (_) {
+          return null;
+        }
+      }
+    }
+
+    const consentStorage = getStorage();
+    
+    // Check if user has already made a choice
+    function checkCookieConsent() {
+      try {
+        const saved = consentStorage ? consentStorage.getItem(COOKIE_CONSENT_KEY) : null;
+        return saved ? JSON.parse(saved) : null;
+      } catch(e) {
+        return null;
+      }
+    }
+    
+    // Save cookie preference
+    function setCookieConsent(accepted) {
+      try {
+        if (!consentStorage) return;
+        consentStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({
+          accepted: accepted,
+          date: new Date().toISOString()
+        }));
+      } catch(e) {
+        console.warn('Could not save cookie preference:', e);
+      }
+    }
+    
+    // Show/hide consent banner
+    function showConsentBanner() {
+      const banner = document.getElementById('cookieConsent');
+      if (!banner) return;
+      
+      const saved = checkCookieConsent();
+      if (saved === null) {
+        // First time visiting, show banner
+        banner.classList.add('visible');
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+    
+    // Hide banner and enable analytics
+    function acceptCookies() {
+      setCookieConsent(true);
+      const banner = document.getElementById('cookieConsent');
+      if (banner) {
+        banner.classList.remove('visible');
+        setTimeout(() => { banner.style.display = 'none'; }, 300);
+      }
+      initAnalytics();
+    }
+    
+    // Hide banner but don't track
+    function rejectCookies() {
+      setCookieConsent(false);
+      const banner = document.getElementById('cookieConsent');
+      if (banner) {
+        banner.classList.remove('visible');
+        setTimeout(() => { banner.style.display = 'none'; }, 300);
+      }
+    }
+    
+    // Track page views and interactions
+    function initAnalytics() {
+      const consent = checkCookieConsent();
+      if (consent && consent.accepted !== true) return;
+      
+      // Track page view
+      const pageView = {
+        page: window.location.pathname,
+        title: document.title,
+        referrer: document.referrer,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      };
+      
+      // Send to analytics endpoint (will be created on backend)
+      fetch('api/analytics/pageview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pageView)
+      }).catch(e => console.warn('Analytics disabled or unavailable'));
+      
+      // Track link clicks
+      document.addEventListener('click', e => {
+        if (e.target.tagName === 'A' || e.target.closest('a')) {
+          const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+          const event = {
+            type: 'link_click',
+            href: link.href,
+            text: link.innerText || link.textContent,
+            timestamp: new Date().toISOString()
+          };
+          fetch('api/analytics/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(event)
+          }).catch(e => {});
+        }
+      });
+      
+      // Track tab/window visibility
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          const event = {
+            type: 'page_focus',
+            page: window.location.pathname,
+            timestamp: new Date().toISOString()
+          };
+          fetch('api/analytics/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(event)
+          }).catch(e => {});
+        }
+      });
+    }
+    
+    // Set up buttons
+    const acceptBtn = document.getElementById('cookieAccept');
+    const rejectBtn = document.getElementById('cookieReject');
+    
+    if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
+    if (rejectBtn) rejectBtn.addEventListener('click', rejectCookies);
+    
+    // Initialize on page load
+    showConsentBanner();
+    
+    // If cookie was previously accepted, enable analytics
+    const consent = checkCookieConsent();
+    if (consent && consent.accepted === true) {
+      const banner = document.getElementById('cookieConsent');
+      if (banner) banner.style.display = 'none';
+      initAnalytics();
+    }
+  })();
+  </script>

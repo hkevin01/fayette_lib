@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your Fayette County Public Libraries account — renew books, check due dates, place holds, and access digital services.">
+  <title>My Account | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/" aria-label="Fayette County Public Libraries home">
+        <img src="../images/logo.png" alt="FCPL Logo" width="120">
+      </a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link active" href="myaccount.html" aria-current="page">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap" id="main">
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+        <span aria-current="page">My Account</span>
+      </nav>
+
+      <div class="page-heading">
+        <h1>My Library Account</h1>
+        <p>Renew books, check due dates, place holds, and access all your digital services — free with your FCPL card.</p>
+      </div>
+
+      <!-- Primary Action — Sign In -->
+      <div class="feature-banner" style="margin-bottom:1.5rem">
+        <div class="feature-icon" aria-hidden="true">👤</div>
+        <div>
+          <h2>Sign In to Your Account</h2>
+          <p>Use your library card number and PIN to log in. Once signed in you can renew items, place holds, see fines, and update your contact information.</p>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem">
+            <a href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener" class="btn btn-primary">Sign In to My Account →</a>
+            <a href="#new-card" class="btn btn-outline">Get a Library Card</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Grid -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">⚡</span> What You Can Do Online</div>
+        <div class="card-body">
+          <div class="resource-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener">
+              <h3>🔄 Renew Items</h3>
+              <p>Renew checked-out books, DVDs, and other materials before they're due — no phone call needed.</p>
+              <span>Renew Now →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener">
+              <h3>📦 Place a Hold</h3>
+              <p>Request an item that's checked out. You'll be notified when it's ready for pickup at your branch.</p>
+              <span>Browse &amp; Hold →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener">
+              <h3>💳 Pay Fines</h3>
+              <p>View and pay any outstanding fines or fees on your account online.</p>
+              <span>Check Fines →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener">
+              <h3>🔔 Manage Alerts</h3>
+              <p>Set up email or text reminders for due dates and hold notifications.</p>
+              <span>Update Alerts →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">
+              <h3>🔍 Search Catalog</h3>
+              <p>Search FCPL's full collection and the statewide WV Info Depot library network.</p>
+              <span>Search Now →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/search~S16/X?newsearch=true&searchscope=16" target="_blank" rel="noopener">
+              <h3>🆕 New Arrivals</h3>
+              <p>See the latest books, DVDs, and materials just added to the collection.</p>
+              <span>Browse New →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Services -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">📱</span> Your Digital Services</div>
+        <div class="card-body">
+          <p style="margin-bottom:1.25rem">These services are all included free with your FCPL library card. Use them on any device, anytime.</p>
+          <div class="resource-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+            <a class="resource-card" href="https://libbyapp.com/library/wvdeli" target="_blank" rel="noopener">
+              <h3>📖 Libby</h3>
+              <p>Borrow eBooks and audiobooks instantly. Download the app on your phone or tablet — read or listen anywhere.</p>
+              <span>Open Libby →</span>
+            </a>
+            <a class="resource-card" href="https://www.hoopladigital.com/" target="_blank" rel="noopener">
+              <h3>🎬 Hoopla Digital</h3>
+              <p>Stream movies, music, comics, and eBooks. No waitlists — borrow up to 10 items per month.</p>
+              <span>Open Hoopla →</span>
+            </a>
+            <a class="resource-card" href="https://fayette.librarychef.com" target="_blank" rel="noopener">
+              <h3>👩‍🍳 Library Chef</h3>
+              <p>Thousands of professional recipes, cooking classes, and meal planning tools — all free with your card.</p>
+              <span>Open Library Chef →</span>
+            </a>
+            <a class="resource-card" href="https://www.libanywhere.com/m/#1HKgRREtUrRu" target="_blank" rel="noopener">
+              <h3>📲 LibAnywhere App</h3>
+              <p>Access your FCPL account, search the catalog, and renew items from your smartphone.</p>
+              <span>Get the App →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIN Help -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">🔑</span> PIN &amp; Account Help</div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.75rem">Forgot Your PIN?</h2>
+              <p style="font-size:.9rem;color:var(--gray-700);margin-bottom:.75rem">
+                Your PIN is set when you register for a card. If you've forgotten it, we can reset it for you quickly.
+              </p>
+              <ul class="checklist" style="font-size:.9rem">
+                <li>Call any branch and a librarian will reset it for you</li>
+                <li>Visit in person with your photo ID</li>
+                <li>Default PIN for new cards is the last 4 digits of your phone number</li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.75rem">Lost or Expired Card?</h2>
+              <p style="font-size:.9rem;color:var(--gray-700);margin-bottom:.75rem">
+                Cards are free to replace and must be renewed every 2 years.
+              </p>
+              <ul class="checklist" style="font-size:.9rem">
+                <li>Bring photo ID to any branch for a replacement</li>
+                <li>Cards expire every 2 years — renewal is free and instant</li>
+                <li>Your borrowing history and holds are preserved</li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-box info" style="margin-top:1.25rem">
+            <span class="ib-icon" aria-hidden="true">📞</span>
+            <div>Need help with your account? Call us at <a href="tel:+13044650121"><strong>304-465-0121</strong></a> — Mon–Fri 9 AM–5 PM.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Get a Card -->
+      <div class="card" id="new-card">
+        <div class="card-header"><span class="icon" aria-hidden="true">🪪</span> Don't Have a Card Yet? It's Free!</div>
+        <div class="card-body">
+          <p style="margin-bottom:1rem">
+            A library card is <strong>completely free</strong> for all Fayette County residents and opens the door to all of FCPL's services — including eBooks, digital streaming, research databases, and more.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.6rem">✅ What to bring:</h2>
+              <ul class="checklist">
+                <li>Photo ID (driver's license, state ID, or passport)</li>
+                <li>Proof of Fayette County address (utility bill, lease, or mail)</li>
+                <li>Children under 18 need a parent or guardian to sign</li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.6rem">🎁 What your card gets you:</h2>
+              <ul class="checklist">
+                <li>Borrow up to 10 items at a time</li>
+                <li>Free eBooks &amp; audiobooks via Libby</li>
+                <li>Free streaming via Hoopla Digital</li>
+                <li>Computer and internet access at all branches</li>
+                <li>Interlibrary loans from any library in WV</li>
+                <li>Access to research databases</li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-box info" style="margin-top:1.25rem">
+            <span class="ib-icon" aria-hidden="true">📍</span>
+            <div>
+              Sign up at any of our 5 branches — walk-ins welcome, no appointment needed.
+              <a href="locations.html" style="margin-left:.3rem">Find a branch near you →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries — serving our community since 1935.</p>
+        <p class="mt-1"><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="locations.html#ansted">Ansted Branch</a></li>
+          <li><a href="locations.html#fayetteville">Fayetteville Branch</a></li>
+          <li><a href="locations.html#montgomery">Montgomery Branch</a></li>
+          <li><a href="locations.html#mthope">Mt. Hope Branch</a></li>
+          <li><a href="locations.html#oakhill">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="ebooks.html">eBooks &amp; Audiobooks</a></li>
+          <li><a href="research.html">Research Databases</a></li>
+          <li><a href="bookmobile.html">Bookmobile</a></li>
+          <li><a href="homebound.html">Homebound Program</a></li>
+          <li><a href="programs.html">Programs &amp; Events</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="archives.html">Archives &amp; Genealogy</a></li>
+          <li><a href="news.html">News &amp; Announcements</a></li>
+          <li><a href="jobs.html">Job Openings</a></li>
+          <li><a href="about.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footerYear"></span> Fayette County Public Libraries · 531 Summit St, Oak Hill, WV 25901</div>
+  </footer>
+
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <a href="tel:+13044650121" class="help-float" aria-label="Call the library for help">
+    📞 Need Help? Call Us
+  </a>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

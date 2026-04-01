@@ -1,0 +1,450 @@
+{
+  "site": {
+    "name": "Fayette County Public Libraries",
+    "tagline": "Without libraries what have we? We have no past and no future.",
+    "tagline_author": "Ray Bradbury",
+    "phone_main": "304-465-0121",
+    "phone_alt": "304-465-5664",
+    "fax": "304-465-5664",
+    "email": "fcpl_director@mail.mln.lib.wv.us",
+    "address": "531 Summit Street, Oak Hill, WV 25901",
+    "catalog_url": "https://mlnapp.raleigh.lib.wv.us/search~S16",
+    "libby_url": "https://libbyapp.com/library/wvdeli",
+    "hoopla_url": "https://www.hoopladigital.com/register?page=REGISTRATION_WELCOME",
+    "wowbrary_url": "https://wowbrary.org/index.aspx?title=IHHUS0wJ1fFja56rH0L8mM4g%20GHRPHp%20TkxvtihAGZgVXPJ5fmmk4aDz2m%27Gqq4zuV8SGGT1m%2Cji7rrA0L%26a94fip%212579",
+    "libanywhere_url": "https://www.libanywhere.com/m/#1HKgRREtUrRu",
+    "library_chef_url": "https://fayette.librarychef.com",
+    "wv_info_depot_url": "http://www.wvinfodepot.org/",
+    "facebook_url": ""
+  },
+  "staff": {
+    "director": "Becky Kellum",
+    "assistant_director": "Kim Massey",
+    "assistant_director_email": "fcpl_director@mail.mln.lib.wv.us",
+    "bookmobile_staff": [
+      "Tim Meadows",
+      "Kathy Kemmish",
+      "Chip Tinder"
+    ]
+  },
+  "branches": [
+    {
+      "id": "admin",
+      "name": "Fayette Co. Public Library Admin & Bookmobile",
+      "address": "531 Summit Street",
+      "city": "Oak Hill, WV 25901",
+      "phone": "304-465-0121 or 304-465-5664",
+      "fax": "304-465-5664",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": "Book Sale: Mon–Fri 9–5 in the Administration Building behind the Oak Hill Library."
+    },
+    {
+      "id": "ansted",
+      "name": "Ansted Public Library",
+      "address": "150 Main Street",
+      "city": "Ansted, WV 25812",
+      "phone": "304-658-5731",
+      "fax": "",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "fayetteville",
+      "name": "Fayetteville Public Library",
+      "address": "401 N Court Street",
+      "city": "Fayetteville, WV 25840",
+      "phone": "304-574-4514",
+      "fax": "",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "montgomery",
+      "name": "Montgomery Public Library",
+      "address": "1009 Second Avenue",
+      "city": "Montgomery, WV 25136",
+      "phone": "304-442-5544",
+      "fax": "",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "mt-hope",
+      "name": "Mt. Hope Public Library",
+      "address": "16 Center Street",
+      "city": "Mt. Hope, WV 25880",
+      "phone": "304-877-6144",
+      "fax": "",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "oak-hill",
+      "name": "Oak Hill Public Library",
+      "address": "531 Summit Street",
+      "city": "Oak Hill, WV 25901",
+      "phone": "304-465-0121",
+      "fax": "304-465-5664",
+      "hours": [
+        {
+          "days": "Mon–Fri",
+          "open": "9:00 AM",
+          "close": "5:00 PM"
+        },
+        {
+          "days": "Sat–Sun",
+          "open": "Closed",
+          "close": ""
+        }
+      ],
+      "note": ""
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "date": "2026-02-09",
+      "title": "Job Opportunity",
+      "body": "We are hiring a Bookmobile Driver. Please check the description and application under the Jobs tab.",
+      "link": "jobs.html"
+    },
+    {
+      "id": 2,
+      "date": "2026-03-01",
+      "title": "New Book on the Story Trail",
+      "body": "The Fayette County Public Library is excited to present the White Oak Story Trail! It starts at the Depot on the White Oak Rail Trail and goes to Tom's.",
+      "link": ""
+    },
+    {
+      "id": 3,
+      "date": "2026-03-01",
+      "title": "Book Sale Refreshed",
+      "body": "The Book Sale has been refreshed. Monday thru Friday 9–5 in the Administration Building behind the Oak Hill Library.",
+      "link": ""
+    },
+    {
+      "id": 4,
+      "date": "2026-03-01",
+      "title": "New Book Review",
+      "body": "NEW book review by one of your librarians — The Correspondent by Virginia Evans. Click to read.",
+      "link": "https://fayette.lib.wv.us/wp-content/uploads/2026/03/Book-Review-The-Correspondent.docx"
+    },
+    {
+      "id": 5,
+      "date": "2026-04-08",
+      "title": "Board of Trustees Meeting",
+      "body": "Board of Trustees Meeting — 2nd Tuesday of each quarter at 3:00 PM at the Fayette County Public Library Administration Building, 531 Summit Street, Oak Hill.",
+      "link": ""
+    }
+  ],
+  "services": {
+    "free": [
+      "Books, audiobooks, e-books and DVDs/videos for checkout",
+      "Magazines and newspapers",
+      "Computer access and Wi-Fi",
+      "Storytime hours",
+      "Summer reading programs",
+      "Notary service (must have photo ID)",
+      "Curriculum support",
+      "Tax forms (available in the Spring)",
+      "Scan documents or pictures to flash drive, email, or print"
+    ],
+    "paid": [
+      "Copies and printing from computers/phones/emails: $0.25 each",
+      "Sending faxes: $3.00 first page, $1.00/page thereafter",
+      "Receiving faxes: $1.00/page"
+    ]
+  },
+  "programs": {
+    "storytimes": [
+      {
+        "branch": "Ansted",
+        "schedule": "Thursdays at 4:00 PM",
+        "ages": "3–6"
+      },
+      {
+        "branch": "Fayetteville",
+        "schedule": "Wednesdays at 11:00 AM",
+        "ages": "3–6"
+      },
+      {
+        "branch": "Mt. Hope",
+        "schedule": "Fridays at 12:00 PM",
+        "ages": "3–6"
+      },
+      {
+        "branch": "Oak Hill",
+        "schedule": "Fridays at 11:00 AM",
+        "ages": "3–6"
+      },
+      {
+        "branch": "Montgomery",
+        "schedule": "Wednesdays at 5:00 PM",
+        "ages": "3–6"
+      }
+    ],
+    "baby_lapsit": [
+      {
+        "branch": "Oak Hill",
+        "schedule": "1st Tuesday at 3:00 PM",
+        "ages": "6–35 months"
+      },
+      {
+        "branch": "Fayetteville",
+        "schedule": "Every Wednesday at 11:00 AM",
+        "ages": "6–35 months"
+      },
+      {
+        "branch": "Mt. Hope",
+        "schedule": "1st and 3rd Wednesday at 11:00 AM",
+        "ages": "6–35 months"
+      }
+    ],
+    "adult_book_club": {
+      "location": "Administration Building",
+      "schedule": "2nd Tuesday of each month at 1:00 PM"
+    },
+    "library_chef": {
+      "description": "Library Chef offers cooking and kitchen skills for adults of all levels. On-demand access — cook and learn at your own pace, anytime, from any device. No Zoom required!",
+      "url": "https://fayette.librarychef.com",
+      "features": [
+        "Interactive cooking classes",
+        "Learn anytime, anywhere",
+        "Computer, tablet, and phone friendly",
+        "Recipes included",
+        "Guest chefs from around the world",
+        "Professional nutrition sessions"
+      ]
+    }
+  },
+  "digital_resources": [
+    {
+      "name": "WV Info Depot",
+      "url": "http://www.wvinfodepot.org/",
+      "description": "Articles, databases, homework help, job search, NoveList Plus, health & legal resources"
+    },
+    {
+      "name": "Libby / OverDrive",
+      "url": "https://libbyapp.com/library/wvdeli",
+      "description": "eBooks and audiobooks — free with your library card"
+    },
+    {
+      "name": "Hoopla Digital",
+      "url": "https://www.hoopladigital.com/register?page=REGISTRATION_WELCOME",
+      "description": "Movies, music, comics, eBooks and audiobooks"
+    },
+    {
+      "name": "LibAnywhere",
+      "url": "https://www.libanywhere.com/m/#1HKgRREtUrRu",
+      "description": "Mobile catalog app"
+    },
+    {
+      "name": "Library Chef",
+      "url": "https://fayette.librarychef.com",
+      "description": "Cooking and kitchen skills classes — free with library card"
+    },
+    {
+      "name": "TumbleBooks",
+      "url": "https://www.wvinfodepot.org/",
+      "description": "Online books for kids"
+    },
+    {
+      "name": "TutorWV / TumbleMath",
+      "url": "https://www.wvinfodepot.org/",
+      "description": "Homework tutoring and math help for kids"
+    },
+    {
+      "name": "National Geographic Kids",
+      "url": "https://www.wvinfodepot.org/",
+      "description": "Educational content for children"
+    },
+    {
+      "name": "WV Driving Tests Practice",
+      "url": "http://fcpl.driving-tests.org/west-virginia/",
+      "description": "Practice tests for your WV driver's license"
+    },
+    {
+      "name": "ArtistWorks",
+      "url": "https://libbyapp.com/library/wvdeli/extras/artistworks/request",
+      "description": "Online music lessons from master musicians"
+    },
+    {
+      "name": "Gale / NGMK",
+      "url": "https://link.gale.com/apps/NGMK?u=wvid_main&sid=geolinks",
+      "description": "National Geographic magazine and resources"
+    },
+    {
+      "name": "LawDepot",
+      "url": "https://www.lawdepot.com",
+      "description": "Free legal documents, forms and contracts"
+    }
+  ],
+  "memorial_program": {
+    "description": "The Fayette County Library Memorial Book Program offers you an opportunity to donate funds to purchase a book for the library's collection in memory of or as a way to honor friends or relatives. You may specify a subject area or the library staff will select a book in an area in need of new materials. While your book will be shared by all interested patrons, you may choose a specific branch to house the book. Your gift book will bear a bookplate naming the donor and the person memorialized or honored. Letters of acknowledgment will be sent to the family of the person being memorialized/honored and the donor will receive a card of appreciation.",
+    "form_url": "https://fayette.lib.wv.us/wp-content/uploads/2021/08/Memorialform.pdf",
+    "contact": "Visit your local branch for more information."
+  },
+  "homepage_images": [
+    {
+      "id": "s1",
+      "src": "images/slider/Copy-of-ff-2.jpg",
+      "alt": "Library program",
+      "caption": "",
+      "type": "slider"
+    },
+    {
+      "id": "s2",
+      "src": "images/slider/Copy-of-fa-5.jpg",
+      "alt": "Library event",
+      "caption": "",
+      "type": "slider"
+    },
+    {
+      "id": "s3",
+      "src": "images/slider/March-2022-1.jpg",
+      "alt": "March 2022 at the library",
+      "caption": "",
+      "type": "slider"
+    },
+    {
+      "id": "s4",
+      "src": "images/slider/Copy-of-fh-4.jpg",
+      "alt": "Library program",
+      "caption": "",
+      "type": "slider"
+    },
+    {
+      "id": "s5",
+      "src": "images/slider/fm-march-calendar.jpg",
+      "alt": "March programs calendar",
+      "caption": "March Programs",
+      "type": "slider"
+    },
+    {
+      "id": "s6",
+      "src": "images/slider/fb-31-1.jpg",
+      "alt": "Library event",
+      "caption": "",
+      "type": "slider"
+    },
+    {
+      "id": "f1",
+      "src": "images/bob.jpeg",
+      "alt": "Bob, our library cat",
+      "caption": "Bob, our library cat — Happy New Year! 🐱",
+      "type": "featured"
+    },
+    {
+      "id": "f2",
+      "src": "images/story-trail.jpeg",
+      "alt": "White Oak Story Trail",
+      "caption": "🌿 New for Spring — White Oak Story Trail!",
+      "type": "featured"
+    },
+    {
+      "id": "f3",
+      "src": "images/book-sale.jpg",
+      "alt": "Book Sale",
+      "caption": "📚 Book Sale refreshed — Mon–Fri 9–5 at Oak Hill Admin Building",
+      "type": "featured"
+    },
+    {
+      "id": "f4",
+      "src": "images/march-programs.jpg",
+      "alt": "March Programs Flyer",
+      "caption": "📅 March Programs — see our full calendar",
+      "type": "featured"
+    },
+    {
+      "id": "f5",
+      "src": "images/hoopla-logo.png",
+      "alt": "Hoopla Digital — borrow free video, music, comics and audiobooks",
+      "caption": "🎬 Hoopla — Free movies, music & more with your library card",
+      "type": "featured",
+      "link": "https://www.hoopladigital.com/register?page=REGISTRATION_WELCOME",
+      "link_label": "Sign up for Hoopla"
+    },
+    {
+      "id": "f6",
+      "src": "images/libby-reads.png",
+      "alt": "Libby Reads — free community reading program",
+      "caption": "📖 Libby Reads — Check out featured titles community-wide with no waitlists!",
+      "type": "featured",
+      "link": "https://libbyapp.com/library/wvdeli",
+      "link_label": "Download Libby"
+    },
+    {
+      "id": "f7",
+      "src": "images/library-chef-cooking.png",
+      "alt": "Library Chef — free cooking classes for adults and kids",
+      "caption": "👨‍🍳 Library Chef — Free cooking classes for adults and children!",
+      "type": "featured",
+      "link": "https://fayette.librarychef.com",
+      "link_label": "Start Cooking"
+    },
+    {
+      "id": "f8",
+      "src": "images/libanywhere.jpg",
+      "alt": "LibAnywhere — Mobile catalog search for your library card",
+      "caption": "📱 LibAnywhere — Search our catalog on your mobile device",
+      "type": "featured",
+      "link": "https://www.libanywhere.com/m/#1HKgRREtUrRu",
+      "link_label": "Search Catalog"
+    }
+  ]
+}

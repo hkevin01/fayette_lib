@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search the Fayette County Public Libraries catalog and the West Virginia statewide library catalog.">
+  <title>Catalog Search | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/" aria-label="Fayette County Public Libraries home">
+        <img src="../images/logo.png" alt="FCPL Logo" width="120">
+      </a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link active" href="catalog.html" aria-current="page">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap full-width" id="main">
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+        <span aria-current="page">Catalog Search</span>
+      </nav>
+
+      <div class="page-heading">
+        <h1>🔍 Catalog Search</h1>
+        <p>Search for books, audiobooks, DVDs, magazines, and more at Fayette County Public Libraries and across West Virginia.</p>
+      </div>
+
+      <!-- Quick Search Card -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">📚</span> Search the Library Catalog</div>
+        <div class="card-body">
+          <p style="margin-bottom:1.25rem">
+            Search the <strong>WV Info Depot</strong> — West Virginia's statewide library catalog. You can search just
+            Fayette County libraries or all libraries across the state.
+          </p>
+
+          <!-- Catalog Search Form -->
+          <form id="catalogSearchForm" action="https://mlnapp.raleigh.lib.wv.us/search~S16"
+                method="GET" target="_blank" rel="noopener"
+                aria-label="Search library catalog">
+            <div class="form-group">
+              <label for="catalogQuery">
+                What are you looking for?
+                <span class="help-tip" tabindex="0" aria-label="Search tip: You can search by book title, author name, subject, or ISBN"
+                      data-tip="Try searching by title, author name, subject, or ISBN number.">?</span>
+              </label>
+              <div class="search-wrap">
+                <input type="text" id="catalogQuery" name="q"
+                       placeholder="Title, author, subject, or ISBN…"
+                       autocomplete="off"
+                       aria-describedby="searchHint"
+                       required>
+                <button type="submit" aria-label="Search catalog">
+                  🔍 Search
+                </button>
+              </div>
+              <span id="searchHint" class="text-sm text-muted" style="display:block;margin-top:.25rem">
+                Tip: Search by book title, author name, subject, or ISBN number. Results open in a new tab.
+              </span>
+            </div>
+
+            <fieldset style="border:none;padding:0;margin-top:.5rem">
+              <legend class="text-sm" style="font-weight:600;margin-bottom:.5rem">Search type:</legend>
+              <div style="display:flex;flex-wrap:wrap;gap:1rem">
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:400;cursor:pointer">
+                  <input type="radio" name="idx" value="kw" checked> Keyword (all fields)
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:400;cursor:pointer">
+                  <input type="radio" name="idx" value="ti"> Title
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:400;cursor:pointer">
+                  <input type="radio" name="idx" value="au"> Author
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:400;cursor:pointer">
+                  <input type="radio" name="idx" value="su"> Subject
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:400;cursor:pointer">
+                  <input type="radio" name="idx" value="nb"> ISBN
+                </label>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      <!-- Direct Links -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">🔗</span> Direct Catalog Links</div>
+        <div class="card-body">
+          <div class="resource-grid">
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">
+              <h3>📚 WV Info Depot Catalog</h3>
+              <p>Search all West Virginia public libraries — find books at any branch statewide.</p>
+              <span>Open Catalog →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/patroninfo~S16" target="_blank" rel="noopener">
+              <h3>👤 My Library Account</h3>
+              <p>Log in to renew books, check due dates, place holds, and manage your account.</p>
+              <span>Sign In →</span>
+            </a>
+            <a class="resource-card" href="https://mlnapp.raleigh.lib.wv.us/search~S16/X?newsearch=true&searchscope=16" target="_blank" rel="noopener">
+              <h3>🆕 New Arrivals</h3>
+              <p>See the latest books and materials just added to the library collection.</p>
+              <span>Browse New Items →</span>
+            </a>
+            <a class="resource-card" href="https://libbyapp.com/" target="_blank" rel="noopener">
+              <h3>📱 Libby App</h3>
+              <p>Borrow eBooks and audiobooks instantly on any device — free with your library card.</p>
+              <span>Get Libby →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to Get a Library Card -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">🪪</span> Get a Library Card — It's Free!</div>
+        <div class="card-body">
+          <p style="margin-bottom:1rem">
+            You need a library card to check out materials and access digital resources. Getting a card is
+            <strong>completely free</strong> for all Fayette County residents!
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.6rem">✅ What you need to bring:</h2>
+              <ul class="checklist">
+                <li>Photo ID (driver's license, state ID, or passport)</li>
+                <li>Proof of Fayette County address (utility bill, lease, or mail)</li>
+                <li>Children under 18 need a parent or guardian to sign</li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.6rem">🎁 What your card gets you:</h2>
+              <ul class="checklist">
+                <li>Borrow up to 10 books at a time</li>
+                <li>Free eBooks and audiobooks via Libby</li>
+                <li>Free streaming via Hoopla Digital</li>
+                <li>Access to research databases</li>
+                <li>Computer and internet access at all branches</li>
+                <li>Interlibrary loans from any library in WV</li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-box info" style="margin-top:1.25rem">
+            <span class="ib-icon" aria-hidden="true">📍</span>
+            <div>
+              Visit any branch to get your card today. Find your
+              <a href="locations.html">nearest location →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Tips -->
+      <div class="card">
+        <div class="card-header"><span class="icon" aria-hidden="true">💡</span> Search Tips</div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.75rem">📖 Finding Books</h2>
+              <ul class="checklist">
+                <li>Search by the <strong>exact title</strong> for best results</li>
+                <li>Use the <strong>author's last name</strong> to find all their books</li>
+                <li>Try a <strong>subject search</strong> to browse by topic (e.g., "Gardening" or "Civil War")</li>
+                <li>Use the <strong>ISBN</strong> number (on the back of a book) for exact matches</li>
+              </ul>
+            </div>
+            <div>
+              <h2 style="font-size:1rem;color:var(--blue-900);margin-bottom:.75rem">📦 Placing a Hold</h2>
+              <ul class="checklist">
+                <li>If a book is checked out, you can place a <strong>hold</strong> — you'll be notified when it's ready</li>
+                <li>Holds are free and you pick up at your preferred branch</li>
+                <li>You need to be <strong>signed in</strong> to your account to place holds</li>
+                <li>Need help? Ask a librarian — we're glad to assist!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries — serving our community since 1935.</p>
+        <p class="mt-1"><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="locations.html#ansted">Ansted Branch</a></li>
+          <li><a href="locations.html#fayetteville">Fayetteville Branch</a></li>
+          <li><a href="locations.html#montgomery">Montgomery Branch</a></li>
+          <li><a href="locations.html#mthope">Mt. Hope Branch</a></li>
+          <li><a href="locations.html#oakhill">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="ebooks.html">eBooks &amp; Audiobooks</a></li>
+          <li><a href="research.html">Research Databases</a></li>
+          <li><a href="bookmobile.html">Bookmobile</a></li>
+          <li><a href="homebound.html">Homebound Program</a></li>
+          <li><a href="programs.html">Programs &amp; Events</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="archives.html">Archives &amp; Genealogy</a></li>
+          <li><a href="news.html">News &amp; Announcements</a></li>
+          <li><a href="jobs.html">Job Openings</a></li>
+          <li><a href="about.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footerYear"></span> Fayette County Public Libraries &middot; 531 Summit St, Oak Hill, WV 25901 &middot;
+      <a href="tel:+13044650121">304-465-0121</a>
+    </div>
+  </footer>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

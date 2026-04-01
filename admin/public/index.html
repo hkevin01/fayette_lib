@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FCPL Staff Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1e3a5f; --blue: #1e4d8c; --gold: #d97706; --red: #dc2626;
+      --green: #16a34a; --gray-50: #f9fafb; --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb; --gray-600: #4b5563; --gray-900: #111827; --white: #fff;
+    }
+    body { font-family: system-ui,-apple-system,sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; }
+    /* ---- Login ---- */
+    #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg,var(--navy),var(--blue)); }
+    .login-card { background: var(--white); border-radius: 16px; padding: 2.5rem 2rem; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,.25); }
+    .login-card h1 { color: var(--navy); font-size: 1.4rem; margin-bottom: .25rem; }
+    .login-card p { color: var(--gray-600); font-size: .875rem; margin-bottom: 1.75rem; }
+    .login-card .logo { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; }
+    label { display: block; font-size: .875rem; font-weight: 600; color: var(--gray-600); margin-bottom: .35rem; }
+    input[type=text],input[type=password],input[type=email],input[type=date],input[type=datetime-local],input[type=time],select,textarea {
+      width: 100%; padding: .65rem .875rem; border: 1.5px solid var(--gray-200); border-radius: 8px;
+      font-size: .9rem; transition: border .15s; background: var(--white);
+    }
+    input:focus,select:focus,textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,77,140,.15); }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .6rem 1.25rem; border: none; border-radius: 8px; font-size: .875rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .btn-primary { background: var(--blue); color: var(--white); }
+    .btn-primary:hover { background: var(--navy); }
+    .btn-danger { background: var(--red); color: var(--white); }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-success { background: var(--green); color: var(--white); }
+    .btn-success:hover { background: #15803d; }
+    .btn-outline { background: var(--white); color: var(--blue); border: 2px solid var(--blue); }
+    .btn-outline:hover { background: var(--gray-100); }
+    .btn-sm { padding: .35rem .75rem; font-size: .8rem; }
+    .btn-gold { background: var(--gold); color: var(--white); }
+    .btn-gold:hover { background: #b45309; }
+    .err { color: var(--red); font-size: .85rem; margin-top: .5rem; }
+    .fg { margin-bottom: 1rem; }
+    /* ---- App Shell ---- */
+    #appShell { display: none; flex-direction: column; min-height: 100vh; }
+    .app-header { background: var(--navy); color: var(--white); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+    .app-header h1 { font-size: 1.1rem; }
+    .app-header .staff-info { font-size: .8rem; color: rgba(255,255,255,.65); }
+    /* ---- Tabs ---- */
+    .tab-bar { background: var(--blue); display: flex; gap: 0; padding: 0 1.5rem; }
+    .tab-btn { padding: .75rem 1.25rem; color: rgba(255,255,255,.7); border: none; background: none; font-size: .9rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all .15s; }
+    .tab-btn.active { color: var(--white); border-bottom-color: var(--gold); }
+    .tab-btn:hover:not(.active) { color: var(--white); background: rgba(255,255,255,.08); }
+    /* ---- Content ---- */
+    .tab-content { padding: 1.5rem; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    /* ---- Cards ---- */
+    .card { background: var(--white); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 1.25rem; overflow: hidden; }
+    .card-head { background: var(--gray-100); padding: .75rem 1.25rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+    .card-head h2 { font-size: 1rem; color: var(--navy); }
+    .card-body { padding: 1.25rem; }
+    /* ---- Table ---- */
+    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    th { background: var(--gray-100); padding: .5rem .75rem; text-align: left; font-size: .8rem; color: var(--gray-600); text-transform: uppercase; letter-spacing: .05em; }
+    td { padding: .55rem .75rem; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--gray-50); }
+    .badge { display: inline-block; padding: .15rem .5rem; border-radius: 999px; font-size: .72rem; font-weight: 700; text-transform: capitalize; }
+    /* ---- Modal ---- */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 14px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,.3); }
+    .modal-head { padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+    .modal-head h3 { font-size: 1rem; color: var(--navy); }
+    .modal-body { padding: 1.25rem 1.5rem; }
+    .modal-foot { padding: .875rem 1.5rem; border-top: 1px solid var(--gray-200); display: flex; gap: .75rem; justify-content: flex-end; }
+    .close-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-600); line-height: 1; }
+    /* ---- Image preview ---- */
+    .img-preview { width: 100%; max-height: 160px; object-fit: cover; border-radius: 8px; margin-top: .5rem; display: none; }
+    /* ---- Toast ---- */
+    #toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: var(--white); padding: .75rem 1.5rem; border-radius: 999px; font-size: .9rem; box-shadow: 0 4px 16px rgba(0,0,0,.2); display: none; z-index: 10000; }
+    /* ---- Empty ---- */
+    .empty { text-align: center; padding: 2.5rem 1rem; color: var(--gray-600); font-size: .95rem; }
+    /* ---- Cat colours ---- */
+    .cat-children   { background: #fef9c3; color: #713f12; }
+    .cat-adults     { background: #dbeafe; color: #1e3a5f; }
+    .cat-teens      { background: #ede9fe; color: #4c1d95; }
+    .cat-bookmobile { background: #dcfce7; color: #14532d; }
+    .cat-general    { background: var(--gray-100); color: var(--gray-900); }
+    .cat-special    { background: #fee2e2; color: #7f1d1d; }
+    /* Form grid */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:520px){ .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN SCREEN
+     ============================================================ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="logo">📚</div>
+    <h1>FCPL Staff Portal</h1>
+    <p>Sign in with your staff password to manage the website.</p>
+    <form id="loginForm">
+      <div class="fg">
+        <label for="staffPassword">Staff Password</label>
+        <input type="password" id="staffPassword" autocomplete="current-password" required placeholder="Enter staff password">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Sign In →</button>
+      <p class="err" id="loginErr" style="display:none"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     APP SHELL
+     ============================================================ -->
+<div id="appShell">
+  <header class="app-header">
+    <div>
+      <h1>📚 FCPL Staff Portal</h1>
+      <div class="staff-info">Logged in as Staff · <a href="/" style="color:rgba(255,255,255,.65)">← Back to website</a></div>
+    </div>
+    <button class="btn btn-outline btn-sm" id="logoutBtn">Log Out</button>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="events">📅 Events</button>
+    <button class="tab-btn" data-tab="announcements">📢 Announcements</button>
+    <button class="tab-btn" data-tab="hours">🕒 Branch Hours</button>
+    <button class="tab-btn" data-tab="programs">📚 Programs</button>
+    <button class="tab-btn" data-tab="resources">🌐 Digital Resources</button>
+    <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
+    <button class="tab-btn" data-tab="system">⚡ System</button>
+    <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+    <button class="tab-btn" data-tab="calendars">📆 Calendars</button>
+    <button class="tab-btn" data-tab="hosting">🏠 Hosting Info</button>
+    <button class="tab-btn" data-tab="staff">👥 Staff</button>
+    <button class="tab-btn" data-tab="homepage-images">🖼️ Images</button>
+    <button class="tab-btn" data-tab="recyclebin">🗑️ Recycle Bin</button>
+    <button class="tab-btn" data-tab="activitylog">🔍 Activity Log</button>
+    <button class="tab-btn" data-tab="backups">💾 Backups</button>
+  </div>
+
+  <div class="tab-content">
+
+    <!-- ===== EVENTS TAB ===== -->
+    <div class="tab-pane active" id="tab-events">
+      <div class="card">
+        <div class="card-head">
+          <h2>Upcoming Events</h2>
+          <button class="btn btn-success btn-sm" id="addEventBtn">+ Add Event</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table id="eventsTable">
+            <thead>
+              <tr>
+                <th>Title</th><th>Date / Time</th><th>Location</th><th>Category</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="eventsBody">
+              <tr><td colspan="5" class="empty">Loading events…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ANNOUNCEMENTS TAB ===== -->
+    <div class="tab-pane" id="tab-announcements">
+      <div class="card">
+        <div class="card-head">
+          <h2>Homepage Announcements</h2>
+          <button class="btn btn-success btn-sm" id="addAnnouncementBtn">+ Add Announcement</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table id="annoTable">
+            <thead>
+              <tr><th>Title</th><th>Date</th><th>Body</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="annoBody">
+              <tr><td colspan="4" class="empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BRANCH HOURS TAB ===== -->
+    <div class="tab-pane" id="tab-hours">
+      <div class="card">
+        <div class="card-head"><h2>Branch Hours</h2><span style="font-size:.8rem;color:#6b7280">Click a branch to edit its hours</span></div>
+        <div class="card-body" id="branchesBody"><p class="empty">Loading branches…</p></div>
+      </div>
+
+      <!-- Holiday Closures card -->
+      <div class="card">
+        <div class="card-head">
+          <h2>🗓️ Holiday Closures</h2>
+          <span style="font-size:.8rem;color:#6b7280">Check holidays the library observes (all branches)</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
+            Federal and WV state holidays observed as library closures. Checked holidays will display as "Closed" on the public-facing hours page.
+          </p>
+          <div id="holidayCheckboxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.5rem .75rem;margin-bottom:1rem"></div>
+          <div class="fg" style="margin-top:.75rem">
+            <label>Additional Closure Notes <span style="font-weight:400;color:#6b7280">(optional — e.g. "Closed Dec 24 Christmas Eve")</span></label>
+            <textarea id="holiday-extra-notes" rows="3" maxlength="600" placeholder="Library may close early Christmas Eve and New Year's Eve."></textarea>
+          </div>
+          <button class="btn btn-primary btn-sm" id="saveHolidaysBtn">Save Holiday Closures</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROGRAMS TAB ===== -->
+    <div class="tab-pane" id="tab-programs">
+      <div class="card">
+        <div class="card-head">
+          <h2>Storytimes</h2>
+          <button class="btn btn-success btn-sm" onclick="openProgramEntry('storytimes',null)">+ Add</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table><thead><tr><th>Branch</th><th>Schedule</th><th>Ages</th><th>Actions</th></tr></thead>
+          <tbody id="prog-storytimes"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Baby Lapsit</h2>
+          <button class="btn btn-success btn-sm" onclick="openProgramEntry('baby_lapsit',null)">+ Add</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table><thead><tr><th>Branch</th><th>Schedule</th><th>Ages</th><th>Actions</th></tr></thead>
+          <tbody id="prog-baby_lapsit"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Adult Book Club</h2></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>Location</label><input type="text" id="abc-location" maxlength="120"></div>
+            <div class="fg"><label>Schedule</label><input type="text" id="abc-schedule" maxlength="200"></div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:.5rem" onclick="saveAdultBookClub()">Save Book Club</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Library Chef</h2></div>
+        <div class="card-body">
+          <div class="fg"><label>Description</label><textarea id="lc-description" rows="3"></textarea></div>
+          <div class="fg"><label>URL</label><input type="url" id="lc-url" maxlength="500"></div>
+          <div class="fg">
+            <label>Features <span style="font-weight:400;color:#6b7280">(one per line)</span></label>
+            <textarea id="lc-features" rows="6" placeholder="Interactive cooking classes&#10;Learn anytime, anywhere"></textarea>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="saveLibraryChef()">Save Library Chef</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DIGITAL RESOURCES TAB ===== -->
+    <div class="tab-pane" id="tab-resources">
+      <div class="card">
+        <div class="card-head">
+          <h2>Digital Resources</h2>
+          <button class="btn btn-success btn-sm" id="addResourceBtn">+ Add Resource</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table>
+            <thead><tr><th>Name</th><th>Description</th><th>URL</th><th>Actions</th></tr></thead>
+            <tbody id="resourcesBody"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ANALYTICS DASHBOARD TAB ===== -->
+    <div class="tab-pane" id="tab-analytics">
+      <!-- Traffic Summary Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-body" style="text-align:center">
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);margin-bottom:.25rem" id="pv24h">—</div>
+            <div style="font-size:.85rem;color:var(--gray-600)">Pageviews (24h)</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-body" style="text-align:center">
+            <div style="font-size:2rem;font-weight:700;color:var(--green);margin-bottom:.25rem" id="ev24h">—</div>
+            <div style="font-size:.85rem;color:var(--gray-600)">Events Tracked (24h)</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-body" style="text-align:center">
+            <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:.25rem" id="totPV">—</div>
+            <div style="font-size:.85rem;color:var(--gray-600)">Total Pageviews</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Pages -->
+      <div class="card">
+        <div class="card-head"><h2>Top Pages (24h)</h2></div>
+        <div class="card-body" style="padding:0">
+          <table style="width:100%">
+            <thead><tr><th>Page</th><th style="text-align:right">Views</th></tr></thead>
+            <tbody id="topPagesBody"><tr><td colspan="2" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Top Events -->
+      <div class="card">
+        <div class="card-head"><h2>Top Interactions (24h)</h2></div>
+        <div class="card-body" style="padding:0">
+          <table style="width:100%">
+            <thead><tr><th>Event Type</th><th style="text-align:right">Count</th></tr></thead>
+            <tbody id="topEventsBody"><tr><td colspan="2" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Pageviews -->
+      <div class="card">
+        <div class="card-head"><h2>Recent Pageviews</h2></div>
+        <div class="card-body" style="padding:0;font-size:.85rem">
+          <table style="width:100%">
+            <thead><tr><th>Page</th><th>Time</th></tr></thead>
+            <tbody id="recentPVBody"><tr><td colspan="2" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Clear Analytics -->
+      <div class="card">
+        <div class="card-head"><h2>⚠️ Analytics Controls</h2></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Dangerous operations — proceed with caution.</p>
+          <button class="btn btn-danger btn-sm" onclick="clearAllAnalytics()">Clear All Analytics Data</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SYSTEM DASHBOARD TAB ===== -->
+    <div class="tab-pane" id="tab-system">
+      <!-- System Health Card -->
+      <div class="card">
+        <div class="card-head"><h2>💚 System Health</h2></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem">
+            <div>
+              <div style="font-size:.85rem;color:var(--gray-600);margin-bottom:.25rem">Status</div>
+              <div style="font-size:1.2rem;font-weight:700;color:var(--green)" id="healthStatus">✓ OK</div>
+            </div>
+            <div>
+              <div style="font-size:.85rem;color:var(--gray-600);margin-bottom:.25rem">Uptime</div>
+              <div style="font-size:1rem;font-weight:600;color:var(--blue)" id="healthUptime">—</div>
+            </div>
+            <div>
+              <div style="font-size:.85rem;color:var(--gray-600);margin-bottom:.25rem">Memory Used</div>
+              <div style="font-size:1rem;font-weight:600;color:var(--blue)" id="healthMemory">—</div>
+            </div>
+            <div>
+              <div style="font-size:.85rem;color:var(--gray-600);margin-bottom:.25rem">Heap Used</div>
+              <div style="font-size:1rem;font-weight:600;color:var(--blue)" id="healthHeap">—</div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200)">
+            <small style="color:var(--gray-600);display:block;margin-bottom:.5rem">Last Updated: <span id="healthTime">—</span></small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Docker & Service Management -->
+      <div class="card">
+        <div class="card-head"><h2>🐳 Service Management</h2></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
+            Restart the admin backend service. It will automatically reconnect after 5 seconds.
+          </p>
+          <button class="btn btn-primary btn-sm" onclick="restartService()">Restart Admin Service</button>
+        </div>
+      </div>
+
+      <!-- Backup & Recovery -->
+      <div class="card">
+        <div class="card-head"><h2>💾 Data Backup</h2></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
+            Download a backup of all site data, events, and announcements as a JSON file. Safe to run anytime.
+          </p>
+          <button class="btn btn-success btn-sm" onclick="downloadBackup()">Download Backup</button>
+          <p style="font-size:.8rem;color:var(--gray-600);margin-top:.75rem">Includes: events.json, content.json, analytics summary</p>
+        </div>
+      </div>
+
+      <!-- Session Info (hidden on reload) -->
+      <div class="card" style="background:#f0f9ff;border:1px solid #bfdbfe">
+        <div class="card-head" style="background:#dbeafe"><h2 style="color:#0c4a6b">📋 Session Info</h2></div>
+        <div class="card-body" style="font-size:.85rem">
+          <div style="margin-bottom:.5rem"><strong>Session Token:</strong> <code style="background:#f3f4f6;padding:2px 4px;border-radius:3px;font-size:.8rem">••••••••••••••••</code></div>
+          <div style="margin-bottom:.5rem"><strong>Stored in:</strong> Browser sessionStorage (cleared on logout)</div>
+          <div><strong>Auto-Restore:</strong> Enabled (you'll stay logged in if you refresh the page)</div>
+        </div>
+      </div>
+
+      <!-- Power Outage Recovery -->
+      <div class="card" style="border:2px solid var(--gold)">
+        <div class="card-head" style="background:rgba(217,119,6,.1)"><h2>⚡ Power Outage Recovery</h2></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
+            In case of power outage or server crash:
+          </p>
+          <ol style="font-size:.85rem;color:var(--gray-600);padding-left:1.5rem;line-height:1.6">
+            <li>Services are configured with <strong>restart: unless-stopped</strong> in Docker</li>
+            <li>They will automatically restart when power is restored</li>
+            <li>Your session will be lost (you'll need to log in again)</li>
+            <li>All data is persisted in volumes — no data loss</li>
+            <li>Check <strong>System Health</strong> above to confirm all services are running</li>
+          </ol>
+          <p style="font-size:.8rem;color:var(--red);margin-top:1rem">
+            💡 For critical infrastructure, consider adding a backup power supply (UPS) or failover server.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SITE SETTINGS TAB ===== -->
+    <div class="tab-pane" id="tab-settings">
+      <div class="card">
+        <div class="card-head"><h2>Contact Information</h2></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>Main Phone</label><input type="tel" id="s-phone_main" maxlength="30"></div>
+            <div class="fg"><label>Alt Phone</label><input type="tel" id="s-phone_alt" maxlength="30"></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>Fax</label><input type="tel" id="s-fax" maxlength="30"></div>
+            <div class="fg"><label>Email</label><input type="email" id="s-email" maxlength="200"></div>
+          </div>
+          <div class="fg"><label>Address</label><input type="text" id="s-address" maxlength="300"></div>
+          <div class="fg"><label>Facebook URL</label><input type="url" id="s-facebook_url" maxlength="500"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Homepage Tagline</h2></div>
+        <div class="card-body">
+          <div class="fg"><label>Quote</label><textarea id="s-tagline" rows="2" maxlength="300"></textarea></div>
+          <div class="fg"><label>Author</label><input type="text" id="s-tagline_author" maxlength="200"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>External Service URLs</h2></div>
+        <div class="card-body">
+          <div class="fg"><label>Online Catalog URL</label><input type="url" id="s-catalog_url" maxlength="500"></div>
+          <div class="fg"><label>Libby / OverDrive URL</label><input type="url" id="s-libby_url" maxlength="500"></div>
+          <div class="fg"><label>Hoopla URL</label><input type="url" id="s-hoopla_url" maxlength="500"></div>
+          <div class="fg"><label>Library Chef URL</label><input type="url" id="s-library_chef_url" maxlength="500"></div>
+          <div class="fg"><label>WV Info Depot URL</label><input type="url" id="s-wv_info_depot_url" maxlength="500"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="saveSiteBtn" style="margin-top:.5rem">Save Site Settings</button>
+    </div>
+
+    <!-- ===== STAFF TAB ===== -->
+    <div class="tab-pane" id="tab-staff">
+      <div class="card">
+        <div class="card-head"><h2>Administration Staff</h2></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>Director</label><input type="text" id="st-director" maxlength="120"></div>
+            <div class="fg"><label>Assistant Director</label><input type="text" id="st-asst_director" maxlength="120"></div>
+          </div>
+          <div class="fg"><label>Assistant Director Email</label><input type="email" id="st-asst_email" maxlength="200"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Bookmobile Staff</h2>
+          <button class="btn btn-success btn-sm" onclick="addBookmobileStaff()">+ Add Person</button>
+        </div>
+        <div class="card-body" id="bookmobile-staff-list"></div>
+      </div>
+      <button class="btn btn-primary" id="saveStaffBtn" style="margin-top:.5rem">Save Staff Info</button>
+    </div>
+
+    <!-- ===== FRONT PAGE IMAGES TAB ===== -->
+    <div class="tab-pane" id="tab-homepage-images">
+      <div class="card">
+        <div class="card-head">
+          <h2>Slider Images</h2>
+          <button class="btn btn-success btn-sm" onclick="openImgUpload('slider')">+ Upload Slider Image</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These images rotate in the hero slideshow at the top of the homepage.</p>
+          <div id="slider-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <div class="card-head">
+          <h2>Featured Photos</h2>
+          <button class="btn btn-success btn-sm" onclick="openImgUpload('featured')">+ Upload Featured Photo</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These appear as photo cards below the quick links on the homepage (Bob the cat, story trail, events, etc.).</p>
+          <div id="featured-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CALENDARS TAB ===== -->
+    <div class="tab-pane" id="tab-calendars">
+      <div class="card">
+        <div class="card-head">
+          <h2>📆 Calendar Management</h2>
+          <button class="btn btn-success btn-sm" id="addCalendarEventBtn">+ Add Calendar Event</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table id="calendarsTable">
+            <thead>
+              <tr>
+                <th>Title</th><th>Start Date/Time</th><th>End Date/Time</th><th>Location</th><th>Category</th><th>Recurrence</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="calendarsBody">
+              <tr><td colspan="7" class="empty">Loading calendar events…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HOSTING INFO TAB ===== -->
+    <div class="tab-pane" id="tab-hosting">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:1.5rem">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">🔗 DNS Provider</h3></div>
+          <div class="card-body">
+            <p id="hostingDnsProvider" style="font-size:1.2rem;font-weight:700;color:var(--blue);margin:0">West Virginia Library Commission (lib.wv.us)</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem">Parent domain registry contact is managed by WVLC; backend registrar stack shows US locality + GoDaddy ops</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">🏢 Hosting Provider</h3></div>
+          <div class="card-body">
+            <p id="hostingProvider" style="font-size:1.2rem;font-weight:700;color:var(--blue);margin:0">Apache / WordPress (production)</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem">Live site headers identify Apache with WordPress endpoints</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">📍 Server IP Address</h3></div>
+          <div class="card-body">
+            <p id="hostingIpAddress" style="font-size:1.2rem;font-weight:700;color:var(--blue);margin:0;word-break:break-all">129.71.20.25</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem">Public IPv4 or DNS CNAME record</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">⏳ Domain Renewal</h3></div>
+          <div class="card-body">
+            <p id="hostingDomainRenewal" style="font-size:1.2rem;font-weight:700;color:var(--gold);margin:0">Due: 2027-01-30</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem">WHOIS value for parent domain lib.wv.us (subdomain fayette.lib.wv.us inherits this)</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">🔒 SSL Certificate</h3></div>
+          <div class="card-body">
+            <p id="hostingSslStatus" style="font-size:1.2rem;font-weight:700;color:var(--green);margin:0">Let's Encrypt (R13)</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem;margin-bottom:.5rem">Auto-renewing every 90 days</p>
+            <p id="hostingSslExpiry" style="font-size:.85rem;color:var(--gray-600);margin:0">Expires: 2026-05-28</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">🐳 Docker Support</h3></div>
+          <div class="card-body">
+            <p style="font-size:1.2rem;font-weight:700;color:var(--green);margin:0">✓ Yes</p>
+            <p style="font-size:.85rem;color:var(--gray-600);margin-top:.5rem">Full container orchestration via docker-compose</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Service Ports & Configuration</h2></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;font-size:.9rem">
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:.4rem">Public Website</div>
+              <div style="color:var(--gray-600);">HTTP: localhost:8080<br>HTTPS: localhost:8443</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:.4rem">Admin Portal</div>
+              <div style="color:var(--gray-600);">Backend: :3000 (internal)<br>Frontend: /admin on port 8080</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:.4rem">Image Storage</div>
+              <div style="color:var(--gray-600);">/images (volume mounted)<br>/data (shared volume)</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:.4rem">Healthcheck</div>
+              <div style="color:var(--gray-600);">Every 30 seconds<br>Auto-restart on failure</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>📋 Update Hosting Information</h2></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>DNS Provider</label><input type="text" id="hosting-dns" placeholder="GoDaddy, Namecheap, Cloudflare, etc." maxlength="120"></div>
+            <div class="fg"><label>Hosting Service</label><input type="text" id="hosting-service" placeholder="Docker, VPS, Dedicated, etc." maxlength="120"></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>Server IP Address</label><input type="text" id="hosting-ip" placeholder="203.0.113.42 or example.com" maxlength="120"></div>
+            <div class="fg"><label>Domain Renewal Date (YYYY-MM-DD)</label><input type="date" id="hosting-renewal-date"></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>SSL Certificate Provider</label><input type="text" id="hosting-ssl" placeholder="Let's Encrypt, DigiCert, etc." maxlength="120"></div>
+            <div class="fg"><label>SSL Expiry Date (YYYY-MM-DD)</label><input type="date" id="hosting-ssl-expiry"></div>
+          </div>
+          <button class="btn btn-primary" id="saveHostingBtn">Save Hosting Information</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RECYCLE BIN TAB ===== -->
+    <div class="tab-pane" id="tab-recyclebin">
+      <div class="card">
+        <div class="card-head">
+          <h2>🗑️ Recycle Bin</h2>
+          <span style="font-size:.85rem;color:rgba(255,255,255,.75)">Items auto-deleted after 60 days</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Deleted events and announcements land here for up to 60 days. Restore any item to put it back, or delete forever to free space now.</p>
+          <table>
+            <thead>
+              <tr><th>Type</th><th>Title</th><th>Deleted On</th><th>Expires</th><th style="white-space:nowrap">Actions</th></tr>
+            </thead>
+            <tbody id="binBody">
+              <tr><td colspan="5" class="empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Activity Log ── -->
+    <div class="tab-pane" id="tab-activitylog">
+      <div class="card">
+        <div class="card-head">
+          <h2>🔍 Activity Log</h2>
+          <button class="btn btn-outline btn-sm" onclick="loadActivityLog()">↻ Refresh</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Every change made through the staff portal is recorded here — who made it (by IP), when, and what was affected. Last 500 actions are kept.</p>
+          <table>
+            <thead>
+              <tr><th>Date &amp; Time</th><th>IP Address</th><th>Action</th><th>Detail</th></tr>
+            </thead>
+            <tbody id="auditBody">
+              <tr><td colspan="4" class="empty">Click Refresh to load.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Backups ── -->
+    <div class="tab-pane" id="tab-backups">
+      <div class="card">
+        <div class="card-head">
+          <h2>💾 Backups</h2>
+          <button class="btn btn-outline btn-sm" onclick="loadBackups()">↻ Refresh</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Automatic snapshots are created before every destructive change. Up to 20 backups are kept per file. <strong style="color:#b91c1c">Restoring overwrites the current live data — use with caution.</strong></p>
+          <table>
+            <thead>
+              <tr><th>File</th><th>Created</th><th>Size</th><th>Action</th></tr>
+            </thead>
+            <tbody id="backupsBody">
+              <tr><td colspan="4" class="empty">Click Refresh to load.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-content -->
+</div><!-- /appShell -->
+
+<!-- ================================================================
+     HOMEPAGE IMAGE UPLOAD MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="imgUploadModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="imgUploadTitle">Upload Image</h3>
+      <button class="btn btn-sm" onclick="closeImgModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <label>Image File (JPEG/PNG/GIF/WebP, max 10 MB)</label>
+        <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp">
+      </div>
+      <div class="fg">
+        <label>Alt Text <span style="font-weight:400;color:var(--gray-600)">(describe the image for screen readers)</span></label>
+        <input type="text" id="imgAltInput" maxlength="200" placeholder="e.g. Bob, our library cat">
+      </div>
+      <div class="fg">
+        <label>Caption <span style="font-weight:400;color:var(--gray-600)">(optional — shown below the photo)</span></label>
+        <input type="text" id="imgCaptionInput" maxlength="300" placeholder="e.g. Bob wishes everyone a Happy New Year!">
+      </div>
+      <div class="fg">
+        <label>Link URL <span style="font-weight:400;color:var(--gray-600)">(optional — clicking the image navigates here)</span></label>
+        <input type="url" id="imgLinkInput" maxlength="500" placeholder="https://www.hoopladigital.com/…">
+      </div>
+      <div class="fg">
+        <label>Link Label <span style="font-weight:400;color:var(--gray-600)">(optional — button text on featured cards)</span></label>
+        <input type="text" id="imgLinkLabelInput" maxlength="200" placeholder="e.g. Sign up for Hoopla">
+      </div>
+      <p class="err" id="imgUploadErr"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeImgModal()">Cancel</button>
+      <button class="btn btn-primary" id="imgUploadSaveBtn" onclick="submitImgUpload()">Upload &amp; Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     EVENT MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="eventModalTitle">Add Event</h3>
+      <button class="close-btn" id="closeEventModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="evtId">
+      <div class="fg">
+        <label for="evtTitle">Event Title *</label>
+        <input type="text" id="evtTitle" required maxlength="120" placeholder="e.g. Storytime — Oak Hill">
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="evtStart">Start Date &amp; Time *</label>
+          <input type="datetime-local" id="evtStart" required>
+        </div>
+        <div class="fg">
+          <label for="evtEnd">End Date &amp; Time</label>
+          <input type="datetime-local" id="evtEnd">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="evtLocation">Location</label>
+          <input type="text" id="evtLocation" placeholder="e.g. Oak Hill Branch">
+        </div>
+        <div class="fg">
+          <label for="evtCategory">Category</label>
+          <select id="evtCategory">
+            <option value="children">Children</option>
+            <option value="adults">Adults</option>
+            <option value="teens">Teens</option>
+            <option value="bookmobile">Bookmobile</option>
+            <option value="special">Special Event</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label for="evtDesc">Description</label>
+        <textarea id="evtDesc" rows="3" placeholder="Brief description of the event…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="evtRecurrence">Recurrence</label>
+          <select id="evtRecurrence">
+            <option value="none">One-time</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="evtRecDay">Recurrence Day</label>
+          <select id="evtRecDay">
+            <option value="">— none —</option>
+            <option value="Monday">Monday</option><option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option><option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Event Image <span style="font-weight:400;color:#6b7280">(optional — JPEG/PNG/GIF/WebP, max 5 MB)</span></label>
+        <input type="file" id="evtImageFile" accept="image/*">
+        <img id="evtImagePreview" class="img-preview" alt="Image preview">
+        <input type="hidden" id="evtImageUrl">
+      </div>
+      <p class="err" id="evtErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="cancelEventBtn">Cancel</button>
+      <button class="btn btn-primary" id="saveEventBtn">Save Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     ANNOUNCEMENT MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="annoModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="annoModalTitle">Add Announcement</h3>
+      <button class="close-btn" id="closeAnnoModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="annoIdx">
+      <div class="fg">
+        <label for="annoTitle">Title *</label>
+        <input type="text" id="annoTitle" required maxlength="120" placeholder="e.g. Library Closed for Holiday">
+      </div>
+      <div class="fg">
+        <label for="annoMessage">Message</label>
+        <textarea id="annoMessage" rows="4" placeholder="Details about the announcement…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="annoDate">Date</label>
+          <input type="date" id="annoDate">
+        </div>
+        <div class="fg">
+          <label for="annoLink">Link (optional)</label>
+          <input type="text" id="annoLink" placeholder="https://...">
+        </div>
+      </div>
+      <p class="err" id="annoErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="cancelAnnoBtn">Cancel</button>
+      <button class="btn btn-primary" id="saveAnnoBtn">Save Announcement</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     BRANCH HOURS MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="branchModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-head">
+      <h3 id="branchModalTitle">Edit Branch Hours</h3>
+      <button class="close-btn" onclick="document.getElementById('branchModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="branchIdx">
+      <div class="fg"><label>Branch Name</label><input type="text" id="b-name" maxlength="120"></div>
+      <div class="form-row">
+        <div class="fg"><label>Address</label><input type="text" id="b-address" maxlength="200"></div>
+        <div class="fg"><label>City / Zip</label><input type="text" id="b-city" maxlength="100"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Phone</label><input type="tel" id="b-phone" maxlength="80"></div>
+        <div class="fg"><label>Fax</label><input type="tel" id="b-fax" maxlength="80"></div>
+      </div>
+      <div class="fg">
+        <label>Hours <button type="button" class="btn btn-outline btn-sm" style="margin-left:.5rem" onclick="addHoursRow()">+ Row</button></label>
+        <table style="margin-top:.5rem;width:100%;font-size:.875rem">
+          <thead><tr><th style="width:40%">Days</th><th style="width:25%">Open</th><th style="width:25%">Close</th><th></th></tr></thead>
+          <tbody id="hours-rows"></tbody>
+        </table>
+      </div>
+      <div class="fg"><label>Special Note (optional)</label><textarea id="b-note" rows="2" maxlength="500"></textarea></div>
+      <p class="err" id="branchErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="document.getElementById('branchModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBranch()">Save Branch</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PROGRAM ENTRY MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="programModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="progModalTitle">Add Program Entry</h3>
+      <button class="close-btn" onclick="document.getElementById('programModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="prog-key">
+      <input type="hidden" id="prog-idx">
+      <div class="fg"><label>Branch</label><input type="text" id="prog-branch" maxlength="80" placeholder="e.g. Oak Hill"></div>
+      <div class="fg"><label>Schedule</label><input type="text" id="prog-schedule" maxlength="200" placeholder="e.g. Fridays at 11:00 AM"></div>
+      <div class="fg"><label>Ages</label><input type="text" id="prog-ages" maxlength="80" placeholder="e.g. 3–6"></div>
+      <p class="err" id="progErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="document.getElementById('programModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProgramEntry()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     DIGITAL RESOURCE MODAL
+     ================================================================ -->
+<div class="modal-overlay" id="resourceModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="resModalTitle">Add Resource</h3>
+      <button class="close-btn" onclick="document.getElementById('resourceModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="res-idx">
+      <div class="fg"><label>Name *</label><input type="text" id="res-name" maxlength="120" required></div>
+      <div class="fg"><label>URL *</label><input type="url" id="res-url" maxlength="500" required placeholder="https://"></div>
+      <div class="fg"><label>Description</label><textarea id="res-desc" rows="3" maxlength="500"></textarea></div>
+      <p class="err" id="resErr" style="display:none"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="document.getElementById('resourceModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveResource()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     CALENDAR EVENT MODAL (Staff Portal)
+     ================================================================ -->
+<div class="modal-overlay" id="eventModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Edit Calendar Event</h3>
+      <button class="close-btn" onclick="closeEventModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="modalEventId">
+      <div class="fg">
+        <label for="modalTitle">Event Title *</label>
+        <input type="text" id="modalTitle" required maxlength="120" placeholder="e.g. Storytime — Oak Hill">
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="modalStart">Start Date &amp; Time *</label>
+          <input type="datetime-local" id="modalStart" required>
+        </div>
+        <div class="fg">
+          <label for="modalEnd">End Date &amp; Time *</label>
+          <input type="datetime-local" id="modalEnd" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="modalLocation">Location</label>
+          <input type="text" id="modalLocation" maxlength="120" placeholder="e.g. Oak Hill Branch">
+        </div>
+        <div class="fg">
+          <label for="modalCategory">Category</label>
+          <select id="modalCategory">
+            <option value="general">General</option>
+            <option value="children">Children</option>
+            <option value="adult">Adults</option>
+            <option value="teen">Teens</option>
+            <option value="community">Community</option>
+            <option value="bookmobile">Bookmobile</option>
+            <option value="closure">Closure</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label for="modalDescription">Description</label>
+        <textarea id="modalDescription" rows="3" maxlength="2000" placeholder="Brief description of the event…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label for="modalRecurrence">Recurrence</label>
+          <select id="modalRecurrence">
+            <option value="none">One-time</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="modalRecurrenceDay">Recurrence Day</label>
+          <input type="text" id="modalRecurrenceDay" maxlength="20" placeholder="e.g. Monday">
+        </div>
+      </div>
+      <p class="err" style="display:none" id="modalEventErr"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeEventModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCalendarEvent()">Save Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  let TOKEN = sessionStorage.getItem('fcpl_staff_token') || '';
+
+  /* ── Utilities ── */
+  function api(method, url, body, isForm) {
+    const opts = { method, headers: { Authorization: 'Bearer ' + TOKEN } };
+    if (body && isForm) {
+      opts.body = body;  // FormData — no Content-Type header needed
+    } else if (body) {
+      opts.headers['Content-Type'] = 'application/json';
+      opts.body = JSON.stringify(body);
+    }
+    return fetch('/admin' + url, opts).then(async r => {
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    });
+  }
+
+  function toast(msg, ms) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.style.display = 'block';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.style.display = 'none'; }, ms || 2800);
+  }
+
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = msg ? 'block' : 'none';
+  }
+
+  function fmtDateTime(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  function toISOLocal(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate())
+      + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+  }
+
+  function gcalUrl(ev) {
+    const enc = encodeURIComponent;
+    const start = toISOLocal(ev.start);
+    const end = toISOLocal(ev.end || ev.start);
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + enc(ev.title || 'Library Event')
+      + '&dates=' + start + '/' + end
+      + '&details=' + enc(ev.description || '')
+      + '&location=' + enc(ev.location || '');
+  }
+
+  function outlookUrl(ev) {
+    const enc = encodeURIComponent;
+    const start = new Date(ev.start || Date.now()).toISOString();
+    const end = new Date(ev.end || ev.start || Date.now()).toISOString();
+    return 'https://outlook.live.com/calendar/0/deeplink/compose?subject=' + enc(ev.title || 'Library Event')
+      + '&startdt=' + enc(start)
+      + '&enddt=' + enc(end)
+      + '&body=' + enc(ev.description || '')
+      + '&location=' + enc(ev.location || '');
+  }
+
+  function yahooUrl(ev) {
+    const enc = encodeURIComponent;
+    const start = toISOLocal(ev.start);
+    const end = toISOLocal(ev.end || ev.start);
+    return 'https://calendar.yahoo.com/?v=60&view=d&type=20'
+      + '&title=' + enc(ev.title || 'Library Event')
+      + '&st=' + start
+      + '&et=' + end
+      + '&desc=' + enc(ev.description || '')
+      + '&in_loc=' + enc(ev.location || '');
+  }
+
+  function downloadEventICS(ev) {
+    const safe = s => String(s || '').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n');
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Fayette County Public Libraries//Staff Portal//EN',
+      'BEGIN:VEVENT',
+      'UID:fcpl-' + (ev.id || Date.now()) + '@fayette.lib.wv.us',
+      'DTSTAMP:' + toISOLocal(new Date().toISOString()),
+      'DTSTART:' + toISOLocal(ev.start),
+      'DTEND:' + toISOLocal(ev.end || ev.start),
+      'SUMMARY:' + safe(ev.title || 'Library Event'),
+      'DESCRIPTION:' + safe(ev.description || ''),
+      'LOCATION:' + safe(ev.location || ''),
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'fcpl-' + String(ev.title || 'event').toLowerCase().replace(/\s+/g, '-') + '.ics';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function toLocalDT(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate())
+         + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  /* ── Auth ── */
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    showErr('loginErr', '');
+    const pw = document.getElementById('staffPassword').value;
+    try {
+      const res = await fetch('/admin/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      TOKEN = data.token;
+      sessionStorage.setItem('fcpl_staff_token', TOKEN);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appShell').style.display = 'flex';
+      loadAll();
+    } catch (err) {
+      showErr('loginErr', 'Incorrect password. Please try again.');
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    TOKEN = '';
+    sessionStorage.removeItem('fcpl_staff_token');
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('appShell').style.display = 'none';
+  });
+
+  /* If already logged in (session token still valid), try to show app */
+  if (TOKEN) {
+    fetch('/admin/api/events', { headers: { Authorization: 'Bearer ' + TOKEN } })
+      .then(r => {
+        if (r.ok) {
+          document.getElementById('loginScreen').style.display = 'none';
+          document.getElementById('appShell').style.display = 'flex';
+          loadAll();
+        }
+      }).catch(() => {});
+  }
+
+  /* ── Tabs ── */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ── Load all data ── */
+  function loadAll() {
+    loadEvents();
+    loadAnnouncements();
+    loadBranches();
+    loadHolidays();
+    loadPrograms();
+    loadResources();
+    loadSiteSettings();
+    loadStaff();
+    loadHomepageImages();
+    loadRecycleBin();
+  }
+
+  /* Also lazy-load images tab when clicked */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.dataset.tab === 'homepage-images') {
+      btn.addEventListener('click', loadHomepageImages, { once: false });
+    }
+    if (btn.dataset.tab === 'recyclebin') {
+      btn.addEventListener('click', loadRecycleBin, { once: false });
+    }
+    if (btn.dataset.tab === 'calendars') {
+      btn.addEventListener('click', loadCalendars, { once: false });
+    }
+    if (btn.dataset.tab === 'hosting') {
+      btn.addEventListener('click', loadHostingInfo, { once: false });
+    }
+  });
+
+  /* ================================================================
+     EVENTS
+     ================================================================ */
+  let allEvents = [];
+
+  function catClass(cat) {
+    const map = { children:'cat-children', adults:'cat-adults', teens:'cat-teens',
+                  bookmobile:'cat-bookmobile', special:'cat-special' };
+    return map[cat] || 'cat-general';
+  }
+
+  function loadEvents() {
+    api('GET', '/api/events').then(data => {
+      allEvents = (data.events || []).slice().sort((a,b) => new Date(a.start) - new Date(b.start));
+      renderEvents();
+    }).catch(() => {
+      document.getElementById('eventsBody').innerHTML = '<tr><td colspan="5" class="empty">Could not load events.</td></tr>';
+    });
+  }
+
+  function renderEvents() {
+    const tbody = document.getElementById('eventsBody');
+    if (!allEvents.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">No events yet. Click "+ Add Event" to create one.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allEvents.map(ev => `
+      <tr>
+        <td><strong>${esc(ev.title)}</strong>${ev.image ? ' 🖼' : ''}${ev.recurrence && ev.recurrence !== 'none' ? ' 🔁' : ''}</td>
+        <td>${fmtDateTime(ev.start)}</td>
+        <td>${esc(ev.location || '—')}</td>
+        <td><span class="badge ${catClass(ev.category)}">${esc(ev.category || 'general')}</span></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" data-action="edit" data-event-id="${ev.id}">Edit</button>
+          <button class="btn btn-danger btn-sm" data-action="delete" data-event-id="${ev.id}" style="margin-left:.35rem">Delete</button>
+        </td>
+      </tr>`).join('');
+
+    if (!tbody.dataset.bound) {
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action][data-event-id]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-event-id');
+        const ev = allEvents.find(x => String(x.id) === String(id));
+        if (!ev) return;
+        const action = btn.getAttribute('data-action');
+        if (action === 'edit') return editEvent(id);
+        if (action === 'delete') return deleteEvent(id);
+      });
+      tbody.dataset.bound = '1';
+    }
+
+    // Compatibility fallback: bind direct listeners for legacy cached markup
+    tbody.querySelectorAll('button[data-action="edit"]').forEach(btn => {
+      if (btn.dataset.editBound) return;
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-event-id');
+        if (id != null) editEvent(id);
+      });
+      btn.dataset.editBound = '1';
+    });
+
+    tbody.querySelectorAll('button[onclick^="editEvent("]').forEach(btn => {
+      if (btn.dataset.editBound) return;
+      const m = (btn.getAttribute('onclick') || '').match(/editEvent\(([^)]+)\)/);
+      if (!m) return;
+      const id = String(m[1]).replace(/['"\s]/g, '');
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        editEvent(id);
+      });
+      btn.dataset.editBound = '1';
+    });
+  }
+
+  window.editEvent = function(id) {
+    const ev = allEvents.find(e => String(e.id) === String(id));
+    if (!ev) return;
+    document.getElementById('eventModalTitle').textContent = 'Edit Event';
+    document.getElementById('evtId').value = ev.id;
+    document.getElementById('evtTitle').value = ev.title || '';
+    document.getElementById('evtStart').value = toLocalDT(ev.start);
+    document.getElementById('evtEnd').value = toLocalDT(ev.end);
+    document.getElementById('evtLocation').value = ev.location || '';
+    document.getElementById('evtCategory').value = ev.category || 'general';
+    document.getElementById('evtDesc').value = ev.description || '';
+    document.getElementById('evtRecurrence').value = ev.recurrence || 'none';
+    document.getElementById('evtRecDay').value = ev.recurrence_day || '';
+    document.getElementById('evtImageUrl').value = ev.image || '';
+    const prev = document.getElementById('evtImagePreview');
+    if (ev.image) { prev.src = ev.image; prev.style.display = 'block'; } else { prev.style.display = 'none'; }
+    showErr('evtErr', '');
+    const modal = document.getElementById('eventModal');
+    modal.classList.add('open');
+  };
+
+  window.deleteEvent = async function(id) {
+    if (!confirm('Delete this event? It will be moved to the Recycle Bin for 60 days.')) return;
+    try {
+      await api('DELETE', '/api/events/' + id);
+      toast('Event moved to Recycle Bin.');
+      loadEvents();
+      loadRecycleBin();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  document.getElementById('addEventBtn').addEventListener('click', () => {
+    document.getElementById('eventModalTitle').textContent = 'Add Event';
+    document.getElementById('evtId').value = '';
+    document.getElementById('evtTitle').value = '';
+    document.getElementById('evtStart').value = '';
+    document.getElementById('evtEnd').value = '';
+    document.getElementById('evtLocation').value = '';
+    document.getElementById('evtCategory').value = 'general';
+    document.getElementById('evtDesc').value = '';
+    document.getElementById('evtRecurrence').value = 'none';
+    document.getElementById('evtRecDay').value = '';
+    document.getElementById('evtImageUrl').value = '';
+    document.getElementById('evtImageFile').value = '';
+    document.getElementById('evtImagePreview').style.display = 'none';
+    showErr('evtErr', '');
+    document.getElementById('eventModal').classList.add('open');
+  });
+
+  document.getElementById('closeEventModal').addEventListener('click', () => document.getElementById('eventModal').classList.remove('open'));
+  document.getElementById('cancelEventBtn').addEventListener('click', () => document.getElementById('eventModal').classList.remove('open'));
+
+  /* Image file preview */
+  document.getElementById('evtImageFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const prev = document.getElementById('evtImagePreview');
+      prev.src = ev.target.result;
+      prev.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('saveEventBtn').addEventListener('click', async () => {
+    showErr('evtErr', '');
+    const title = document.getElementById('evtTitle').value.trim();
+    const start = document.getElementById('evtStart').value;
+    if (!title) return showErr('evtErr', 'Event title is required.');
+    if (!start)  return showErr('evtErr', 'Start date/time is required.');
+
+    // Upload image first if one was selected
+    let imageUrl = document.getElementById('evtImageUrl').value;
+    const fileInput = document.getElementById('evtImageFile');
+    if (fileInput.files.length > 0) {
+      try {
+        const formData = new FormData();
+        formData.append('image', fileInput.files[0]);
+        const upRes = await api('POST', '/api/upload', formData, true);
+        imageUrl = upRes.url;
+      } catch (e) {
+        return showErr('evtErr', 'Image upload failed: ' + e.message);
+      }
+    }
+
+    const body = {
+      title,
+      start: new Date(start).toISOString(),
+      end:   document.getElementById('evtEnd').value ? new Date(document.getElementById('evtEnd').value).toISOString() : '',
+      location:     document.getElementById('evtLocation').value,
+      category:     document.getElementById('evtCategory').value,
+      description:  document.getElementById('evtDesc').value,
+      recurrence:   document.getElementById('evtRecurrence').value,
+      recurrence_day: document.getElementById('evtRecDay').value,
+      image:        imageUrl || undefined,
+    };
+
+    const id = document.getElementById('evtId').value;
+    try {
+      if (id) {
+        await api('PUT', '/api/events/' + id, body);
+        toast('Event updated!');
+      } else {
+        await api('POST', '/api/events', body);
+        toast('Event added!');
+      }
+      document.getElementById('eventModal').classList.remove('open');
+      loadEvents();
+    } catch(e) { showErr('evtErr', 'Save failed: ' + e.message); }
+  });
+
+  /* ================================================================
+     ANNOUNCEMENTS
+     ================================================================ */
+  let allAnnouncements = [];
+
+  function loadAnnouncements() {
+    api('GET', '/api/announcements').then(data => {
+      allAnnouncements = data.announcements || [];
+      renderAnnouncements();
+    }).catch(() => {
+      document.getElementById('annoBody').innerHTML = '<tr><td colspan="4" class="empty">Could not load announcements.</td></tr>';
+    });
+  }
+
+  function renderAnnouncements() {
+    const tbody = document.getElementById('annoBody');
+    if (!allAnnouncements.length) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty">No announcements. Click "+ Add Announcement" to create one.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allAnnouncements.map((a, idx) => `
+      <tr>
+        <td><strong>${esc(a.title)}</strong></td>
+        <td>${esc(a.date || '')}</td>
+        <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(a.body || '')}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" data-action="edit" data-anno-idx="${idx}">Edit</button>
+          <button class="btn btn-danger btn-sm" data-action="delete" data-anno-idx="${idx}" style="margin-left:.35rem">Delete</button>
+        </td>
+      </tr>`).join('');
+    if (!tbody.dataset.bound) {
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action][data-anno-idx]');
+        if (!btn) return;
+        const idx = parseInt(btn.getAttribute('data-anno-idx'), 10);
+        if (btn.getAttribute('data-action') === 'edit')   return editAnnouncement(idx);
+        if (btn.getAttribute('data-action') === 'delete') return deleteAnnouncement(idx);
+      });
+      tbody.dataset.bound = '1';
+    }
+  }
+
+  window.editAnnouncement = function(idx) {
+    const a = allAnnouncements[idx];
+    if (!a) return;
+    document.getElementById('annoModalTitle').textContent = 'Edit Announcement';
+    document.getElementById('annoIdx').value = idx;
+    document.getElementById('annoTitle').value = a.title || '';
+    document.getElementById('annoMessage').value = a.body || '';
+    document.getElementById('annoDate').value = a.date || '';
+    document.getElementById('annoLink').value = a.link || '';
+    showErr('annoErr', '');
+    document.getElementById('annoModal').classList.add('open');
+  };
+
+  window.deleteAnnouncement = async function(idx) {
+    if (!confirm('Delete this announcement? It will be moved to the Recycle Bin for 60 days.')) return;
+    try {
+      await api('DELETE', '/api/announcements/' + idx);
+      toast('Announcement moved to Recycle Bin.');
+      loadAnnouncements();
+      loadRecycleBin();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  document.getElementById('addAnnouncementBtn').addEventListener('click', () => {
+    document.getElementById('annoModalTitle').textContent = 'Add Announcement';
+    document.getElementById('annoIdx').value = '';
+    document.getElementById('annoTitle').value = '';
+    document.getElementById('annoMessage').value = '';
+    document.getElementById('annoDate').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('annoLink').value = '';
+    showErr('annoErr', '');
+    document.getElementById('annoModal').classList.add('open');
+  });
+
+  document.getElementById('closeAnnoModal').addEventListener('click', () => document.getElementById('annoModal').classList.remove('open'));
+  document.getElementById('cancelAnnoBtn').addEventListener('click', () => document.getElementById('annoModal').classList.remove('open'));
+
+  document.getElementById('saveAnnoBtn').addEventListener('click', async () => {
+    showErr('annoErr', '');
+    const title = document.getElementById('annoTitle').value.trim();
+    if (!title) return showErr('annoErr', 'Title is required.');
+    const body = {
+      title,
+      body:  document.getElementById('annoMessage').value,
+      date:  document.getElementById('annoDate').value,
+      link:  document.getElementById('annoLink').value || undefined,
+    };
+    const idx = document.getElementById('annoIdx').value;
+    try {
+      if (idx !== '') {
+        await api('PUT', '/api/announcements/' + idx, body);
+        toast('Announcement updated!');
+      } else {
+        await api('POST', '/api/announcements', body);
+        toast('Announcement added!');
+      }
+      document.getElementById('annoModal').classList.remove('open');
+      loadAnnouncements();
+    } catch(e) { showErr('annoErr', 'Save failed: ' + e.message); }
+  });
+
+  /* ── XSS safe escape ── */
+  function esc(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ================================================================
+     RECYCLE BIN
+     ================================================================ */
+  let binItems = [];
+
+  function loadRecycleBin() {
+    api('GET', '/api/recycle-bin').then(data => {
+      binItems = data.items || [];
+      renderBin();
+    }).catch(() => {
+      const el = document.getElementById('binBody');
+      if (el) el.innerHTML = '<tr><td colspan="5" class="empty">Could not load recycle bin.</td></tr>';
+    });
+  }
+
+  function renderBin() {
+    const tbody = document.getElementById('binBody');
+    if (!tbody) return;
+    if (!binItems.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">Recycle bin is empty.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = binItems.map(item => {
+      const typeLabel = item.type === 'event'            ? '📅 Event'
+                      : item.type === 'announcement'    ? '📢 Announcement'
+                      : item.type === 'program'         ? '📚 Program'
+                      : item.type === 'digital_resource'? '🌐 Resource'
+                      : item.type === 'homepage_image'  ? '🖼️ Image'
+                      : item.type;
+      const deletedFmt = new Date(item.deleted_at).toLocaleDateString();
+      const expiresFmt = new Date(item.expires_at).toLocaleDateString();
+      const daysLeft   = Math.ceil((new Date(item.expires_at) - Date.now()) / (1000 * 60 * 60 * 24));
+      const urgentStyle = daysLeft <= 7 ? 'color:#c0392b;font-weight:600' : '';
+      return `
+        <tr>
+          <td>${typeLabel}</td>
+          <td><strong>${esc(item.label)}</strong></td>
+          <td>${deletedFmt}</td>
+          <td style="${urgentStyle}">${expiresFmt} <small style="opacity:.65">(${daysLeft}d left)</small></td>
+          <td style="white-space:nowrap">
+            <button class="btn btn-success btn-sm" data-action="restore" data-bin-id="${esc(item.bin_id)}">Restore</button>
+            <button class="btn btn-danger btn-sm" data-action="permdelete" data-bin-id="${esc(item.bin_id)}" style="margin-left:.35rem">Delete Forever</button>
+          </td>
+        </tr>`;
+    }).join('');
+    if (!tbody.dataset.bound) {
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action][data-bin-id]');
+        if (!btn) return;
+        const binId = btn.getAttribute('data-bin-id');
+        if (btn.getAttribute('data-action') === 'restore')    return restoreBinItem(binId);
+        if (btn.getAttribute('data-action') === 'permdelete') return permanentDeleteBinItem(binId);
+      });
+      tbody.dataset.bound = '1';
+    }
+  }
+
+  window.restoreBinItem = async function(binId) {
+    if (!confirm('Restore this item? It will be added back to its original list.')) return;
+    const item = binItems.find(i => i.bin_id === binId);
+    try {
+      await api('POST', '/api/recycle-bin/' + binId + '/restore');
+      toast('Item restored successfully!');
+      loadRecycleBin();
+      if (!item || item.type === 'event')               loadEvents();
+      if (!item || item.type === 'announcement')         loadAnnouncements();
+      if (!item || item.type === 'program')              loadPrograms();
+      if (!item || item.type === 'digital_resource')     loadResources();
+      if (!item || item.type === 'homepage_image')       loadHomepageImages();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.permanentDeleteBinItem = async function(binId) {
+    if (!confirm('Permanently delete this item?\n\nThis CANNOT be undone — the item will be gone forever.')) return;
+    try {
+      await api('DELETE', '/api/recycle-bin/' + binId);
+      toast('Item permanently deleted.');
+      loadRecycleBin();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  /* ================================================================
+     BRANCH HOURS
+     ================================================================ */
+  let allBranches = [];
+
+  function loadBranches() {
+    api('GET', '/api/content/branches').then(res => {
+      allBranches = res.data || [];
+      renderBranches();
+    }).catch(() => {
+      document.getElementById('branchesBody').innerHTML = '<p class="empty">Could not load branches.</p>';
+    });
+  }
+
+  function renderBranches() {
+    const body = document.getElementById('branchesBody');
+    if (!allBranches.length) { body.innerHTML = '<p class="empty">No branches found.</p>'; return; }
+    body.innerHTML = allBranches.map((b, idx) => `
+      <div style="border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:.75rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <strong>${esc(b.name)}</strong><br>
+          <span style="color:#6b7280;font-size:.85rem">${esc(b.address)}, ${esc(b.city)} · ${esc(b.phone)}</span><br>
+          <table style="font-size:.8rem;margin-top:.4rem;border-collapse:collapse">
+            ${(b.hours||[]).map(h => `<tr><td style="padding:.1rem .5rem .1rem 0;color:#6b7280">${esc(h.days)}</td><td style="padding:.1rem .5rem .1rem 0">${esc(h.open)}${h.close ? ' – ' + esc(h.close) : ''}</td></tr>`).join('')}
+          </table>
+          ${b.note ? `<p style="font-size:.8rem;color:#6b7280;margin-top:.3rem;font-style:italic">${esc(b.note)}</p>` : ''}
+        </div>
+        <button class="btn btn-outline btn-sm" style="white-space:nowrap" data-action="edit" data-branch-idx="${idx}">Edit Hours</button>
+      </div>`).join('');
+    if (!body.dataset.bound) {
+      body.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action="edit"][data-branch-idx]');
+        if (!btn) return;
+        editBranch(parseInt(btn.getAttribute('data-branch-idx'), 10));
+      });
+      body.dataset.bound = '1';
+    }
+  }
+
+  window.editBranch = function(idx) {
+    const b = allBranches[idx];
+    if (!b) return;
+    document.getElementById('branchModalTitle').textContent = 'Edit: ' + b.name;
+    document.getElementById('branchIdx').value = idx;
+    document.getElementById('b-name').value = b.name || '';
+    document.getElementById('b-address').value = b.address || '';
+    document.getElementById('b-city').value = b.city || '';
+    document.getElementById('b-phone').value = b.phone || '';
+    document.getElementById('b-fax').value = b.fax || '';
+    document.getElementById('b-note').value = b.note || '';
+    renderHoursRows(b.hours || []);
+    document.getElementById('branchModal').classList.add('open');
+  };
+
+  function renderHoursRows(hours) {
+    const tbody = document.getElementById('hours-rows');
+    tbody.innerHTML = hours.map((h, i) => `
+      <tr id="hr-${i}">
+        <td><input type="text" value="${esc(h.days)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-days="${i}"></td>
+        <td><input type="text" value="${esc(h.open)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-open="${i}"></td>
+        <td><input type="text" value="${esc(h.close)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-close="${i}"></td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeHoursRow(${i})">✕</button></td>
+      </tr>`).join('');
+  }
+
+  window.addHoursRow = function() {
+    const tbody = document.getElementById('hours-rows');
+    const i = tbody.rows.length;
+    const tr = document.createElement('tr');
+    tr.id = 'hr-' + i;
+    tr.innerHTML = `
+      <td><input type="text" placeholder="Mon–Fri" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-days="${i}"></td>
+      <td><input type="text" placeholder="9:00 AM" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-open="${i}"></td>
+      <td><input type="text" placeholder="5:00 PM" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-close="${i}"></td>
+      <td><button type="button" class="btn btn-danger btn-sm" onclick="removeHoursRow(${i})">✕</button></td>`;
+    tbody.appendChild(tr);
+  };
+
+  window.removeHoursRow = function(i) {
+    const row = document.getElementById('hr-' + i);
+    if (row) row.remove();
+  };
+
+  function collectHoursRows() {
+    const rows = [];
+    document.querySelectorAll('#hours-rows tr').forEach(_tr => {
+      const days  = (_tr.querySelector('[data-hr-days]')  || {}).value || '';
+      const open  = (_tr.querySelector('[data-hr-open]')  || {}).value || '';
+      const close = (_tr.querySelector('[data-hr-close]') || {}).value || '';
+      if (days) rows.push({ days: days.trim(), open: open.trim(), close: close.trim() });
+    });
+    return rows;
+  }
+
+  window.saveBranch = async function() {
+    const idx = parseInt(document.getElementById('branchIdx').value, 10);
+    if (!Number.isFinite(idx) || idx < 0 || idx >= allBranches.length) return;
+    const updated = {
+      ...allBranches[idx],
+      name:    document.getElementById('b-name').value,
+      address: document.getElementById('b-address').value,
+      city:    document.getElementById('b-city').value,
+      phone:   document.getElementById('b-phone').value,
+      fax:     document.getElementById('b-fax').value || '',
+      hours:   collectHoursRows(),
+      note:    document.getElementById('b-note').value,
+    };
+    const updatedList = allBranches.map((b, i) => i === idx ? updated : b);
+    try {
+      await api('PUT', '/api/content/branches', updatedList);
+      allBranches = updatedList;
+      renderBranches();
+      document.getElementById('branchModal').classList.remove('open');
+      toast('Branch hours saved!');
+    } catch (e) {
+      document.getElementById('branchErr').textContent = e.message;
+      document.getElementById('branchErr').style.display = 'block';
+    }
+  };
+
+  /* ================================================================
+     HOLIDAY CLOSURES
+     ================================================================ */
+  const STANDARD_HOLIDAYS = [
+    { key: 'new_years_day',       label: "New Year's Day",              date: 'Jan 1' },
+    { key: 'mlk_day',             label: 'Martin Luther King Jr. Day',  date: '3rd Mon in Jan' },
+    { key: 'presidents_day',      label: "Presidents' Day",             date: '3rd Mon in Feb' },
+    { key: 'good_friday',         label: 'Good Friday',                 date: 'Variable (spring)' },
+    { key: 'memorial_day',        label: 'Memorial Day',                date: 'Last Mon in May' },
+    { key: 'juneteenth',          label: 'Juneteenth',                  date: 'Jun 19' },
+    { key: 'wv_day',              label: 'West Virginia Day',           date: 'Jun 20' },
+    { key: 'independence_day',    label: 'Independence Day',            date: 'Jul 4' },
+    { key: 'labor_day',           label: 'Labor Day',                   date: '1st Mon in Sep' },
+    { key: 'columbus_day',        label: 'Columbus Day',                date: '2nd Mon in Oct' },
+    { key: 'veterans_day',        label: "Veterans Day",                date: 'Nov 11' },
+    { key: 'thanksgiving',        label: 'Thanksgiving Day',            date: '4th Thu in Nov' },
+    { key: 'thanksgiving_friday', label: 'Day After Thanksgiving',      date: 'Fri after 4th Thu' },
+    { key: 'christmas_eve',       label: 'Christmas Eve',               date: 'Dec 24' },
+    { key: 'christmas_day',       label: 'Christmas Day',               date: 'Dec 25' },
+    { key: 'new_years_eve',       label: "New Year's Eve",              date: 'Dec 31' },
+  ];
+
+  let holidayData = { observed: [], extra_notes: '' };
+
+  function loadHolidays() {
+    api('GET', '/api/content/holiday_closures').then(res => {
+      holidayData = res.data || { observed: [], extra_notes: '' };
+      renderHolidayCheckboxes();
+    }).catch(() => {
+      renderHolidayCheckboxes();
+    });
+  }
+
+  function renderHolidayCheckboxes() {
+    const observed = holidayData.observed || [];
+    const container = document.getElementById('holidayCheckboxes');
+    if (!container) return;
+    container.innerHTML = STANDARD_HOLIDAYS.map(h => {
+      const checked = observed.includes(h.key) ? 'checked' : '';
+      return `<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.35rem .5rem;border:1px solid var(--gray-200);border-radius:6px;font-size:.875rem;user-select:none">
+        <input type="checkbox" data-holiday-key="${h.key}" ${checked} style="width:1rem;height:1rem;cursor:pointer">
+        <span><strong>${esc(h.label)}</strong><br><span style="color:var(--gray-600);font-size:.78rem">${esc(h.date)}</span></span>
+      </label>`;
+    }).join('');
+    const notes = document.getElementById('holiday-extra-notes');
+    if (notes) notes.value = holidayData.extra_notes || '';
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('#saveHolidaysBtn');
+    if (!btn) return;
+    const observed = [...document.querySelectorAll('[data-holiday-key]:checked')].map(cb => cb.getAttribute('data-holiday-key'));
+    const extra_notes = (document.getElementById('holiday-extra-notes') || {}).value || '';
+    holidayData = { observed, extra_notes };
+    api('PUT', '/api/content/holiday_closures', holidayData)
+      .then(() => toast('Holiday closures saved!'))
+      .catch(e => toast('Error: ' + e.message));
+  });
+
+  /* ================================================================
+     PROGRAMS
+     ================================================================ */
+  let programsData = {};
+
+  function loadPrograms() {
+    api('GET', '/api/content/programs').then(res => {
+      programsData = res.data || {};
+      renderPrograms();
+    }).catch(() => toast('Could not load programs.'));
+  }
+
+  function renderPrograms() {
+    ['storytimes', 'baby_lapsit'].forEach(key => {
+      const items = programsData[key] || [];
+      const tbody = document.getElementById('prog-' + key);
+      if (!tbody) return;
+      if (!items.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty">No entries yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = items.map((item, i) => `
+        <tr>
+          <td>${esc(item.branch)}</td>
+          <td>${esc(item.schedule)}</td>
+          <td>${esc(item.ages)}</td>
+          <td style="white-space:nowrap">
+            <button class="btn btn-outline btn-sm" data-action="edit" data-prog-key="${key}" data-prog-idx="${i}">Edit</button>
+            <button class="btn btn-danger btn-sm" style="margin-left:.35rem" data-action="delete" data-prog-key="${key}" data-prog-idx="${i}">Delete</button>
+          </td>
+        </tr>`).join('');
+      if (!tbody.dataset.bound) {
+        tbody.addEventListener('click', e => {
+          const btn = e.target.closest('button[data-action][data-prog-key]');
+          if (!btn) return;
+          const k = btn.getAttribute('data-prog-key');
+          const idx = parseInt(btn.getAttribute('data-prog-idx'), 10);
+          if (btn.getAttribute('data-action') === 'edit')   return openProgramEntry(k, idx);
+          if (btn.getAttribute('data-action') === 'delete') return deleteProgramEntry(k, idx);
+        });
+        tbody.dataset.bound = '1';
+      }
+    });
+    // Adult book club
+    const abc = programsData.adult_book_club || {};
+    document.getElementById('abc-location').value = abc.location || '';
+    document.getElementById('abc-schedule').value = abc.schedule || '';
+    // Library chef
+    const lc = programsData.library_chef || {};
+    document.getElementById('lc-description').value = lc.description || '';
+    document.getElementById('lc-url').value = lc.url || '';
+    document.getElementById('lc-features').value = (lc.features || []).join('\n');
+  }
+
+  window.openProgramEntry = function(key, idx) {
+    document.getElementById('prog-key').value = key;
+    document.getElementById('prog-idx').value = idx === null ? '' : idx;
+    document.getElementById('progModalTitle').textContent = idx === null ? 'Add Entry' : 'Edit Entry';
+    const entry = idx !== null ? (programsData[key] || [])[idx] : {};
+    document.getElementById('prog-branch').value = entry ? (entry.branch || '') : '';
+    document.getElementById('prog-schedule').value = entry ? (entry.schedule || '') : '';
+    document.getElementById('prog-ages').value = entry ? (entry.ages || '') : '';
+    document.getElementById('progErr').style.display = 'none';
+    document.getElementById('programModal').classList.add('open');
+  };
+
+  window.saveProgramEntry = async function() {
+    const key = document.getElementById('prog-key').value;
+    const idxRaw = document.getElementById('prog-idx').value;
+    const idx = idxRaw === '' ? null : parseInt(idxRaw, 10);
+    const entry = {
+      branch:   document.getElementById('prog-branch').value.trim(),
+      schedule: document.getElementById('prog-schedule').value.trim(),
+      ages:     document.getElementById('prog-ages').value.trim(),
+    };
+    if (!entry.branch) {
+      document.getElementById('progErr').textContent = 'Branch is required.';
+      document.getElementById('progErr').style.display = 'block';
+      return;
+    }
+    const list = [...(programsData[key] || [])];
+    if (idx === null) list.push(entry); else list[idx] = entry;
+    const updated = { ...programsData, [key]: list };
+    try {
+      await api('PUT', '/api/content/programs', updated);
+      programsData = updated;
+      renderPrograms();
+      document.getElementById('programModal').classList.remove('open');
+      toast('Program entry saved!');
+    } catch (e) {
+      document.getElementById('progErr').textContent = e.message;
+      document.getElementById('progErr').style.display = 'block';
+    }
+  };
+
+  window.deleteProgramEntry = async function(key, idx) {
+    if (!confirm('Delete this entry? It will be moved to the Recycle Bin.')) return;
+    try {
+      await api('DELETE', '/api/content/programs/' + key + '/' + idx);
+      loadPrograms();
+      loadRecycleBin();
+      toast('Entry deleted (moved to recycle bin).');
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.saveAdultBookClub = async function() {
+    const updated = { ...programsData, adult_book_club: {
+      location: document.getElementById('abc-location').value.trim(),
+      schedule: document.getElementById('abc-schedule').value.trim(),
+    }};
+    try {
+      await api('PUT', '/api/content/programs', updated);
+      programsData = updated;
+      toast('Adult Book Club saved!');
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.saveLibraryChef = async function() {
+    const features = document.getElementById('lc-features').value
+      .split('\n').map(s => s.trim()).filter(Boolean);
+    const updated = { ...programsData, library_chef: {
+      description: document.getElementById('lc-description').value.trim(),
+      url:         document.getElementById('lc-url').value.trim(),
+      features,
+    }};
+    try {
+      await api('PUT', '/api/content/programs', updated);
+      programsData = updated;
+      toast('Library Chef saved!');
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  /* ================================================================
+     DIGITAL RESOURCES
+     ================================================================ */
+  let allResources = [];
+
+  function loadResources() {
+    api('GET', '/api/content/digital_resources').then(res => {
+      allResources = res.data || [];
+      renderResources();
+    }).catch(() => toast('Could not load digital resources.'));
+  }
+
+  function renderResources() {
+    const tbody = document.getElementById('resourcesBody');
+    if (!allResources.length) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty">No resources yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allResources.map((r, i) => `
+      <tr>
+        <td><strong>${esc(r.name)}</strong></td>
+        <td style="max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.description)}</td>
+        <td><a href="${esc(r.url)}" target="_blank" rel="noopener" style="font-size:.8rem">${esc(r.url.replace(/^https?:\/\//,'').slice(0,40))}</a></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" data-action="edit" data-res-idx="${i}">Edit</button>
+          <button class="btn btn-danger btn-sm" style="margin-left:.35rem" data-action="delete" data-res-idx="${i}">Delete</button>
+        </td>
+      </tr>`).join('');
+    if (!tbody.dataset.bound) {
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action][data-res-idx]');
+        if (!btn) return;
+        const idx = parseInt(btn.getAttribute('data-res-idx'), 10);
+        if (btn.getAttribute('data-action') === 'edit')   return editResource(idx);
+        if (btn.getAttribute('data-action') === 'delete') return deleteResource(idx);
+      });
+      tbody.dataset.bound = '1';
+    }
+  }
+
+  document.getElementById('addResourceBtn').addEventListener('click', () => {
+    document.getElementById('resModalTitle').textContent = 'Add Resource';
+    document.getElementById('res-idx').value = '';
+    document.getElementById('res-name').value = '';
+    document.getElementById('res-url').value = '';
+    document.getElementById('res-desc').value = '';
+    document.getElementById('resErr').style.display = 'none';
+    document.getElementById('resourceModal').classList.add('open');
+  });
+
+  window.editResource = function(idx) {
+    const r = allResources[idx];
+    if (!r) return;
+    document.getElementById('resModalTitle').textContent = 'Edit Resource';
+    document.getElementById('res-idx').value = idx;
+    document.getElementById('res-name').value = r.name || '';
+    document.getElementById('res-url').value = r.url || '';
+    document.getElementById('res-desc').value = r.description || '';
+    document.getElementById('resErr').style.display = 'none';
+    document.getElementById('resourceModal').classList.add('open');
+  };
+
+  window.deleteResource = async function(idx) {
+    if (!confirm('Remove this resource? It will be moved to the Recycle Bin.')) return;
+    try {
+      await api('DELETE', '/api/content/digital_resources/' + idx);
+      loadResources();
+      loadRecycleBin();
+      toast('Resource removed (moved to recycle bin).');
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.saveResource = async function() {
+    const name = document.getElementById('res-name').value.trim();
+    const url  = document.getElementById('res-url').value.trim();
+    if (!name) { document.getElementById('resErr').textContent = 'Name is required.'; document.getElementById('resErr').style.display = 'block'; return; }
+    if (!url)  { document.getElementById('resErr').textContent = 'URL is required.';  document.getElementById('resErr').style.display = 'block'; return; }
+    const entry = { name, url, description: document.getElementById('res-desc').value.trim() };
+    const idxRaw = document.getElementById('res-idx').value;
+    const updated = [...allResources];
+    if (idxRaw === '') updated.push(entry); else updated[parseInt(idxRaw, 10)] = entry;
+    try {
+      await api('PUT', '/api/content/digital_resources', updated);
+      allResources = updated;
+      renderResources();
+      document.getElementById('resourceModal').classList.remove('open');
+      toast('Resource saved!');
+    } catch (e) { document.getElementById('resErr').textContent = e.message; document.getElementById('resErr').style.display = 'block'; }
+  };
+
+  /* ================================================================
+     SITE SETTINGS
+     ================================================================ */
+  function loadSiteSettings() {
+    api('GET', '/api/content/site').then(res => {
+      const s = res.data || {};
+      ['phone_main','phone_alt','fax','email','address','facebook_url',
+       'tagline','tagline_author','catalog_url','libby_url','hoopla_url',
+       'library_chef_url','wv_info_depot_url'].forEach(k => {
+        const el = document.getElementById('s-' + k);
+        if (el) el.value = s[k] || '';
+      });
+    }).catch(() => toast('Could not load site settings.'));
+  }
+
+  document.getElementById('saveSiteBtn').addEventListener('click', async () => {
+    const keys = ['phone_main','phone_alt','fax','email','address','facebook_url',
+                  'tagline','tagline_author','catalog_url','libby_url','hoopla_url',
+                  'library_chef_url','wv_info_depot_url'];
+    const body = {};
+    keys.forEach(k => { const el = document.getElementById('s-' + k); if (el) body[k] = el.value.trim(); });
+    try {
+      await api('PUT', '/api/content/site', body);
+      toast('Site settings saved!');
+    } catch (e) { toast('Error: ' + e.message); }
+  });
+
+  /* ================================================================
+     STAFF INFO
+     ================================================================ */
+  let staffData = {};
+
+  function loadStaff() {
+    api('GET', '/api/content/staff').then(res => {
+      staffData = res.data || {};
+      document.getElementById('st-director').value    = staffData.director || '';
+      document.getElementById('st-asst_director').value = staffData.assistant_director || '';
+      document.getElementById('st-asst_email').value  = staffData.assistant_director_email || '';
+      renderBookmobileStaff(staffData.bookmobile_staff || []);
+    }).catch(() => toast('Could not load staff info.'));
+  }
+
+  function renderBookmobileStaff(list) {
+    const container = document.getElementById('bookmobile-staff-list');
+    if (!list.length) { container.innerHTML = '<p style="color:#6b7280;font-size:.9rem">No bookmobile staff listed.</p>'; return; }
+    container.innerHTML = list.map((name, i) => `
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem">
+        <input type="text" value="${esc(name)}" data-bm="${i}" style="flex:1;padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+        <button class="btn btn-danger btn-sm" data-action="remove-bm" data-bm="${i}">✕</button>
+      </div>`).join('');
+    if (!container.dataset.bound) {
+      container.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action="remove-bm"]');
+        if (!btn) return;
+        btn.closest('div').remove();
+      });
+      container.dataset.bound = '1';
+    }
+  }
+
+  window.addBookmobileStaff = function() {
+    const container = document.getElementById('bookmobile-staff-list');
+    const i = container.querySelectorAll('[data-bm]').length;
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem';
+    div.innerHTML = `
+      <input type="text" data-bm="${i}" placeholder="Full name" style="flex:1;padding:.4rem .6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.875rem" maxlength="120">
+      <button class="btn btn-danger btn-sm" data-action="remove-bm" data-bm="${i}">✕</button>`;
+    container.appendChild(div);
+  };
+
+  window.removeBookmobileStaff = function(i) {
+    const el = document.querySelector(`[data-bm="${i}"]`);
+    if (el) el.closest('div').remove();
+  };
+
+  document.getElementById('saveStaffBtn').addEventListener('click', async () => {
+    const bookmobile_staff = [...document.querySelectorAll('[data-bm]')]
+      .map(el => el.value.trim()).filter(Boolean);
+    const body = {
+      director:                 document.getElementById('st-director').value.trim(),
+      assistant_director:       document.getElementById('st-asst_director').value.trim(),
+      assistant_director_email: document.getElementById('st-asst_email').value.trim(),
+      bookmobile_staff,
+    };
+    try {
+      await api('PUT', '/api/content/staff', body);
+      staffData = body;
+      toast('Staff info saved!');
+    } catch (e) { toast('Error: ' + e.message); }
+  });
+
+  /* ================================================================
+     CALENDARS / CALENDAR MANAGEMENT
+     ================================================================ */
+  let calendarData = [];
+
+  function loadCalendars() {
+    api('GET', '/api/events').then(data => {
+      calendarData = (data.events || []).slice().sort((a,b) => new Date(a.start) - new Date(b.start));
+      renderCalendars();
+    }).catch(() => {
+      document.getElementById('calendarsBody').innerHTML = '<tr><td colspan="7" class="empty">Could not load calendar events.</td></tr>';
+    });
+  }
+
+  function renderCalendars() {
+    const tbody = document.getElementById('calendarsBody');
+    if (!calendarData.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">No calendar events. Click "+ Add Calendar Event" to create one.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = calendarData.map(ev => `
+      <tr>
+        <td><strong>${esc(ev.title)}</strong></td>
+        <td>${new Date(ev.start).toLocaleString()}</td>
+        <td>${new Date(ev.end).toLocaleString()}</td>
+        <td>${esc(ev.location || '—')}</td>
+        <td><span class="cat-badge" style="background:#f3f4f6;padding:.25rem .5rem;border-radius:4px;font-size:.8rem">${esc(ev.category || 'general')}</span></td>
+        <td>${ev.recurrence && ev.recurrence !== 'none' ? esc(ev.recurrence) : '—'}</td>
+        <td style="white-space:nowrap;text-align:right">
+          <button class="btn btn-primary btn-sm" data-action="edit"    data-cal-id="${ev.id}">Edit</button>
+          <button class="btn btn-danger btn-sm"  data-action="delete"  data-cal-id="${ev.id}">Delete</button>
+        </td>
+      </tr>`).join('');
+    if (!tbody.dataset.bound) {
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action][data-cal-id]');
+        if (!btn) return;
+        const rawId = btn.getAttribute('data-cal-id');
+        const action = btn.getAttribute('data-action');
+        if (action === 'edit')    return editCalendarEvent(Number(rawId));
+        if (action === 'delete')  return deleteCalendarEvent(Number(rawId));
+      });
+      tbody.dataset.bound = '1';
+    }
+  }
+
+  window.editCalendarEvent = async function(id) {
+    const event = calendarData.find(e => e.id === id);
+    if (!event) return alert('Event not found.');
+    // Populate modal with event data
+    document.getElementById('modalTitle').value = event.title || '';
+    document.getElementById('modalStart').value = event.start ? event.start.slice(0, 16) : '';
+    document.getElementById('modalEnd').value = event.end ? event.end.slice(0, 16) : '';
+    document.getElementById('modalLocation').value = event.location || '';
+    document.getElementById('modalCategory').value = event.category || 'general';
+    document.getElementById('modalDescription').value = event.description || '';
+    document.getElementById('modalRecurrence').value = event.recurrence || 'none';
+    document.getElementById('modalRecurrenceDay').value = event.recurrence_day || '';
+    document.getElementById('modalEventId').value = id;
+    document.getElementById('eventModalOverlay').style.display = 'flex';
+  };
+
+  window.deleteCalendarEvent = async function(id) {
+    if (!confirm('Delete this calendar event? It will be moved to the Recycle Bin for 60 days.')) return;
+    try {
+      await api('DELETE', '/api/events/' + id);
+      toast('Event moved to recycle bin.');
+      loadCalendars();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.openCalendarEntryModal = function() {
+    // Clear form
+    document.getElementById('modalTitle').value = '';
+    document.getElementById('modalStart').value = '';
+    document.getElementById('modalEnd').value = '';
+    document.getElementById('modalLocation').value = '';
+    document.getElementById('modalCategory').value = 'general';
+    document.getElementById('modalDescription').value = '';
+    document.getElementById('modalRecurrence').value = 'none';
+    document.getElementById('modalRecurrenceDay').value = '';
+    document.getElementById('modalEventId').value = '';
+    document.getElementById('eventModalOverlay').style.display = 'flex';
+  };
+
+  window.closeEventModal = function() {
+    document.getElementById('eventModalOverlay').style.display = 'none';
+  };
+
+  window.saveCalendarEvent = async function() {
+    const id = document.getElementById('modalEventId').value;
+    const body = {
+      title: document.getElementById('modalTitle').value.trim(),
+      start: document.getElementById('modalStart').value,
+      end: document.getElementById('modalEnd').value,
+      location: document.getElementById('modalLocation').value.trim(),
+      category: document.getElementById('modalCategory').value || 'general',
+      description: document.getElementById('modalDescription').value.trim(),
+      recurrence: document.getElementById('modalRecurrence').value || 'none',
+      recurrence_day: document.getElementById('modalRecurrenceDay').value || '',
+    };
+    if (!body.title || !body.start || !body.end) {
+      return alert('Title, start time, and end time are required.');
+    }
+    try {
+      if (id) {
+        // Update existing
+        await api('PUT', '/api/events/' + id, body);
+        toast('Calendar event updated!');
+      } else {
+        // Create new
+        await api('POST', '/api/events', body);
+        toast('Calendar event created!');
+      }
+      closeEventModal();
+      loadCalendars();
+    } catch (e) {
+      alert('Error saving event: ' + e.message);
+    }
+  };
+
+  /* Attach event listeners for calendar tab */
+  document.addEventListener('DOMContentLoaded', function() {
+    const addCalendarBtn = document.getElementById('addCalendarEventBtn');
+    if (addCalendarBtn) {
+      addCalendarBtn.addEventListener('click', openCalendarEntryModal);
+    }
+  });
+
+  /* ================================================================
+     HOSTING INFORMATION
+     ================================================================ */
+  let hostingData = {
+    dns_provider: 'West Virginia Library Commission (lib.wv.us)',
+    hosting_service: 'Apache / WordPress (production)',
+    server_ip: '129.71.20.25',
+    domain_renewal: '2027-01-30',
+    ssl_provider: "Let's Encrypt (R13)",
+    ssl_expiry: '2026-05-28',
+  };
+
+  function loadHostingInfo() {
+    api('GET', '/api/content/hosting').then(res => {
+      const incoming = res && res.data ? res.data : {};
+      hostingData = {
+        ...hostingData,
+        ...incoming,
+      };
+      renderHostingInfo();
+    }).catch(() => {
+      // Render defaults if hosting section does not exist yet.
+      renderHostingInfo();
+    });
+  }
+
+  function renderHostingInfo() {
+    document.getElementById('hostingDnsProvider').textContent = hostingData.dns_provider || 'Not configured';
+    document.getElementById('hostingProvider').textContent = hostingData.hosting_service || 'Not configured';
+    document.getElementById('hostingIpAddress').textContent = hostingData.server_ip || 'Configure in settings';
+    document.getElementById('hostingDomainRenewal').textContent = hostingData.domain_renewal ? 'Due: ' + hostingData.domain_renewal : 'Not set';
+    document.getElementById('hostingSslStatus').textContent = hostingData.ssl_provider || "Let's Encrypt";
+    document.getElementById('hostingSslExpiry').textContent = hostingData.ssl_expiry ? 'Expires: ' + hostingData.ssl_expiry : 'Not set';
+
+    // Populate form
+    document.getElementById('hosting-dns').value = hostingData.dns_provider || '';
+    document.getElementById('hosting-service').value = hostingData.hosting_service || '';
+    document.getElementById('hosting-ip').value = hostingData.server_ip || '';
+    document.getElementById('hosting-renewal-date').value = hostingData.domain_renewal || '';
+    document.getElementById('hosting-ssl').value = hostingData.ssl_provider || '';
+    document.getElementById('hosting-ssl-expiry').value = hostingData.ssl_expiry || '';
+  }
+
+  document.getElementById('saveHostingBtn').addEventListener('click', async () => {
+    hostingData = {
+      dns_provider: document.getElementById('hosting-dns').value.trim() || 'Not configured',
+      hosting_service: document.getElementById('hosting-service').value.trim() || 'Not configured',
+      server_ip: document.getElementById('hosting-ip').value.trim() || 'Not configured',
+      domain_renewal: document.getElementById('hosting-renewal-date').value || '',
+      ssl_provider: document.getElementById('hosting-ssl').value.trim() || "Let's Encrypt",
+      ssl_expiry: document.getElementById('hosting-ssl-expiry').value || '',
+    };
+    try {
+      await api('PUT', '/api/content/hosting', hostingData);
+      renderHostingInfo();
+      toast('Hosting information saved!');
+    } catch (e) {
+      toast('Error: ' + e.message);
+    }
+  });
+
+
+  /* ================================================================
+     HOMEPAGE IMAGES
+     ================================================================ */
+  let _imgUploadType = 'slider';
+
+  function loadHomepageImages() {
+    api('GET', '/api/homepage-images').then(data => {
+      renderImgGrid('slider-images-grid',   (data.images||[]).filter(i=>i.type==='slider'));
+      renderImgGrid('featured-images-grid', (data.images||[]).filter(i=>i.type==='featured'));
+    }).catch(() => {});
+  }
+
+  function renderImgGrid(containerId, images) {
+    const grid = document.getElementById(containerId);
+    if (!grid) return;
+    if (!images.length) {
+      grid.innerHTML = '<p style="color:var(--gray-600);font-size:.875rem">No images yet. Click Upload to add one.</p>';
+      return;
+    }
+    // Normalise relative image paths — admin is served at /admin/ so we need absolute paths
+    function imgUrl(src) {
+      if (!src) return '';
+      if (src.startsWith('images/') || src.startsWith('slider/')) return '/' + src;
+      return src;
+    }
+    grid.innerHTML = images.map(img => `
+      <div style="border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.07)" data-img-card="${img.id}">
+        <img src="${imgUrl(img.src)}" alt="${img.alt||''}" loading="lazy"
+             style="width:100%;height:140px;object-fit:cover;display:block">
+        <div style="padding:.6rem .75rem">
+          <input type="text" value="${escHtml(img.caption||'')}" placeholder="Caption (optional)"
+                 style="width:100%;font-size:.8rem;padding:.3rem .5rem;border:1px solid var(--gray-200);border-radius:6px;margin-bottom:.35rem"
+                 data-img-field="caption" data-img-id="${img.id}">
+          <input type="url" value="${escHtml(img.link||'')}" placeholder="Link URL (optional)"
+                 style="width:100%;font-size:.8rem;padding:.3rem .5rem;border:1px solid var(--gray-200);border-radius:6px;margin-bottom:.35rem"
+                 data-img-field="link" data-img-id="${img.id}">
+          <input type="text" value="${escHtml(img.link_label||'')}" placeholder="Link label (optional)"
+                 style="width:100%;font-size:.8rem;padding:.3rem .5rem;border:1px solid var(--gray-200);border-radius:6px;margin-bottom:.5rem"
+                 data-img-field="link_label" data-img-id="${img.id}">
+          <div style="display:flex;gap:.4rem;justify-content:flex-end">
+            ${img.link ? '<span style="font-size:.75rem;background:#e8f5e9;color:#2e7d32;padding:.2rem .5rem;border-radius:4px;align-self:center">🔗 Has link</span>' : ''}
+            <button class="btn btn-danger btn-sm" data-action="delete-img" data-img-id="${img.id}">🗑 Remove</button>
+          </div>
+        </div>
+      </div>`).join('');
+    if (!grid.dataset.bound) {
+      grid.addEventListener('change', e => {
+        const input = e.target.closest('input[data-img-field][data-img-id]');
+        if (!input) return;
+        updateImgField(input.getAttribute('data-img-id'), input.getAttribute('data-img-field'), input.value);
+      });
+      grid.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-action="delete-img"][data-img-id]');
+        if (!btn) return;
+        deleteImg(btn.getAttribute('data-img-id'));
+      });
+      grid.dataset.bound = '1';
+    }
+  }
+
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  window.updateImgField = async function(id, field, value) {
+    // Reload current image data from server to get clean values, then update
+    try {
+      const data = await api('GET', '/api/homepage-images');
+      const img  = (data.images || []).find(i => i.id === id);
+      if (!img) return;
+      const payload = { alt: img.alt, caption: img.caption, type: img.type,
+                        link: img.link, link_label: img.link_label };
+      payload[field] = value || undefined;
+      await api('PUT', '/api/homepage-images/' + id, payload);
+    } catch(e) { toast('Save failed: ' + e.message); }
+  };
+
+  window.deleteImg = async function(id) {
+    if (!confirm('Remove this image from the front page?')) return;
+    try {
+      await api('DELETE', '/api/homepage-images/' + id);
+      loadHomepageImages();
+      toast('Image removed.');
+    } catch(e) { toast('Error: ' + e.message); }
+  };
+
+  window.openImgUpload = function(type) {
+    _imgUploadType = type;
+    document.getElementById('imgUploadTitle').textContent = type === 'slider' ? 'Upload Slider Image' : 'Upload Featured Photo';
+    document.getElementById('imgFileInput').value = '';
+    document.getElementById('imgAltInput').value = '';
+    document.getElementById('imgCaptionInput').value = '';
+    document.getElementById('imgLinkInput').value = '';
+    document.getElementById('imgLinkLabelInput').value = '';
+    document.getElementById('imgUploadErr').textContent = '';
+    document.getElementById('imgUploadModal').style.display = 'flex';
+  };
+
+  window.closeImgModal = function() {
+    document.getElementById('imgUploadModal').style.display = 'none';
+  };
+
+  window.submitImgUpload = async function() {
+    const file      = document.getElementById('imgFileInput').files[0];
+    const alt       = document.getElementById('imgAltInput').value.trim();
+    const cap       = document.getElementById('imgCaptionInput').value.trim();
+    const link      = document.getElementById('imgLinkInput').value.trim();
+    const linkLabel = document.getElementById('imgLinkLabelInput').value.trim();
+    const errEl = document.getElementById('imgUploadErr');
+    errEl.textContent = '';
+    if (!file) { errEl.textContent = 'Please choose an image file.'; return; }
+    const btn = document.getElementById('imgUploadSaveBtn');
+    btn.disabled = true; btn.textContent = 'Uploading…';
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      const upRes = await fetch('/admin/api/upload/general', {
+        method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN }, body: fd
+      });
+      const upData = await upRes.json();
+      if (!upRes.ok) throw new Error(upData.error || 'Upload failed');
+      await api('POST', '/api/homepage-images', {
+        src: upData.url, alt, caption: cap, type: _imgUploadType,
+        link: link || undefined, link_label: linkLabel || undefined,
+      });
+      closeImgModal();
+      loadHomepageImages();
+      toast('Image added to front page!');
+    } catch(e) { errEl.textContent = e.message; }
+    finally { btn.disabled = false; btn.textContent = 'Upload & Add'; }
+  };
+
+  /* ================================================================
+     ANALYTICS DASHBOARD
+     ================================================================ */
+  function loadAnalyticsData() {
+    api('GET', '/api/analytics/summary').then(summary => {
+      document.getElementById('pv24h').textContent = summary.pageviews_24h || '0';
+      document.getElementById('ev24h').textContent = summary.events_24h || '0';
+      document.getElementById('totPV').textContent = summary.total_pageviews || '0';
+      
+      // Top pages
+      const topPagesTbody = document.getElementById('topPagesBody');
+      if (summary.top_pages && summary.top_pages.length) {
+        topPagesTbody.innerHTML = summary.top_pages.map(p => `
+          <tr><td>${esc(p.url)}</td><td style="text-align:right;font-weight:600">${p.count}</td></tr>`).join('');
+      } else {
+        topPagesTbody.innerHTML = '<tr><td colspan="2" class="empty">No data yet</td></tr>';
+      }
+      
+      // Top events
+      const topEventsTbody = document.getElementById('topEventsBody');
+      if (summary.top_events && summary.top_events.length) {
+        topEventsTbody.innerHTML = summary.top_events.map(e => {
+          const label = e.type === 'link_click' ? '🔗 Link Click'
+                      : e.type === 'page_focus' ? '👁️ Page Focus'
+                      : e.type === 'button_click' ? '🖱️ Button Click'
+                      : e.type;
+          return `<tr><td>${label}</td><td style="text-align:right;font-weight:600">${e.count}</td></tr>`;
+        }).join('');
+      } else {
+        topEventsTbody.innerHTML = '<tr><td colspan="2" class="empty">No data yet</td></tr>';
+      }
+    }).catch(e => {
+      console.error('Analytics load failed:', e);
+      document.getElementById('pv24h').textContent = '—';
+      document.getElementById('ev24h').textContent = '—';
+    });
+
+    // Recent pageviews (last 10)
+    api('GET', '/api/analytics/pageviews?limit=10&offset=0').then(data => {
+      const tbody = document.getElementById('recentPVBody');
+      if (data.pageviews && data.pageviews.length) {
+        tbody.innerHTML = data.pageviews.map(pv => {
+          const time = new Date(pv.timestamp).toLocaleTimeString();
+          return `<tr><td>${esc(pv.url)}</td><td>${time}</td></tr>`;
+        }).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="2" class="empty">No recent pageviews</td></tr>';
+      }
+    }).catch(() => {
+      document.getElementById('recentPVBody').innerHTML = '<tr><td colspan="2" class="empty">Could not load</td></tr>';
+    });
+  }
+
+  window.clearAllAnalytics = async function() {
+    if (!confirm('Delete ALL analytics data?\n\nThis CANNOT be undone — all pageviews and events will be lost forever.')) return;
+    try {
+      await api('DELETE', '/api/analytics');
+      toast('Analytics data cleared.');
+      loadAnalyticsData();
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  /* ================================================================
+     SYSTEM DASHBOARD
+     ================================================================ */
+  function loadSystemHealth() {
+    api('GET', '/api/system/health').then(health => {
+      document.getElementById('healthStatus').textContent = '✓ ' + (health.status === 'ok' ? 'RUNNING' : 'UNKNOWN');
+      document.getElementById('healthUptime').textContent = health.uptime_hours + 'h ' + (health.uptime_minutes % 60) + 'm';
+      document.getElementById('healthMemory').textContent = health.memory.rss;
+      document.getElementById('healthHeap').textContent = health.memory.heap_used + ' / ' + health.memory.heap_total;
+      document.getElementById('healthTime').textContent = new Date(health.timestamp).toLocaleTimeString();
+    }).catch(e => {
+      console.error('Health check failed:', e);
+      document.getElementById('healthStatus').textContent = '✗ Error';
+    });
+  }
+
+  window.restartService = async function() {
+    if (!confirm('Restart the admin backend service?\n\nYou will be temporarily disconnected. The service will restart within 5 seconds.\n\nYour session will remain valid.')) return;
+    try {
+      await api('POST', '/api/system/restart');
+      toast('Restart signal sent. Service restarting…');
+      // Wait 6 seconds then try to reconnect
+      setTimeout(() => {
+        fetch('/admin/api/events', { headers: { Authorization: 'Bearer ' + TOKEN } })
+          .then(r => {
+            if (r.ok) {
+              toast('System back online!');
+              loadAll();
+            }
+          }).catch(() => {
+            setTimeout(() => { window.location.reload(); }, 2000);
+          });
+      }, 6000);
+    } catch (e) { toast('Error: ' + e.message); }
+  };
+
+  window.downloadBackup = async function() {
+    try {
+      const [events, content] = await Promise.all([
+        fetch('/admin/api/events', { headers: { Authorization: 'Bearer ' + TOKEN } }).then(r => r.json()),
+        fetch('/admin/api/content/site', { headers: { Authorization: 'Bearer ' + TOKEN } }).then(r => r.json()),
+      ]);
+      const backup = {
+        backup_timestamp: new Date().toISOString(),
+        events,
+        content,
+        version: '1.0.0',
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'fcpl-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Backup downloaded!');
+    } catch (e) { toast('Backup failed: ' + e.message); }
+  };
+
+  /* ================================================================
+     LOAD ALL DATA
+     ================================================================ */
+  function loadAll() {
+    loadEvents();
+    loadAnnouncements();
+    loadBranches();
+    loadHolidays();
+    loadPrograms();
+    loadResources();
+    loadSiteSettings();
+    loadStaff();
+    loadCalendars();
+    loadHostingInfo();
+    loadHomepageImages();
+    loadRecycleBin();
+    loadAnalyticsData();
+    loadSystemHealth();
+  }
+
+  /* ================================================================
+     ACTIVITY LOG
+     ================================================================ */
+  window.loadActivityLog = async function() {
+    const tbody = document.getElementById('auditBody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Loading…</td></tr>';
+    try {
+      const data = await api('GET', '/api/audit-log');
+      const entries = data.entries || [];
+      if (!entries.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">No activity recorded yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = entries.map(e => {
+        const d = new Date(e.ts);
+        const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        const action = esc(e.action || '');
+        const detail = esc(e.detail || '');
+        const ip     = esc(e.ip || 'unknown');
+        const rowStyle = e.action && e.action.startsWith('delete') ? 'background:#fff5f5' : '';
+        return `<tr style="${rowStyle}"><td style="white-space:nowrap;font-size:.8rem">${dateStr}</td><td style="font-family:monospace;font-size:.8rem">${ip}</td><td><strong>${action}</strong></td><td style="font-size:.85rem;color:var(--gray-600)">${detail}</td></tr>`;
+      }).join('');
+    } catch (e) { tbody.innerHTML = `<tr><td colspan="4" class="empty">Error: ${esc(e.message)}</td></tr>`; }
+  };
+
+  /* ================================================================
+     BACKUPS
+     ================================================================ */
+  window.loadBackups = async function() {
+    const tbody = document.getElementById('backupsBody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Loading…</td></tr>';
+    try {
+      const data = await api('GET', '/api/backups');
+      const bkps = data.backups || [];
+      if (!bkps.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">No backups yet. Backups are created automatically when data is changed.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = bkps.map(b => {
+        const d = new Date(b.mtime);
+        const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        const kb = Math.ceil(b.size / 1024);
+        return `<tr>
+          <td style="font-family:monospace;font-size:.8rem">${esc(b.name)}</td>
+          <td style="font-size:.8rem;white-space:nowrap">${dateStr}</td>
+          <td style="font-size:.8rem">${kb} KB</td>
+          <td><button class="btn btn-outline btn-sm" data-backup="${esc(b.name)}" onclick="restoreBackup(this.dataset.backup)">Restore</button></td>
+        </tr>`;
+      }).join('');
+    } catch (e) { tbody.innerHTML = `<tr><td colspan="4" class="empty">Error: ${esc(e.message)}</td></tr>`; }
+  };
+
+  window.restoreBackup = async function(filename) {
+    if (!confirm(`⚠️ Restore backup "${filename}"?\n\nThis will OVERWRITE the current live data with this backup. The current data will first be saved as a new backup.\n\nProceed?`)) return;
+    try {
+      await api('POST', '/api/backups/' + encodeURIComponent(filename) + '/restore');
+      toast('Backup restored! Reloading data…');
+      loadAll();
+      loadBackups();
+    } catch (e) { toast('Error restoring backup: ' + e.message); }
+  };
+
+  // Lazy-load activity log and backups when their tabs are clicked
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.dataset.tab === 'activitylog') btn.addEventListener('click', loadActivityLog, { once: false });
+    if (btn.dataset.tab === 'backups')     btn.addEventListener('click', loadBackups,     { once: false });
+  });
+
+})();
+</script>
+</body>
+</html>

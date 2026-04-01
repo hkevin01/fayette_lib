@@ -1,0 +1,16 @@
+# Secrets & credentials
+admin/.env
+docker/certs/key.pem
+docker/certs/cert.pem
+
+# Auto-generated data (populated at runtime)
+site/data/audit_log.json
+site/data/backups/
+
+# Dependencies
+admin/node_modules/
+node_modules/
+
+# Logs & temp
+*.log
+npm-debug.log*

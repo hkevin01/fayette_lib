@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FCPL Bookmobile — schedule, request a stop, and bookmobile services for Fayette County, WV.">
+  <title>Bookmobile | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="../images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+            <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link active" href="bookmobile.html" aria-current="page">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap" id="main">
+    <main>
+      <div class="page-heading">
+        <h1>📚 Bookmobile</h1>
+        <p>The library comes to you — serving schools and communities throughout Fayette County.</p>
+      </div>
+
+      <!-- Bookmobile Image -->
+      <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;box-shadow:var(--shadow)">
+        <img src="../images/bookmobile.png" alt="FCPL Bookmobile vehicle" style="width:100%;max-height:300px;object-fit:cover">
+      </div>
+
+      <!-- About -->
+      <div class="card">
+        <div class="card-header"><span class="icon">🚌</span> About the Bookmobile</div>
+        <div class="card-body">
+          <p>The Fayette County Public Library Bookmobile brings library services directly to you! Our bookmobile visits schools, community centers, and rural areas throughout the county that may not have easy access to a branch location.</p>
+          <h3 class="section-heading">Services Available on the Bookmobile</h3>
+          <ul class="checklist">
+            <li>Full library checkout — books, audiobooks, DVDs</li>
+            <li>New library card sign-up</li>
+            <li>Hold pickup for items requested at branches</li>
+            <li>Children's programming at school stops</li>
+            <li>Summer reading program participation</li>
+            <li>Material returns and renewals</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Schedule Calendar -->
+      <h2 class="section-heading">📅 Bookmobile Calendar</h2>
+      <div class="calendar-wrap">
+        <div class="cal-header">
+          <button class="cal-nav-btn" id="calPrev" aria-label="Previous month">&#8592;</button>
+          <h2 id="calMonthLabel"></h2>
+          <button class="cal-nav-btn" id="calNext" aria-label="Next month">&#8594;</button>
+        </div>
+        <div class="cal-legend" id="calLegend"></div>
+        <div class="cal-filter" id="calFilter"></div>
+        <div class="cal-view-tabs">
+          <button class="cal-view-btn active" data-view="month">Month</button>
+          <button class="cal-view-btn" data-view="list">List</button>
+        </div>
+        <div id="calContainer"></div>
+      </div>
+
+      <!-- Request a Stop -->
+      <div class="card" style="margin-top:1.5rem">
+        <div class="card-header"><span class="icon">📋</span> Request a Bookmobile Stop</div>
+        <div class="card-body">
+          <p style="margin-bottom:1rem">Does your school, community center, or neighborhood need a bookmobile visit? Submit a request and we'll do our best to accommodate you!</p>
+          <div class="info-box info">
+            <span class="ib-icon">📝</span>
+            <div>
+              To request a bookmobile stop, please contact us directly:<br><br>
+              📞 <a href="tel:+13044650121"><strong>304-465-0121</strong></a><br>
+              📍 531 Summit St, Oak Hill, WV 25901<br><br>
+              Our bookmobile coordinator will discuss scheduling options with you.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📞 Bookmobile Contact</div>
+        <div class="widget-body">
+          <p class="text-sm"><strong>Main Office</strong></p>
+          <p class="text-sm"><a href="tel:+13044650121">304-465-0121</a></p>
+          <p class="text-sm mt-1">531 Summit St<br>Oak Hill, WV 25901</p>
+          <p class="text-sm mt-1">Mon–Fri 9 AM – 5 PM</p>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">🏠 Can't Come to Us?</div>
+        <div class="widget-body">
+          <p class="text-sm" style="margin-bottom:.75rem">If you're unable to visit a branch or bookmobile stop due to a disability or health condition, you may qualify for our <strong>Homebound Delivery Program</strong>.</p>
+          <a href="homebound.html" class="btn btn-primary" style="width:100%;justify-content:center">Learn About Homebound →</a>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">📢 Announcements</div>
+        <div class="widget-body">
+          <div id="announcements" class="announcement-list"><p class="text-muted text-sm">Loading…</p></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div class="event-modal-overlay" id="eventModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="event-modal">
+      <div class="event-modal-header">
+        <h3 id="modalTitle"></h3>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="event-modal-body">
+        <div class="event-modal-meta">
+          <p><span id="modalDate"></span></p>
+          <p><span id="modalTime"></span></p>
+          <p><span id="modalLocation"></span></p>
+          <strong id="modalCat" style="font-size:.8rem;text-transform:uppercase"></strong>
+        </div>
+        <p class="event-modal-desc" id="modalDesc"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+          <a class="gcal-btn" id="gcalBtn" href="#" target="_blank" rel="noopener">📅 Add to Google Calendar</a>
+          <button class="ics-btn" id="icsDownloadBtn">⬇ Download .ics</button>
+            <button class="ics-btn" id="appleCalendarBtn" title="Import to Apple Calendar or iCloud">🍎 Apple Calendar</button>
+            <button class="ics-btn" id="outlookBtn" title="Add to Microsoft Outlook">📧 Outlook</button>
+            <button class="ics-btn" id="yahooBtn" title="Add to Yahoo Calendar">🔶 Yahoo Calendar</button>
+            <button class="ics-btn" id="iphoneBtn" title="Add to iPhone Calendar">📱 iPhone</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col"><img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85"><p>Fayette County Public Libraries</p><p><a href="tel:+13044650121">304-465-0121</a></p></div>
+      <div class="footer-col"><h3>Branches</h3><ul><li><a href="locations.html">Ansted</a></li><li><a href="locations.html">Fayetteville</a></li><li><a href="locations.html">Montgomery</a></li><li><a href="locations.html">Mt. Hope</a></li><li><a href="locations.html">Oak Hill</a></li></ul></div>
+      <div class="footer-col"><h3>Services</h3><ul><li><a href="ebooks.html">eBooks</a></li><li><a href="research.html">Research</a></li><li><a href="bookmobile.html">Bookmobile</a></li><li><a href="homebound.html">Homebound</a></li></ul></div>
+      <div class="footer-col"><h3>Info</h3><ul><li><a href="about.html">About</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="/">Home</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footerYear"></span> Fayette County Public Libraries</div>
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/calendar.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+</body>
+</html>

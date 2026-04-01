@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FCPL eBooks, audiobooks, and digital media — free with your library card.">
+  <title>eBooks &amp; Digital Media | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="../images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+            <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link active" href="ebooks.html" aria-current="page">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap" id="main">
+    <main>
+      <div class="page-heading">
+        <h1>eBooks &amp; Digital Media</h1>
+        <p>Thousands of free eBooks, audiobooks, movies, comic books, and more — all free with your FCPL library card.</p>
+      </div>
+
+      <div class="info-box success">
+        <span class="ib-icon">🆓</span>
+        <div><strong>All digital resources are completely FREE</strong> with a valid FCPL library card. No late fees for digital checkouts!</div>
+      </div>
+
+      <!-- Featured: Libby -->
+      <div class="feature-banner" style="border-color:var(--blue-100);background:linear-gradient(135deg,var(--blue-50),var(--white))">
+        <div class="feature-icon">📱</div>
+        <div>
+          <h2>Libby by OverDrive — Most Popular</h2>
+          <p>Thousands of eBooks and audiobooks available on any device — phone, tablet, Kindle, or computer. 
+             Borrow for 21 days with no late fees. Holds available for popular titles.</p>
+          <a href="https://libbyapp.com/" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;margin-top:.75rem">Get Libby Free →</a>
+        </div>
+      </div>
+
+      <!-- Featured: Hoopla -->
+      <div class="feature-banner" style="border-color:#fde68a;background:linear-gradient(135deg,var(--gold-100),var(--white))">
+        <div class="feature-icon">🎬</div>
+        <div>
+          <h2>Hoopla Digital — No Holds, Instant Access</h2>
+          <p>Stream or download movies, TV shows, music albums, comic books, graphic novels, and audiobooks — with 
+             <strong>no waiting and no holds</strong>. Borrow up to 10 titles per month.</p>
+          <a href="https://www.hoopladigital.com/" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;margin-top:.75rem;background:var(--gold-500)">Visit Hoopla →</a>
+        </div>
+      </div>
+
+      <!-- All Digital Resources -->
+      <h2 class="section-heading">📚 All Digital Services</h2>
+      <div class="resource-grid" id="resourceGrid">
+        <!-- filled by JS from content.json, plus static fallback below -->
+        <a class="resource-card" href="https://libbyapp.com/" target="_blank" rel="noopener">
+          <h3>📱 Libby (OverDrive)</h3>
+          <p>eBooks and audiobooks. 21-day checkout, Kindle compatible, no late fees.</p>
+          <span>Get Libby →</span>
+        </a>
+        <a class="resource-card" href="https://www.hoopladigital.com/" target="_blank" rel="noopener">
+          <h3>🎬 Hoopla Digital</h3>
+          <p>Movies, music, comics, audiobooks — no holds, instant access, 10 borrows/month.</p>
+          <span>Visit Hoopla →</span>
+        </a>
+        <a class="resource-card" href="https://www.wowbrary.org/nu.aspx?p=WV_FCPL" target="_blank" rel="noopener">
+          <h3>📰 Wowbrary New Arrivals</h3>
+          <p>Subscribe to weekly alerts about new books and materials at FCPL.</p>
+          <span>Subscribe →</span>
+        </a>
+        <a class="resource-card" href="https://www.tumblebooklibrary.com/" target="_blank" rel="noopener">
+          <h3>🎒 TumbleBooks (Kids)</h3>
+          <p>Animated talking books, read-alouds, and literacy games for children.</p>
+          <span>Read Now →</span>
+        </a>
+        <a class="resource-card" href="https://www.tumblemathbooks.com/" target="_blank" rel="noopener">
+          <h3>🔢 TumbleMath (Kids)</h3>
+          <p>Math picture books with interactive activities for young learners.</p>
+          <span>Explore →</span>
+        </a>
+        <a class="resource-card" href="https://app.librarychef.com/" target="_blank" rel="noopener">
+          <h3>👩‍🍳 Library Chef</h3>
+          <p>Build your personal digital cookbook. Thousands of professional recipes.</p>
+          <span>Start Cooking →</span>
+        </a>
+      </div>
+
+      <!-- How to Get Started -->
+      <div class="card" style="margin-top:1.5rem">
+        <div class="card-header"><span class="icon">🚀</span> How to Get Started</div>
+        <div class="card-body">
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:.75rem">
+            <li style="font-size:.9rem"><strong>Get your library card</strong> — Visit any FCPL branch with proof of Fayette County residency. Cards are free!</li>
+            <li style="font-size:.9rem"><strong>Download the app</strong> — Get the Libby app from your device's app store (iOS or Android), or access Hoopla on the web.</li>
+            <li style="font-size:.9rem"><strong>Sign in with your library card</strong> — Search for "Fayette County Public Libraries" and enter your card number and PIN.</li>
+            <li style="font-size:.9rem"><strong>Browse and borrow</strong> — Find a title you like and check it out instantly!</li>
+          </ol>
+          <div class="info-box info mt-2">
+            <span class="ib-icon">❓</span>
+            <div>Need help setting up digital access? Visit any branch and staff will walk you through it — or call <a href="tel:+13044650121">304-465-0121</a>.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📱 Get Started Now</div>
+        <div class="widget-body">
+          <a class="sidebar-link" href="https://libbyapp.com/" target="_blank" rel="noopener"><span class="sl-icon">📚</span>Download Libby App</a>
+          <a class="sidebar-link" href="https://www.hoopladigital.com/" target="_blank" rel="noopener"><span class="sl-icon">🎬</span>Visit Hoopla</a>
+          <a class="sidebar-link" href="https://app.librarychef.com/" target="_blank" rel="noopener"><span class="sl-icon">👩‍🍳</span>Library Chef</a>
+          <a class="sidebar-link" href="https://www.wowbrary.org/nu.aspx?p=WV_FCPL" target="_blank" rel="noopener"><span class="sl-icon">📰</span>New Arrivals Alert</a>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">🔑 Need a Card?</div>
+        <div class="widget-body">
+          <p class="text-sm" style="margin-bottom:.75rem">Get a free library card at any FCPL branch with proof of county residency.</p>
+          <a href="locations.html" class="btn btn-primary" style="width:100%;justify-content:center">Find a Branch →</a>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">📢 Announcements</div>
+        <div class="widget-body">
+          <div id="announcements" class="announcement-list"><p class="text-muted text-sm">Loading…</p></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col"><img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85"><p>Fayette County Public Libraries</p><p><a href="tel:+13044650121">304-465-0121</a></p></div>
+      <div class="footer-col"><h3>Branches</h3><ul><li><a href="locations.html">Ansted</a></li><li><a href="locations.html">Fayetteville</a></li><li><a href="locations.html">Montgomery</a></li><li><a href="locations.html">Mt. Hope</a></li><li><a href="locations.html">Oak Hill</a></li></ul></div>
+      <div class="footer-col"><h3>Services</h3><ul><li><a href="ebooks.html">eBooks</a></li><li><a href="research.html">Research</a></li><li><a href="bookmobile.html">Bookmobile</a></li><li><a href="homebound.html">Homebound</a></li></ul></div>
+      <div class="footer-col"><h3>Info</h3><ul><li><a href="about.html">About</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="/">Home</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footerYear"></span> Fayette County Public Libraries</div>
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FCPL Programs and Events — storytimes, book clubs, Library Chef, and more.">
+  <title>Programs &amp; Events | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="../images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+            <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link active" href="programs.html" aria-current="page">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap" id="main">
+    <main>
+      <div class="page-heading">
+        <h1>Programs &amp; Events</h1>
+        <p>Free programs for all ages — children, teens, and adults.</p>
+      </div>
+
+      <!-- Library Chef Feature -->
+      <div class="feature-banner">
+        <div class="feature-icon">👩‍🍳</div>
+        <div>
+          <h2>New! Library Chef</h2>
+          <p>Build your personal digital cookbook with access to thousands of recipes from top chefs. Library Chef is a new platform available FREE to all FCPL cardholders. Create shopping lists, meal plans, and save your favorites.</p>
+          <p class="mt-1"><a href="https://app.librarychef.com/" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;margin-top:.5rem">Visit Library Chef →</a></p>
+        </div>
+      </div>
+
+      <!-- Program Tabs -->
+      <p class="tab-hint" aria-hidden="true">👇 Click a tab below to see programs</p>
+      <div class="program-tabs" role="tablist">
+        <button class="prog-tab active" data-prog="children" role="tab">👧 Children</button>
+        <button class="prog-tab" data-prog="adults" role="tab">📖 Adults</button>
+        <button class="prog-tab" data-prog="teens" role="tab">🧑 Teens</button>
+        <button class="prog-tab" data-prog="community" role="tab">🏘️ Community</button>
+      </div>
+
+      <!-- Children Panel -->
+      <div class="prog-panel active" id="prog-children" role="tabpanel">
+        <h2 class="section-heading">📚 Story Times</h2>
+        <p class="text-sm text-muted" style="margin-bottom:1rem">Storytimes are free and open to all children. No registration required unless noted.</p>
+        <table class="program-table" style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+          <thead>
+            <tr><th>Branch</th><th>Day</th><th>Time</th><th>Age Group</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Fayetteville</strong></td><td>Tuesday</td><td>10:00 AM</td><td>All ages</td></tr>
+            <tr><td><strong>Oak Hill</strong></td><td>Tuesday</td><td>10:30 AM</td><td>All ages</td></tr>
+            <tr><td><strong>Montgomery</strong></td><td>Wednesday</td><td>10:00 AM</td><td>All ages</td></tr>
+            <tr><td><strong>Ansted</strong></td><td>Thursday</td><td>10:00 AM</td><td>All ages</td></tr>
+            <tr><td><strong>Mt. Hope</strong></td><td>Thursday</td><td>10:30 AM</td><td>All ages</td></tr>
+          </tbody>
+        </table>
+
+        <h2 class="section-heading">👶 Baby Lapsit</h2>
+        <p class="text-sm text-muted" style="margin-bottom:1rem">Baby lapsit is a gentle, nurturing program for babies and their caregivers — songs, rhymes, and lap play.</p>
+        <table class="program-table" style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+          <thead>
+            <tr><th>Branch</th><th>Day</th><th>Time</th><th>Age Group</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Fayetteville</strong></td><td>Tuesday</td><td>9:30 AM</td><td>Babies 0–18 months</td></tr>
+            <tr><td><strong>Oak Hill</strong></td><td>Tuesday</td><td>9:30 AM</td><td>Babies 0–18 months</td></tr>
+            <tr><td><strong>Montgomery</strong></td><td>Wednesday</td><td>9:30 AM</td><td>Babies 0–18 months</td></tr>
+          </tbody>
+        </table>
+
+        <div class="info-box success mt-2">
+          <span class="ib-icon">🌳</span>
+          <div><strong>White Oak Story Trail:</strong> An outdoor storytime experience along the White Oak nature trail. Visit the library for the current featured book and trail map.</div>
+        </div>
+      </div>
+
+      <!-- Adults Panel -->
+      <div class="prog-panel" id="prog-adults" role="tabpanel">
+        <h2 class="section-heading">📖 Adult Book Club</h2>
+        <div class="card">
+          <div class="card-body">
+            <div class="feature-banner" style="background:var(--blue-50);border-color:var(--blue-100)">
+              <div class="feature-icon">📚</div>
+              <div>
+                <h2>FCPL Adult Book Club</h2>
+                <p><strong>Location:</strong> Oak Hill Branch, 531 Summit St, Oak Hill, WV</p>
+                <p><strong>Schedule:</strong> Monthly — check the calendar for exact dates.</p>
+                <p style="margin-top:.5rem">Love to read? Join your neighbors for monthly discussions of great books. All genres welcome. New members always welcome!</p>
+              </div>
+            </div>
+            <p>To find out the current title and next meeting date, call <a href="tel:+13044650121">304-465-0121</a> or visit the Oak Hill Branch. Copies of the current selection are available at the library.</p>
+          </div>
+        </div>
+
+        <h2 class="section-heading">👩‍🍳 Library Chef</h2>
+        <div class="card">
+          <div class="card-body">
+            <p>Library Chef gives you access to thousands of professionally developed recipes. Build a personal digital cookbook, create meal plans, and generate shopping lists — all free with your FCPL card.</p>
+            <a href="https://app.librarychef.com/" target="_blank" rel="noopener" class="btn btn-primary mt-2">Access Library Chef →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teens Panel -->
+      <div class="prog-panel" id="prog-teens" role="tabpanel">
+        <div class="card">
+          <div class="card-body">
+            <div class="info-box info">
+              <span class="ib-icon">🧑</span>
+              <div>
+                <strong>Teen Programs Coming Soon!</strong><br>
+                FCPL is developing programming specifically for teens. Contact your local branch to express interest or suggest ideas. Your input shapes our programs!
+              </div>
+            </div>
+            <p class="mt-2">In the meantime, teens are always welcome at all library programs, and can access:</p>
+            <ul class="checklist mt-1">
+              <li>Free computer and internet access</li>
+              <li>Homework help from staff</li>
+              <li>TutorWV — free online tutoring service</li>
+              <li>eBooks, graphic novels, and audiobooks via Libby &amp; Hoopla</li>
+              <li>All research databases through <a href="research.html">Research &amp; Homework</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Panel -->
+      <div class="prog-panel" id="prog-community" role="tabpanel">
+        <div class="card">
+          <div class="card-header">🏘️ Community Programs &amp; Events</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">FCPL hosts and participates in community events throughout the year. Check the calendar for upcoming events.</p>
+            <ul class="checklist">
+              <li>Annual Book Sale — gently used books at bargain prices</li>
+              <li>Holiday events and special programs</li>
+              <li>Community meeting room available for local groups</li>
+              <li>Voter registration assistance at all branches</li>
+              <li>Genealogy research assistance</li>
+            </ul>
+            <div class="info-box warning mt-2">
+              <span class="ib-icon">📢</span>
+              <div>Have a community event to announce? Contact us at <a href="tel:+13044650121">304-465-0121</a> to discuss posting on our announcements board.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Calendar -->
+      <h2 class="section-heading mt-3">📅 Events Calendar</h2>
+      <div class="calendar-wrap">
+        <div class="cal-header">
+          <button class="cal-nav-btn" id="calPrev" aria-label="Previous month">&#8592;</button>
+          <h2 id="calMonthLabel"></h2>
+          <button class="cal-nav-btn" id="calNext" aria-label="Next month">&#8594;</button>
+        </div>
+        <div class="cal-legend" id="calLegend"></div>
+        <div class="cal-filter" id="calFilter"></div>
+        <div class="cal-view-tabs">
+          <button class="cal-view-btn active" data-view="month">Month</button>
+          <button class="cal-view-btn" data-view="list">List</button>
+        </div>
+        <div id="calContainer"></div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <div class="widget-title">📢 Announcements</div>
+        <div class="widget-body">
+          <div id="announcements" class="announcement-list">
+            <p class="text-muted text-sm">Loading…</p>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">🔗 Quick Links</div>
+        <div class="widget-body" id="sidebarLinks"></div>
+      </div>
+      <div class="sidebar-widget">
+        <div class="widget-title">📞 Contact</div>
+        <div class="widget-body">
+          <p class="text-sm"><strong>Main Line:</strong> <a href="tel:+13044650121">304-465-0121</a></p>
+          <p class="text-sm mt-1"><strong>Hours:</strong> Mon–Fri 9 AM – 5 PM</p>
+          <p class="text-sm mt-1">Contact your local branch to register for programs or ask about upcoming events.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div class="event-modal-overlay" id="eventModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="event-modal">
+      <div class="event-modal-header">
+        <h3 id="modalTitle"></h3>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="event-modal-body">
+        <div class="event-modal-meta">
+          <p><span id="modalDate"></span></p>
+          <p><span id="modalTime"></span></p>
+          <p><span id="modalLocation"></span></p>
+          <strong id="modalCat" style="font-size:.8rem;text-transform:uppercase"></strong>
+        </div>
+        <p class="event-modal-desc" id="modalDesc"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+          <a class="gcal-btn" id="gcalBtn" href="#" target="_blank" rel="noopener">📅 Add to Google Calendar</a>
+          <button class="ics-btn" id="icsDownloadBtn">⬇ Download .ics</button>
+          <button class="ics-btn" id="appleCalendarBtn" title="Import to Apple Calendar or iCloud">🍎 Apple Calendar</button>
+          <button class="ics-btn" id="outlookBtn" title="Add to Microsoft Outlook">📧 Outlook</button>
+          <button class="ics-btn" id="yahooBtn" title="Add to Yahoo Calendar">🔶 Yahoo Calendar</button>
+          <button class="ics-btn" id="iphoneBtn" title="Add to iPhone Calendar">📱 iPhone</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col"><img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85"><p>Fayette County Public Libraries</p><p><a href="tel:+13044650121">304-465-0121</a></p></div>
+      <div class="footer-col"><h3>Branches</h3><ul><li><a href="locations.html">Ansted</a></li><li><a href="locations.html">Fayetteville</a></li><li><a href="locations.html">Montgomery</a></li><li><a href="locations.html">Mt. Hope</a></li><li><a href="locations.html">Oak Hill</a></li></ul></div>
+      <div class="footer-col"><h3>Services</h3><ul><li><a href="ebooks.html">eBooks</a></li><li><a href="research.html">Research</a></li><li><a href="bookmobile.html">Bookmobile</a></li><li><a href="homebound.html">Homebound</a></li></ul></div>
+      <div class="footer-col"><h3>Info</h3><ul><li><a href="about.html">About</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="/">Home</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footerYear"></span> Fayette County Public Libraries · 531 Summit St, Oak Hill, WV 25901</div>
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/calendar.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+</body>
+</html>

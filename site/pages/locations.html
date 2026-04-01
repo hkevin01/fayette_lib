@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FCPL Branch Locations — hours, addresses, and contact info for all 5 Fayette County library branches.">
+  <title>Locations | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    .lf-map { height:280px; width:100%; display:block; border-radius:var(--radius,8px); overflow:hidden; background:var(--gray-100,#f3f4f6); margin-bottom:.4rem; }
+    .branch-map-ctl { display:flex; gap:.35rem; margin-bottom:.4rem; flex-wrap:wrap; }
+    .lf-ctl-btn { background:#fff; border:1px solid #d1d5db; border-radius:6px; padding:.28rem .65rem; font-size:.8rem; cursor:pointer; line-height:1.5; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+    .lf-ctl-btn:hover { background:#eff6ff; border-color:#93c5fd; }
+    .lf-ctl-btn.active-layer { background:#1e3a5f; color:#fff; border-color:#1e3a5f; }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="../images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+            <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link active" href="locations.html" aria-current="page">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap full-width" id="main">
+    <main>
+      <div class="page-heading">
+        <h1>Branch Locations</h1>
+        <p>Five branches serving all of Fayette County, West Virginia.</p>
+      </div>
+
+      <div class="hours-bar" id="hoursBar">
+        <span class="open-badge">Hours</span>
+        <p>Loading today's hours…</p>
+      </div>
+
+      <!-- Branch Tabs -->
+      <p class="tab-hint" aria-hidden="true">👇 Click a branch name below to see its hours, address and map</p>
+      <div class="branch-tabs" role="tablist" id="branchTabs">
+        <button class="branch-tab active" data-branch="oakhill" role="tab">🏛️ Oak Hill</button>
+        <button class="branch-tab" data-branch="fayetteville" role="tab">📚 Fayetteville</button>
+        <button class="branch-tab" data-branch="montgomery" role="tab">📖 Montgomery</button>
+        <button class="branch-tab" data-branch="mthope" role="tab">📗 Mt. Hope</button>
+        <button class="branch-tab" data-branch="ansted" role="tab">📘 Ansted</button>
+      </div>
+
+      <!-- Oak Hill -->
+      <div class="branch-panel active" id="branch-oakhill" role="tabpanel">
+        <div class="branch-info">
+          <h2>🏛️ Oak Hill Branch (Main Branch)</h2>
+          <div class="branch-detail"><span class="det-icon">📍</span><p>531 Summit St, Oak Hill, WV 25901</p></div>
+          <div class="branch-detail"><span class="det-icon">📞</span><p><a href="tel:+13044650121" class="phone-cta">304-465-0121 — Tap to Call</a></p></div>
+          <div class="branch-detail"><span class="det-icon">✉️</span><p>Also serves as the Administrative Office &amp; Bookmobile base</p></div>
+          <h3 style="margin-top:1rem;margin-bottom:.5rem;font-size:.9rem;color:var(--gray-700)">Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Tuesday</td><td>9:00 AM – 5:00 PM (Storytime 10:30 AM)</td></tr>
+            <tr><td>Wednesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Thursday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Friday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>Closed</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="branch-map-ctl">
+            <button class="lf-ctl-btn active-layer" data-branch="oakhill" data-action="street">🗺 Street</button>
+            <button class="lf-ctl-btn" data-branch="oakhill" data-action="satellite">🛰 Satellite</button>
+            <button class="lf-ctl-btn" data-branch="oakhill" data-action="locate">📍 My Location</button>
+          </div>
+          <div id="map-oakhill" class="lf-map"></div>
+          <div class="info-box info mt-2">
+            <span class="ib-icon">🚌</span>
+            <div>The main administrative office and Bookmobile dispatch are located here. Adult Book Club meets at this branch monthly.</div>
+          </div>
+          <a href="https://maps.google.com/?q=531+Summit+St+Oak+Hill+WV+25901" target="_blank" rel="noopener" class="btn btn-primary mt-2">Get Directions →</a>
+        </div>
+      </div>
+
+      <!-- Fayetteville -->
+      <div class="branch-panel" id="branch-fayetteville" role="tabpanel">
+        <div class="branch-info">
+          <h2>📚 Fayetteville Branch</h2>
+          <div class="branch-detail"><span class="det-icon">📍</span><p>401 N Court St, Fayetteville, WV 25840</p></div>
+          <div class="branch-detail"><span class="det-icon">📞</span><p><a href="tel:+13045744514" class="phone-cta">304-574-4514 — Tap to Call</a></p></div>
+          <h3 style="margin-top:1rem;margin-bottom:.5rem;font-size:.9rem;color:var(--gray-700)">Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Tuesday</td><td>9:00 AM – 5:00 PM (Lapsit 9:30 AM, Storytime 10:00 AM)</td></tr>
+            <tr><td>Wednesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Thursday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Friday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>Closed</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="branch-map-ctl">
+            <button class="lf-ctl-btn active-layer" data-branch="fayetteville" data-action="street">🗺 Street</button>
+            <button class="lf-ctl-btn" data-branch="fayetteville" data-action="satellite">🛰 Satellite</button>
+            <button class="lf-ctl-btn" data-branch="fayetteville" data-action="locate">📍 My Location</button>
+          </div>
+          <div id="map-fayetteville" class="lf-map"></div>
+          <div class="info-box info mt-2">
+            <span class="ib-icon">👶</span>
+            <div>Weekly Baby Lapsit (Tuesdays 9:30 AM) and Storytime (Tuesdays 10:00 AM) for young children.</div>
+          </div>
+          <a href="https://maps.google.com/?q=401+N+Court+St+Fayetteville+WV+25840" target="_blank" rel="noopener" class="btn btn-primary mt-2">Get Directions →</a>
+        </div>
+      </div>
+
+      <!-- Montgomery -->
+      <div class="branch-panel" id="branch-montgomery" role="tabpanel">
+        <div class="branch-info">
+          <h2>📖 Montgomery Branch</h2>
+          <div class="branch-detail"><span class="det-icon">📍</span><p>1009 Second Ave, Montgomery, WV 25136</p></div>
+          <div class="branch-detail"><span class="det-icon">📞</span><p><a href="tel:+13044425544" class="phone-cta">304-442-5544 — Tap to Call</a></p></div>
+          <h3 style="margin-top:1rem;margin-bottom:.5rem;font-size:.9rem;color:var(--gray-700)">Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Tuesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Wednesday</td><td>9:00 AM – 5:00 PM (Lapsit 9:30 AM, Storytime 10:00 AM)</td></tr>
+            <tr><td>Thursday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Friday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>Closed</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="branch-map-ctl">
+            <button class="lf-ctl-btn active-layer" data-branch="montgomery" data-action="street">🗺 Street</button>
+            <button class="lf-ctl-btn" data-branch="montgomery" data-action="satellite">🛰 Satellite</button>
+            <button class="lf-ctl-btn" data-branch="montgomery" data-action="locate">📍 My Location</button>
+          </div>
+          <div id="map-montgomery" class="lf-map"></div>
+          <div class="info-box info mt-2">
+            <span class="ib-icon">👶</span>
+            <div>Weekly Baby Lapsit (Wednesdays 9:30 AM) and Storytime (Wednesdays 10:00 AM).</div>
+          </div>
+          <a href="https://maps.google.com/?q=1009+Second+Ave+Montgomery+WV+25136" target="_blank" rel="noopener" class="btn btn-primary mt-2">Get Directions →</a>
+        </div>
+      </div>
+
+      <!-- Mt. Hope -->
+      <div class="branch-panel" id="branch-mthope" role="tabpanel">
+        <div class="branch-info">
+          <h2>📗 Mt. Hope Branch</h2>
+          <div class="branch-detail"><span class="det-icon">📍</span><p>16 Center St, Mt. Hope, WV 25880</p></div>
+          <div class="branch-detail"><span class="det-icon">📞</span><p><a href="tel:+13048776144" class="phone-cta">304-877-6144 — Tap to Call</a></p></div>
+          <h3 style="margin-top:1rem;margin-bottom:.5rem;font-size:.9rem;color:var(--gray-700)">Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Tuesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Wednesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Thursday</td><td>9:00 AM – 5:00 PM (Storytime 10:30 AM)</td></tr>
+            <tr><td>Friday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>Closed</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="branch-map-ctl">
+            <button class="lf-ctl-btn active-layer" data-branch="mthope" data-action="street">🗺 Street</button>
+            <button class="lf-ctl-btn" data-branch="mthope" data-action="satellite">🛰 Satellite</button>
+            <button class="lf-ctl-btn" data-branch="mthope" data-action="locate">📍 My Location</button>
+          </div>
+          <div id="map-mthope" class="lf-map"></div>
+          <a href="https://maps.google.com/?q=16+Center+St+Mt+Hope+WV+25880" target="_blank" rel="noopener" class="btn btn-primary mt-2">Get Directions →</a>
+        </div>
+      </div>
+
+      <!-- Ansted -->
+      <div class="branch-panel" id="branch-ansted" role="tabpanel">
+        <div class="branch-info">
+          <h2>📘 Ansted Branch</h2>
+          <div class="branch-detail"><span class="det-icon">📍</span><p>150 Main St, Ansted, WV 25812</p></div>
+          <div class="branch-detail"><span class="det-icon">📞</span><p><a href="tel:+13046585731" class="phone-cta">304-658-5731 — Tap to Call</a></p></div>
+          <h3 style="margin-top:1rem;margin-bottom:.5rem;font-size:.9rem;color:var(--gray-700)">Hours</h3>
+          <table class="hours-table">
+            <tr><td>Monday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Tuesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Wednesday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Thursday</td><td>9:00 AM – 5:00 PM (Storytime 10:00 AM)</td></tr>
+            <tr><td>Friday</td><td>9:00 AM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>Closed</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="branch-map-ctl">
+            <button class="lf-ctl-btn active-layer" data-branch="ansted" data-action="street">🗺 Street</button>
+            <button class="lf-ctl-btn" data-branch="ansted" data-action="satellite">🛰 Satellite</button>
+            <button class="lf-ctl-btn" data-branch="ansted" data-action="locate">📍 My Location</button>
+          </div>
+          <div id="map-ansted" class="lf-map"></div>
+          </div>
+          <a href="https://maps.google.com/?q=150+Main+St+Ansted+WV+25812" target="_blank" rel="noopener" class="btn btn-primary mt-2">Get Directions →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col"><img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85"><p>Fayette County Public Libraries</p><p><a href="tel:+13044650121">304-465-0121</a></p></div>
+      <div class="footer-col"><h3>Branches</h3><ul><li><a href="locations.html#ansted">Ansted</a></li><li><a href="locations.html#fayetteville">Fayetteville</a></li><li><a href="locations.html#montgomery">Montgomery</a></li><li><a href="locations.html#mthope">Mt. Hope</a></li><li><a href="locations.html#oakhill">Oak Hill</a></li></ul></div>
+      <div class="footer-col"><h3>Services</h3><ul><li><a href="ebooks.html">eBooks</a></li><li><a href="research.html">Research</a></li><li><a href="bookmobile.html">Bookmobile</a></li><li><a href="homebound.html">Homebound</a></li></ul></div>
+      <div class="footer-col"><h3>Info</h3><ul><li><a href="about.html">About</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="/">Home</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="footerYear"></span> Fayette County Public Libraries</div>
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+  (function () {
+    'use strict';
+    // Verified coordinates: Fayetteville fixed from wrong 37.8472,-81.1022 → correct 38.0596,-81.1063
+    var BRANCHES = {
+      oakhill:      { lat: 37.9728, lng: -81.1322, zoom: 16, label: 'Oak Hill Branch (Main)' },
+      fayetteville: { lat: 38.0596, lng: -81.1063, zoom: 16, label: 'Fayetteville Branch' },
+      montgomery:   { lat: 38.1772, lng: -81.3222, zoom: 16, label: 'Montgomery Branch' },
+      mthope:       { lat: 37.8872, lng: -81.1122, zoom: 16, label: 'Mt. Hope Branch' },
+      ansted:       { lat: 38.1296, lng: -81.1090, zoom: 16, label: 'Ansted Branch' }
+    };
+    var lMaps = {};
+
+    function initMap(id) {
+      if (lMaps[id]) { lMaps[id].map.invalidateSize(); return; }
+      var cfg = BRANCHES[id];
+      if (!cfg) return;
+      var el = document.getElementById('map-' + id);
+      if (!el) return;
+
+      var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+      var satLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      });
+
+      var map = L.map(el, { layers: [streetLayer] }).setView([cfg.lat, cfg.lng], cfg.zoom);
+      L.marker([cfg.lat, cfg.lng]).addTo(map)
+        .bindPopup('<strong>' + cfg.label + '</strong>').openPopup();
+
+      lMaps[id] = { map: map, streetLayer: streetLayer, satLayer: satLayer, isSat: false, locMarker: null };
+
+      // Wire the Street / Satellite / My Location buttons for this branch
+      document.querySelectorAll('[data-branch="' + id + '"][data-action]').forEach(function (btn) {
+        btn.addEventListener('click', function () { handleAction(id, btn.dataset.action); });
+      });
+    }
+
+    function handleAction(id, action) {
+      var m = lMaps[id];
+      if (!m) return;
+      if (action === 'street' && m.isSat) {
+        m.map.removeLayer(m.satLayer);
+        m.streetLayer.addTo(m.map);
+        m.isSat = false;
+        setActiveLayer(id, 'street');
+      } else if (action === 'satellite' && !m.isSat) {
+        m.map.removeLayer(m.streetLayer);
+        m.satLayer.addTo(m.map);
+        m.isSat = true;
+        setActiveLayer(id, 'satellite');
+      } else if (action === 'locate') {
+        m.map.locate({ setView: true, maxZoom: 16 });
+        m.map.once('locationfound', function (e) {
+          if (m.locMarker) m.map.removeLayer(m.locMarker);
+          m.locMarker = L.circleMarker(e.latlng, {
+            radius: 9, color: '#1a73e8', fillColor: '#4fa3f7', fillOpacity: 0.85, weight: 2
+          }).addTo(m.map).bindPopup('You are here').openPopup();
+        });
+        m.map.once('locationerror', function () {
+          alert('Could not detect your location. Please allow location access in your browser.');
+        });
+      }
+    }
+
+    function setActiveLayer(id, action) {
+      document.querySelectorAll('[data-branch="' + id + '"][data-action="street"],[data-branch="' + id + '"][data-action="satellite"]')
+        .forEach(function (b) { b.classList.toggle('active-layer', b.dataset.action === action); });
+    }
+
+    // MutationObserver: lazy-init map when a branch panel becomes visible
+    var observer = new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          var el = m.target;
+          if (el.classList.contains('active') && el.id && el.id.startsWith('branch-')) {
+            var id = el.id.replace('branch-', '');
+            requestAnimationFrame(function () { initMap(id); });
+          }
+        }
+      });
+    });
+    document.querySelectorAll('.branch-panel').forEach(function (p) {
+      observer.observe(p, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    // Init whichever branch is already active on page load
+    var active = document.querySelector('.branch-panel.active');
+    if (active) {
+      var initId = active.id.replace('branch-', '');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { initMap(initId); }); });
+    }
+  })();
+  </script>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+</body>
+</html>

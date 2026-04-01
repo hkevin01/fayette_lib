@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Fayette County Public Libraries — mission, services, board, and policies.">
+  <title>About Us | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/"><img src="../images/logo.png" alt="FCPL Logo" width="120"></a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+            <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link active" href="about.html" aria-current="page">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link" href="archives.html">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap full-width" id="main">
+    <main>
+      <div class="page-heading">
+        <h1>About Fayette County Public Libraries</h1>
+        <p>Serving the communities of Fayette County, West Virginia since 1935.</p>
+      </div>
+
+      <!-- Mission -->
+      <div class="card">
+        <div class="card-header"><span class="icon">🌟</span> Our Mission</div>
+        <div class="card-body">
+          <p>The mission of Fayette County Public Libraries is to provide free access to information, education, culture, and recreation for all residents of Fayette County. We are committed to intellectual freedom, lifelong learning, and serving as a welcoming community space for everyone.</p>
+        </div>
+      </div>
+
+      <!-- Service Tabs -->
+      <div class="program-tabs" role="tablist">
+        <button class="prog-tab active" data-prog="services" role="tab" aria-selected="true">Library Services</button>
+        <button class="prog-tab" data-prog="policy" role="tab" aria-selected="false">Patron Policy</button>
+        <button class="prog-tab" data-prog="faq" role="tab" aria-selected="false" id="faq">FAQ</button>
+        <button class="prog-tab" data-prog="board" role="tab" aria-selected="false" id="board">Board of Directors</button>
+      </div>
+
+      <!-- Services Panel -->
+      <div class="prog-panel active" id="prog-services" role="tabpanel">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
+          <div class="card">
+            <div class="card-header">✅ Free Services</div>
+            <div class="card-body">
+              <ul class="checklist">
+                <li>Book, magazine, and audiobook circulation</li>
+                <li>eBooks &amp; digital media via Libby / Hoopla</li>
+                <li>Computer and internet access</li>
+                <li>Fax service (local &amp; long distance)</li>
+                <li>Notary Public</li>
+                <li>Voter registration assistance</li>
+                <li>Children's programs &amp; storytimes</li>
+                <li>Adult programming and book clubs</li>
+                <li>Research and homework help</li>
+                <li>Bookmobile home delivery for qualifying patrons</li>
+                <li>Homebound delivery service</li>
+                <li>Genealogy research assistance</li>
+                <li>Community meeting room use (by reservation)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">💲 Fee-Based Services</div>
+            <div class="card-body">
+              <ul class="checklist">
+                <li>Photocopies — $0.15 / page (black &amp; white)</li>
+                <li>Color copies — $0.25 / page</li>
+                <li>Printing from computer — $0.15 / page</li>
+                <li>Laminating service</li>
+                <li>Lost card replacement — $1.00</li>
+                <li>Overdue fines (per library policy)</li>
+              </ul>
+              <div class="info-box info mt-2">
+                <span class="ib-icon">💻</span>
+                <div><strong>Computer Access:</strong> Free internet access available at all branches. Printing is $0.15/page. Session time limits may apply during peak hours.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="info-box warning mt-2">
+          <span class="ib-icon">📋</span>
+          <div>
+            <strong>Library Policies:</strong> Full patron policy, by-laws, and brochures are available at any branch location. Ask staff for printed copies.
+          </div>
+        </div>
+      </div>
+
+      <!-- Patron Policy Panel -->
+      <div class="prog-panel" id="prog-policy" role="tabpanel">
+        <div class="card">
+          <div class="card-header">📋 Patron Policy Summary</div>
+          <div class="card-body">
+            <h3 class="section-heading">Library Card Eligibility</h3>
+            <p>Any resident of Fayette County, WV is eligible for a free library card. Proof of county residency is required. Non-residents may obtain a card for an annual fee.</p>
+            <h3 class="section-heading">Borrowing Periods</h3>
+            <table class="program-table">
+              <thead><tr><th>Material</th><th>Loan Period</th><th>Renewals</th></tr></thead>
+              <tbody>
+                <tr><td>Books (Adult/Children)</td><td>3 weeks</td><td>2</td></tr>
+                <tr><td>Magazines</td><td>1 week</td><td>None</td></tr>
+                <tr><td>DVDs / Videos</td><td>1 week</td><td>1</td></tr>
+                <tr><td>Audiobooks</td><td>3 weeks</td><td>2</td></tr>
+                <tr><td>eBooks (Libby)</td><td>21 days</td><td>Per OverDrive policy</td></tr>
+              </tbody>
+            </table>
+            <h3 class="section-heading">Overdue Fines</h3>
+            <p>Fines accrue for overdue materials. Lost or damaged items are charged at replacement cost plus a processing fee. Accounts with balances over $10.00 are suspended until resolved.</p>
+            <h3 class="section-heading">Computer Use Policy</h3>
+            <p>Computers are available for patron use during library hours. Sessions are typically 60 minutes per patron. Use of library computers for illegal activities is prohibited and will result in loss of privileges and potential legal action.</p>
+            <div class="info-box info mt-2">
+              <span class="ib-icon">📄</span>
+              <div>Full policy documents and by-laws are available at each branch or by request. Contact us at <a href="tel:+13044650121">304-465-0121</a>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Panel -->
+      <div class="prog-panel" id="prog-faq" role="tabpanel">
+        <div class="card">
+          <div class="card-header">❓ Frequently Asked Questions</div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:1.25rem">
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">How do I get a library card?</h3>
+                <p>Visit any FCPL branch with proof of Fayette County residency (driver's license, utility bill, etc.). Cards are free for county residents.</p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">Can I use computers at the library?</h3>
+                <p>Yes! Free internet access is available at all branches. Printing is available at $0.15/page (B&amp;W) and $0.25/page (color).</p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">How do I access eBooks and digital media?</h3>
+                <p>Download the free <strong>Libby</strong> app (OverDrive) or visit <strong>Hoopla</strong> online. You'll need your FCPL library card number to sign in.</p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">What if I can't come to the library?</h3>
+                <p>We offer a <strong>Homebound Delivery Program</strong> for patrons who are unable to visit due to health or mobility issues. <a href="homebound.html">Learn more →</a></p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">Does the Bookmobile come to my area?</h3>
+                <p>The FCPL Bookmobile serves schools and communities throughout the county. <a href="bookmobile.html">Check the schedule →</a></p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">How do I renew items?</h3>
+                <p>Renew online via the <a href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">WV Info Depot catalog</a>, by phone, or in person at any branch.</p>
+              </div>
+              <div>
+                <h3 style="color:var(--blue-800);margin-bottom:.35rem">Can I request items from other libraries?</h3>
+                <p>Yes! Through interlibrary loan, we can request materials from other WV libraries and beyond. Ask a librarian for assistance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Board Panel -->
+      <div class="prog-panel" id="prog-board" role="tabpanel">
+        <div class="card">
+          <div class="card-header">🏛️ Board of Directors</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">The Fayette County Public Library Board of Directors provides governance and oversight for the library system. The Board meets regularly to set policy, approve budgets, and ensure the library serves all community members effectively.</p>
+            <div class="info-box info">
+              <span class="ib-icon">📅</span>
+              <div>Board meetings are open to the public. Contact the library at <a href="tel:+13044650121">304-465-0121</a> for the current meeting schedule and agenda.</div>
+            </div>
+            <h3 class="section-heading">Staff Directory</h3>
+            <table class="program-table">
+              <thead><tr><th>Name</th><th>Title</th><th>Contact</th></tr></thead>
+              <tbody>
+                <tr><td>Library Director</td><td>Director</td><td><a href="tel:+13044650121">304-465-0121</a></td></tr>
+                <tr><td>Assistant Director</td><td>Assistant Director</td><td><a href="tel:+13044650121">304-465-0121</a></td></tr>
+                <tr><td>Kim Massey</td><td>Homebound Program Coordinator</td><td><a href="tel:+13044655664">304-465-5664</a></td></tr>
+                <tr><td>Bookmobile Staff</td><td>Bookmobile Driver / Librarian</td><td><a href="tel:+13044650121">304-465-0121</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries</p>
+        <p><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="locations.html">Ansted Branch</a></li>
+          <li><a href="locations.html">Fayetteville Branch</a></li>
+          <li><a href="locations.html">Montgomery Branch</a></li>
+          <li><a href="locations.html">Mt. Hope Branch</a></li>
+          <li><a href="locations.html">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="ebooks.html">eBooks</a></li>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="bookmobile.html">Bookmobile</a></li>
+          <li><a href="homebound.html">Homebound</a></li>
+          <li><a href="programs.html">Programs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Info</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="jobs.html">Jobs</a></li>
+          <li><a href="/">Home</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footerYear"></span> Fayette County Public Libraries · 531 Summit St, Oak Hill, WV 25901
+    </div>
+  </footer>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+</body>
+</html>

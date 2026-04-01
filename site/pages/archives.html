@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Historical archives at Fayette County Public Libraries — microfilm, yearbooks, newspapers, genealogy research, and the West Virginia Collection.">
+  <title>Archives &amp; Genealogy | FCPL</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-wrap" href="/" aria-label="Fayette County Public Libraries home">
+        <img src="../images/logo.png" alt="FCPL Logo" width="120">
+      </a>
+      <div class="site-title-group">
+        <div class="site-name">Fayette County Public Libraries</div>
+        <div class="site-tagline">Serving Fayette County, West Virginia</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-catalog" href="https://mlnapp.raleigh.lib.wv.us/search~S16" target="_blank" rel="noopener">Online Catalog</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="siteNav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list" role="list">
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link" href="about.html">About Us</a></li>
+        <li><a class="nav-link" href="programs.html">Programs &amp; Events</a></li>
+        <li><a class="nav-link" href="locations.html">Locations</a></li>
+        <li><a class="nav-link" href="research.html">Research &amp; Homework</a></li>
+        <li><a class="nav-link" href="ebooks.html">eBooks</a></li>
+        <li><a class="nav-link" href="bookmobile.html">Bookmobile</a></li>
+        <li><a class="nav-link" href="homebound.html">Homebound</a></li>
+        <li><a class="nav-link active" href="archives.html" aria-current="page">Archives</a></li>
+        <li><a class="nav-link" href="news.html">News</a></li>
+        <li><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li><a class="nav-link" href="catalog.html">Catalog Search</a></li>
+        <li><a class="nav-link" href="myaccount.html">My Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrap full-width" id="main">
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep" aria-hidden="true">›</span>
+        <span aria-current="page">Archives &amp; Genealogy</span>
+      </nav>
+
+      <div class="page-heading">
+        <h1>🗂️ Archives &amp; Genealogy</h1>
+        <p>Explore our historic collections — perfect for genealogy research, local history, and West Virginia studies.</p>
+      </div>
+
+      <div class="info-box info">
+        <span class="ib-icon" aria-hidden="true">📍</span>
+        <div>
+          <strong>Located at the Oak Hill Branch</strong> — Most archive materials are housed at the main Oak Hill branch.
+          Please call <a href="tel:+13044650121">304-465-0121</a> before visiting to confirm availability of specific collections.
+        </div>
+      </div>
+
+      <!-- Archive Collections Tabs -->
+      <p class="tab-hint" aria-hidden="true">👇 Click a tab below to explore each collection</p>
+      <div class="program-tabs" id="archiveTabs" role="tablist" aria-label="Archive collections">
+        <button class="prog-tab active" data-prog="microfilm" role="tab"
+                aria-selected="true" aria-controls="arch-microfilm" id="tab-microfilm">
+          🎞️ Microfilm
+        </button>
+        <button class="prog-tab" data-prog="yearbooks" role="tab"
+                aria-selected="false" aria-controls="arch-yearbooks" id="tab-yearbooks">
+          🎓 Yearbooks
+        </button>
+        <button class="prog-tab" data-prog="newspapers" role="tab"
+                aria-selected="false" aria-controls="arch-newspapers" id="tab-newspapers">
+          📰 Newspapers
+        </button>
+        <button class="prog-tab" data-prog="magazines" role="tab"
+                aria-selected="false" aria-controls="arch-magazines" id="tab-magazines">
+          📖 Magazines
+        </button>
+        <button class="prog-tab" data-prog="family" role="tab"
+                aria-selected="false" aria-controls="arch-family" id="tab-family">
+          👨‍👩‍👧 Family Collections
+        </button>
+        <button class="prog-tab" data-prog="wvcollection" role="tab"
+                aria-selected="false" aria-controls="arch-wvcollection" id="tab-wvcollection">
+          ⛰️ WV Collection
+        </button>
+        <button class="prog-tab" data-prog="misc" role="tab"
+                aria-selected="false" aria-controls="arch-misc" id="tab-misc">
+          📦 Miscellaneous
+        </button>
+      </div>
+
+      <!-- Microfilm Panel -->
+      <div class="prog-panel active" id="arch-microfilm" role="tabpanel" aria-labelledby="tab-microfilm">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">🎞️</span> Microfilm Collection</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">Our microfilm collection preserves historical newspapers, government records, and documents from Fayette County and surrounding areas. Microfilm readers are available at the Oak Hill Branch.</p>
+            <div class="info-box info">
+              <span class="ib-icon" aria-hidden="true">📋</span>
+              <div>
+                <strong>What's on microfilm?</strong> — Historical newspapers, deeds, census records, and more.
+                Download our full collection guide for details.
+              </div>
+            </div>
+            <a class="btn btn-primary" href="https://fayette.lib.wv.us/wp-content/uploads/2021/10/ARCHIVE-COLLECTION-1.docx"
+               target="_blank" rel="noopener"
+               aria-label="Download microfilm collection guide (Word document, opens externally)">
+              📥 Download Collection Guide
+            </a>
+            <p class="text-sm text-muted mt-2">File format: Microsoft Word (.docx). You may need Word or a compatible app to open it.</p>
+
+            <h2 style="margin-top:1.5rem;font-size:1.05rem;color:var(--blue-900)">How to Use Microfilm Readers</h2>
+            <ol style="padding-left:1.25rem;margin-top:.5rem">
+              <li style="margin-bottom:.4rem;font-size:.9rem">Ask a librarian to retrieve the microfilm reel you need.</li>
+              <li style="margin-bottom:.4rem;font-size:.9rem">Thread the film through the reader following the labeled guides.</li>
+              <li style="margin-bottom:.4rem;font-size:.9rem">Use the zoom and focus controls to view the image clearly.</li>
+              <li style="margin-bottom:.4rem;font-size:.9rem">To print, use the reader's built-in print function (cost: $0.15/page).</li>
+              <li style="margin-bottom:.4rem;font-size:.9rem">Rewind and return the reel to a librarian when finished.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yearbooks Panel -->
+      <div class="prog-panel" id="arch-yearbooks" role="tabpanel" aria-labelledby="tab-yearbooks">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">🎓</span> School Yearbooks</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">We collect and preserve Fayette County school yearbooks. Yearbooks are a wonderful resource for family history research — they contain class photos, faculty listings, club memberships, and sports records.</p>
+            <div class="info-box warning">
+              <span class="ib-icon" aria-hidden="true">⚠️</span>
+              <div>Yearbooks are reference materials and may not be checked out. Photocopies available for $0.15/page.</div>
+            </div>
+            <h2 style="margin-top:1.25rem;font-size:1.05rem;color:var(--blue-900)">To Find a Yearbook</h2>
+            <p style="font-size:.9rem;margin-top:.5rem">
+              Contact us at <a href="tel:+13044650121">304-465-0121</a> to ask about yearbooks for a specific school and year.
+              We'll check availability and have it ready for your visit.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newspapers Panel -->
+      <div class="prog-panel" id="arch-newspapers" role="tabpanel" aria-labelledby="tab-newspapers">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">📰</span> Bound &amp; Loose Newspapers</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">Our newspaper collection includes both bound volumes and loose copies of local and regional newspapers. These are valuable for genealogy, local history, and research into historical events.</p>
+            <div class="info-box info">
+              <span class="ib-icon" aria-hidden="true">💡</span>
+              <div>
+                <strong>Tip for genealogy researchers:</strong> Historic newspapers often contain birth announcements, obituaries, wedding notices, and community news that isn't available in official records.
+              </div>
+            </div>
+            <h2 style="margin-top:1.25rem;font-size:1.05rem;color:var(--blue-900)">Online Newspaper Resources</h2>
+            <ul class="checklist" style="margin-top:.5rem">
+              <li>
+                <a href="https://www.newspapers.com/" target="_blank" rel="noopener">Newspapers.com</a> — search historical newspapers nationwide
+              </li>
+              <li>
+                <a href="https://chroniclingamerica.loc.gov/" target="_blank" rel="noopener">Chronicling America (Library of Congress)</a> — free historical US newspapers
+              </li>
+              <li>
+                <a href="https://www.wvencyclopedia.org/" target="_blank" rel="noopener">WV Encyclopedia</a> — West Virginia history and culture
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Magazines Panel -->
+      <div class="prog-panel" id="arch-magazines" role="tabpanel" aria-labelledby="tab-magazines">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">📖</span> Magazines</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">We maintain a collection of older magazine issues, particularly those with local, regional, or West Virginia content. These cover topics from community events to feature articles about Fayette County history.</p>
+            <p class="text-sm">For current magazine subscriptions, visit any branch — we receive numerous periodicals for patron use in-library.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Family Collections Panel -->
+      <div class="prog-panel" id="arch-family" role="tabpanel" aria-labelledby="tab-family">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">👨‍👩‍👧</span> Family Collections</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">Our family collections contain genealogical materials donated by local families — documents, photographs, family trees, and personal histories related to Fayette County residents and families.</p>
+            <div class="info-box success">
+              <span class="ib-icon" aria-hidden="true">✅</span>
+              <div>
+                <strong>Donating family materials?</strong> — We welcome donations of genealogical materials, family histories, and photographs related to Fayette County families. Please call or stop by the Oak Hill Branch to discuss.
+              </div>
+            </div>
+            <h2 style="margin-top:1.25rem;font-size:1.05rem;color:var(--blue-900)">Genealogy Research Help</h2>
+            <p style="font-size:.9rem;margin-top:.5rem">
+              Our staff can assist you with genealogy research. For appointments or to inquire about specific family names, call
+              <a href="tel:+13044650121">304-465-0121</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- WV Collection Panel -->
+      <div class="prog-panel" id="arch-wvcollection" role="tabpanel" aria-labelledby="tab-wvcollection">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">⛰️</span> The West Virginia Collection</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">The West Virginia Collection is a curated selection of books, pamphlets, and documents specifically about West Virginia history, culture, geography, and notable persons. This is an essential resource for anyone researching the Mountain State.</p>
+            <div class="info-box info">
+              <span class="ib-icon" aria-hidden="true">📚</span>
+              <div>
+                Many WV Collection items are <strong>reference-only</strong> and cannot be checked out. Photocopies are available to researchers.
+              </div>
+            </div>
+            <h2 style="margin-top:1.25rem;font-size:1.05rem;color:var(--blue-900)">Online WV History Resources</h2>
+            <ul class="checklist" style="margin-top:.5rem">
+              <li><a href="https://www.wvencyclopedia.org/" target="_blank" rel="noopener">WV Encyclopedia</a> — comprehensive online reference</li>
+              <li><a href="https://www.wvculture.org/history/" target="_blank" rel="noopener">WV State Archives</a> — official state historical records</li>
+              <li><a href="https://www.wvu.edu/research" target="_blank" rel="noopener">WVU Libraries</a> — West Virginia University collections</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Miscellaneous Panel -->
+      <div class="prog-panel" id="arch-misc" role="tabpanel" aria-labelledby="tab-misc">
+        <div class="card">
+          <div class="card-header"><span class="icon" aria-hidden="true">📦</span> Miscellaneous Archives</div>
+          <div class="card-body">
+            <p style="margin-bottom:1rem">This section contains additional archival materials that don't fit neatly into other categories — maps, government documents, community records, ephemera, and other unique resources.</p>
+            <p class="text-sm">For information about specific items, please contact the library directly.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Genealogy Resources External -->
+      <div class="card" style="margin-top:1.5rem">
+        <div class="card-header"><span class="icon" aria-hidden="true">🔍</span> Free Online Genealogy Resources</div>
+        <div class="card-body">
+          <p style="margin-bottom:1rem">These free resources are available to all library card holders:</p>
+          <div class="resource-grid">
+            <a class="resource-card" href="https://www.familysearch.org/" target="_blank" rel="noopener">
+              <h3>FamilySearch</h3>
+              <p>Free genealogy database with billions of records. Great starting point for family history research.</p>
+              <span>Visit FamilySearch →</span>
+            </a>
+            <a class="resource-card" href="https://www.wvculture.org/history/archivesindex.aspx" target="_blank" rel="noopener">
+              <h3>WV State Archives</h3>
+              <p>Official West Virginia historical archives, records, and genealogical databases.</p>
+              <span>Search Archives →</span>
+            </a>
+            <a class="resource-card" href="https://www.wvinfodepot.org/" target="_blank" rel="noopener">
+              <h3>WV Info Depot</h3>
+              <p>Statewide library catalog and research databases — search all WV libraries.</p>
+              <span>Search Catalog →</span>
+            </a>
+            <a class="resource-card" href="https://chroniclingamerica.loc.gov/" target="_blank" rel="noopener">
+              <h3>Chronicling America</h3>
+              <p>Library of Congress digitized historical newspapers — free to search and read.</p>
+              <span>Search Newspapers →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact / Help -->
+      <div class="info-box info" style="margin-top:1.5rem">
+        <span class="ib-icon" aria-hidden="true">❓</span>
+        <div>
+          <strong>Need research help?</strong> Our librarians are here to assist with genealogy and historical research.
+          Call <a href="tel:+13044650121">304-465-0121</a> or stop by the Oak Hill Branch during business hours.
+          <span class="help-tip" tabindex="0" aria-label="Tip: Call ahead to confirm availability of specific archive materials"
+                data-tip="Call ahead to confirm specific materials are available before your visit.">?</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="../images/logo.png" alt="FCPL" style="height:48px;margin-bottom:.75rem;opacity:.85">
+        <p>Fayette County Public Libraries — serving our community since 1935.</p>
+        <p class="mt-1"><a href="tel:+13044650121">304-465-0121</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Branches</h3>
+        <ul>
+          <li><a href="locations.html#ansted">Ansted Branch</a></li>
+          <li><a href="locations.html#fayetteville">Fayetteville Branch</a></li>
+          <li><a href="locations.html#montgomery">Montgomery Branch</a></li>
+          <li><a href="locations.html#mthope">Mt. Hope Branch</a></li>
+          <li><a href="locations.html#oakhill">Oak Hill Branch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Research</h3>
+        <ul>
+          <li><a href="research.html">Research Databases</a></li>
+          <li><a href="archives.html">Archives &amp; Genealogy</a></li>
+          <li><a href="ebooks.html">eBooks &amp; Audiobooks</a></li>
+          <li><a href="catalog.html">Catalog Search</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Information</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="news.html">News &amp; Announcements</a></li>
+          <li><a href="jobs.html">Job Openings</a></li>
+          <li><a href="about.html#board">Board of Directors</a></li>
+          <li><a href="about.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footerYear"></span> Fayette County Public Libraries &middot; 531 Summit St, Oak Hill, WV 25901 &middot;
+      <a href="tel:+13044650121">304-465-0121</a>
+    </div>
+  </footer>
+
+  <!-- Floating Help Button -->
+  <a class="help-float" href="tel:+13044650121" aria-label="Need help? Call us at 304-465-0121">
+    <span class="help-float-icon" aria-hidden="true">📞</span>
+    Need Help? Call Us
+  </a>
+
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+  <script src="../js/a11y.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

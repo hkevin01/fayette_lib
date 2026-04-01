@@ -1,0 +1,183 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Oak Hill High School Bookmobile Visit",
+      "start": "2026-04-03T12:55:00",
+      "end": "2026-04-03T13:40:00",
+      "location": "Oak Hill High School",
+      "category": "bookmobile",
+      "description": "Bookmobile visit to Oak Hill High School",
+      "recurrence": "weekly",
+      "recurrence_day": "Friday"
+    },
+    {
+      "id": 2,
+      "title": "Divide Elementary Bookmobile Visit",
+      "start": "2026-04-06T07:30:00",
+      "end": "2026-04-06T10:00:00",
+      "location": "Divide Elementary School",
+      "category": "bookmobile",
+      "description": "Bookmobile visit to Divide Elementary School",
+      "recurrence": "weekly",
+      "recurrence_day": "Monday"
+    },
+    {
+      "id": 3,
+      "title": "Storytime — Ansted",
+      "start": "2026-04-02T16:00:00",
+      "end": "2026-04-02T16:45:00",
+      "location": "Ansted Public Library",
+      "category": "children",
+      "description": "Storytime for children ages 3–6",
+      "recurrence": "weekly",
+      "recurrence_day": "Thursday"
+    },
+    {
+      "id": 4,
+      "title": "Storytime — Fayetteville",
+      "start": "2026-04-01T11:00:00",
+      "end": "2026-04-01T11:45:00",
+      "location": "Fayetteville Public Library",
+      "category": "children",
+      "description": "Storytime for children ages 3–6",
+      "recurrence": "weekly",
+      "recurrence_day": "Wednesday"
+    },
+    {
+      "id": 5,
+      "title": "Storytime — Mt. Hope",
+      "start": "2026-04-03T12:00:00",
+      "end": "2026-04-03T12:45:00",
+      "location": "Mt. Hope Public Library",
+      "category": "children",
+      "description": "Storytime for children ages 3–6",
+      "recurrence": "weekly",
+      "recurrence_day": "Friday"
+    },
+    {
+      "id": 6,
+      "title": "Storytime — Oak Hill",
+      "start": "2026-04-03T11:00:00",
+      "end": "2026-04-03T11:45:00",
+      "location": "Oak Hill Public Library",
+      "category": "children",
+      "description": "Storytime for children ages 3–6",
+      "recurrence": "weekly",
+      "recurrence_day": "Friday"
+    },
+    {
+      "id": 7,
+      "title": "Storytime — Montgomery",
+      "start": "2026-04-01T17:00:00",
+      "end": "2026-04-01T17:45:00",
+      "location": "Montgomery Public Library",
+      "category": "children",
+      "description": "Storytime for children ages 3–6",
+      "recurrence": "weekly",
+      "recurrence_day": "Wednesday"
+    },
+    {
+      "id": 8,
+      "title": "Baby Lapsit — Oak Hill",
+      "start": "2026-04-07T15:00:00",
+      "end": "2026-04-07T15:45:00",
+      "location": "Oak Hill Public Library",
+      "category": "children",
+      "description": "Baby Lapsit for little ones ages 6–35 months",
+      "recurrence": "monthly",
+      "recurrence_desc": "1st Tuesday"
+    },
+    {
+      "id": 9,
+      "title": "Baby Lapsit — Fayetteville",
+      "start": "2026-04-01T11:00:00",
+      "end": "2026-04-01T11:45:00",
+      "location": "Fayetteville Public Library",
+      "category": "children",
+      "description": "Baby Lapsit for little ones ages 6–35 months",
+      "recurrence": "weekly",
+      "recurrence_day": "Wednesday"
+    },
+    {
+      "id": 10,
+      "title": "Baby Lapsit — Mt. Hope",
+      "start": "2026-04-01T11:00:00",
+      "end": "2026-04-01T11:45:00",
+      "location": "Mt. Hope Public Library",
+      "category": "children",
+      "description": "Baby Lapsit for little ones ages 6–35 months. 1st and 3rd Wednesday.",
+      "recurrence": "monthly",
+      "recurrence_desc": "1st and 3rd Wednesday"
+    },
+    {
+      "id": 11,
+      "title": "Adult Book Club",
+      "start": "2026-04-14T13:00:00",
+      "end": "2026-04-14T14:30:00",
+      "location": "FCPL Administration Building",
+      "category": "adult",
+      "description": "Adult Book Club — open to all. 2nd Tuesday of each month at 1:00 PM.",
+      "recurrence": "monthly",
+      "recurrence_desc": "2nd Tuesday"
+    },
+    {
+      "id": 12,
+      "title": "Board of Trustees Meeting",
+      "start": "2026-05-13T15:00:00",
+      "end": "2026-05-13T16:30:00",
+      "location": "FCPL Administration Building",
+      "category": "community",
+      "description": "Board of Trustees Meeting open to the public.",
+      "recurrence": "none"
+    },
+    {
+      "id": 13,
+      "title": "Library Closed — Christmas Eve",
+      "start": "2026-12-24T08:00:00",
+      "end": "2026-12-24T17:00:00",
+      "location": "All Branches",
+      "category": "closure",
+      "description": "All Fayette County Public Library branches will be closed for Christmas Eve. We will reopen on December 26th.",
+      "recurrence": "yearly"
+    },
+    {
+      "id": 14,
+      "title": "Library Closed — Christmas Day",
+      "start": "2026-12-25T08:00:00",
+      "end": "2026-12-25T17:00:00",
+      "location": "All Branches",
+      "category": "closure",
+      "description": "All Fayette County Public Library branches will be closed for Christmas Day. We will reopen on December 26th.",
+      "recurrence": "yearly"
+    },
+    {
+      "id": 15,
+      "title": "Library Closed — New Year's Day",
+      "start": "2027-01-01T08:00:00",
+      "end": "2027-01-01T17:00:00",
+      "location": "All Branches",
+      "category": "closure",
+      "description": "All Fayette County Public Library branches will be closed for New Year's Day.",
+      "recurrence": "yearly"
+    },
+    {
+      "id": 16,
+      "title": "Library Closed — Independence Day",
+      "start": "2026-07-04T08:00:00",
+      "end": "2026-07-04T17:00:00",
+      "location": "All Branches",
+      "category": "closure",
+      "description": "All Fayette County Public Library branches will be closed for Independence Day.",
+      "recurrence": "yearly"
+    }
+  ],
+  "categories": [
+    {"id": "children",  "label": "Children",    "color": "#f59e0b"},
+    {"id": "adult",     "label": "Adults",       "color": "#3b82f6"},
+    {"id": "teen",      "label": "Teens",        "color": "#8b5cf6"},
+    {"id": "community", "label": "Community",    "color": "#10b981"},
+    {"id": "bookmobile","label": "Bookmobile",   "color": "#ef4444"},
+    {"id": "closure",   "label": "Library Closed","color": "#6b7280"}
+  ]
+}
