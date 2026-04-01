@@ -352,11 +352,14 @@ main { min-width: 0; }
 /* ====================================================
    CALENDAR
    ==================================================== */
-.calendar-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+/* overflow:visible lets the Add-to-Calendar dropdown escape the container;
+   .cal-header gets its own top radius to replace the clip. */
+.calendar-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: visible; }
 .cal-header {
   background: var(--blue-900); color: var(--white);
   display: flex; align-items: center; justify-content: space-between;
   padding: 1rem 1.25rem;
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 .cal-header h2 { font-size: 1.1rem; }
 .cal-nav-btn {

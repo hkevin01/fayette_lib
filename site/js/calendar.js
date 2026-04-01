@@ -380,7 +380,9 @@ const FCPLCalendar = (function() {
       quick = document.createElement('div');
       quick.id = 'calQuickAdd';
       quick.style.cssText = 'margin-top:1rem;padding:.9rem;border:1px solid #dbe6f5;border-radius:10px;background:#f8fbff;';
-      container.parentElement.appendChild(quick);
+      // Append OUTSIDE .calendar-wrap so position:absolute dropdowns inside
+      // calQuickAdd are not clipped by .calendar-wrap's overflow.
+      (container.closest('.card-body') || container.parentElement).appendChild(quick);
     }
 
     const items = nextUpcomingEvents(3);
