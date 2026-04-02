@@ -71,7 +71,7 @@ app.use(helmet({
     directives: {
       defaultSrc:      ["'self'"],
       scriptSrc:       ["'self'", "'unsafe-inline'"],   // admin SPA uses inline scripts
-      scriptSrcAttr:   ["'unsafe-inline'"],             // allow inline onclick handlers (admin SPA pattern)
+      scriptSrcAttr:   ["'none'"],                      // inline script attributes (onclick, etc.) disabled
       styleSrc:        ["'self'", "'unsafe-inline'"],
       imgSrc:          ["'self'", "data:", "blob:"],
       fontSrc:         ["'none'"],

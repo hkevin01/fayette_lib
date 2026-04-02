@@ -45,8 +45,23 @@
     .app-header h1 { font-size: 1.1rem; }
     .app-header .staff-info { font-size: .8rem; color: rgba(255,255,255,.65); }
     /* ---- Tabs ---- */
-    .tab-bar { background: var(--blue); display: flex; gap: 0; padding: 0 1.5rem; }
-    .tab-btn { padding: .75rem 1.25rem; color: rgba(255,255,255,.7); border: none; background: none; font-size: .9rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all .15s; }
+    .tab-bar { background: var(--blue); display: flex; gap: 0; padding: 0 1.5rem; overflow-x: auto; }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      white-space: nowrap;
+      flex: 0 0 auto;
+      padding: .75rem 1.25rem;
+      color: rgba(255,255,255,.7);
+      border: none;
+      background: none;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all .15s;
+    }
     .tab-btn.active { color: var(--white); border-bottom-color: var(--gold); }
     .tab-btn:hover:not(.active) { color: var(--white); background: rgba(255,255,255,.08); }
     /* ---- Content ---- */
@@ -130,18 +145,15 @@
     <button class="tab-btn" data-tab="announcements">📢 Announcements</button>
     <button class="tab-btn" data-tab="hours">🕒 Branch Hours</button>
     <button class="tab-btn" data-tab="programs">📚 Programs</button>
-    <button class="tab-btn" data-tab="homepage-features">🏠 Homepage Features</button>
+    <button class="tab-btn" data-tab="homepage-features">🏠 Homepage Content</button>
     <button class="tab-btn" data-tab="resources">🌐 Digital Resources</button>
     <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
     <button class="tab-btn" data-tab="system">⚡ System</button>
     <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     <button class="tab-btn" data-tab="hosting">🏠 Hosting Info</button>
     <button class="tab-btn" data-tab="staff">👥 Staff</button>
-    <button class="tab-btn" data-tab="homepage-images">🖼️ Images</button>
     <button class="tab-btn" data-tab="jobs">💼 Jobs</button>
-    <button class="tab-btn" data-tab="recyclebin">🗑️ Recycle Bin</button>
-    <button class="tab-btn" data-tab="activitylog">🔍 Activity Log</button>
-    <button class="tab-btn" data-tab="backups">💾 Backups</button>
+    <button class="tab-btn" data-tab="operations">🧰 Operations</button>
   </div>
 
   <div class="tab-content">
@@ -167,6 +179,16 @@
               <tr><td colspan="5" class="empty">Loading events…</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem">
+        <div class="card-head">
+          <h2>Recent Announcements</h2>
+          <button class="btn btn-outline btn-sm" data-tab="announcements" id="jumpToAnnouncementsBtn">Open Full Announcements</button>
+        </div>
+        <div class="card-body" id="eventsAnnouncementsPreview">
+          <p class="empty">Loading announcements...</p>
         </div>
       </div>
     </div>
@@ -223,7 +245,7 @@
       <div class="card">
         <div class="card-head">
           <h2>Storytimes</h2>
-          <button class="btn btn-success btn-sm" onclick="openProgramEntry('storytimes',null)">+ Add</button>
+          <button class="btn btn-success btn-sm" data-admin-action="open-program-entry" data-key="storytimes">+ Add</button>
         </div>
         <div class="card-body" style="padding:0">
           <table><thead><tr><th>Branch</th><th>Schedule</th><th>Ages</th><th>Actions</th></tr></thead>
@@ -233,7 +255,7 @@
       <div class="card">
         <div class="card-head">
           <h2>Baby Lapsit</h2>
-          <button class="btn btn-success btn-sm" onclick="openProgramEntry('baby_lapsit',null)">+ Add</button>
+          <button class="btn btn-success btn-sm" data-admin-action="open-program-entry" data-key="baby_lapsit">+ Add</button>
         </div>
         <div class="card-body" style="padding:0">
           <table><thead><tr><th>Branch</th><th>Schedule</th><th>Ages</th><th>Actions</th></tr></thead>
@@ -247,7 +269,7 @@
             <div class="fg"><label>Location</label><input type="text" id="abc-location" maxlength="120"></div>
             <div class="fg"><label>Schedule</label><input type="text" id="abc-schedule" maxlength="200"></div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:.5rem" onclick="saveAdultBookClub()">Save Book Club</button>
+          <button class="btn btn-primary btn-sm" style="margin-top:.5rem" data-admin-action="save-adult-bookclub">Save Book Club</button>
         </div>
       </div>
       <div class="card">
@@ -259,17 +281,17 @@
             <label>Features <span style="font-weight:400;color:#6b7280">(one per line)</span></label>
             <textarea id="lc-features" rows="6" placeholder="Interactive cooking classes&#10;Learn anytime, anywhere"></textarea>
           </div>
-          <button class="btn btn-primary btn-sm" onclick="saveLibraryChef()">Save Library Chef</button>
+          <button class="btn btn-primary btn-sm" data-admin-action="save-library-chef">Save Library Chef</button>
         </div>
       </div>
     </div>
 
-    <!-- ===== HOMEPAGE FEATURES TAB ===== -->
+    <!-- ===== HOMEPAGE CONTENT TAB ===== -->
     <div class="tab-pane" id="tab-homepage-features">
       <div class="card">
         <div class="card-head">
           <h2>Homepage Feature Banners</h2>
-          <button class="btn btn-success btn-sm" onclick="openFeatureModal(null)">+ Add Banner</button>
+          <button class="btn btn-success btn-sm" data-admin-action="open-feature-modal">+ Add Banner</button>
         </div>
         <div class="card-body">
           <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These banners appear prominently on the homepage between the photo highlights and the events calendar. Drag to reorder using the ↕ handle.</p>
@@ -279,6 +301,28 @@
       <div class="card" style="background:#f0f9ff;border:1px solid #bfdbfe">
         <div class="card-body" style="font-size:.85rem;color:#1e40af">
           <strong>💡 Tips:</strong> Use the <em>Style</em> field to change the banner's background color. Keep body text short — 1–2 sentences works best. Links can be internal (e.g. <code>pages/programs.html</code>) or external URLs.
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem">
+        <div class="card-head">
+          <h2>Slider Images</h2>
+          <button class="btn btn-success btn-sm" data-admin-action="open-img-upload" data-type="slider">+ Upload Slider Image</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These images rotate in the hero slideshow at the top of the homepage.</p>
+          <div id="slider-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem">
+        <div class="card-head">
+          <h2>Featured Photos</h2>
+          <button class="btn btn-success btn-sm" data-admin-action="open-img-upload" data-type="featured">+ Upload Featured Photo</button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These appear as photo cards below the quick links on the homepage (Bob the cat, story trail, events, etc.).</p>
+          <div id="featured-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
         </div>
       </div>
     </div>
@@ -307,12 +351,12 @@
         <div class="card-body" style="display:flex;align-items:center;flex-wrap:wrap;gap:.75rem">
           <strong style="font-size:.9rem;color:var(--gray-600)">Period:</strong>
           <div style="display:flex;gap:.4rem;flex-wrap:wrap" id="analyticsPeriodBtns">
-            <button class="btn btn-sm" data-period="24h" onclick="setAnalyticsPeriod('24h')" style="background:var(--blue);color:#fff">24h</button>
-            <button class="btn btn-sm" data-period="7d" onclick="setAnalyticsPeriod('7d')">7 days</button>
-            <button class="btn btn-sm" data-period="30d" onclick="setAnalyticsPeriod('30d')">30 days</button>
-            <button class="btn btn-sm" data-period="90d" onclick="setAnalyticsPeriod('90d')">90 days</button>
-            <button class="btn btn-sm" data-period="1y" onclick="setAnalyticsPeriod('1y')">1 year</button>
-            <button class="btn btn-sm" data-period="all" onclick="setAnalyticsPeriod('all')">All time</button>
+            <button class="btn btn-sm" data-period="24h" data-admin-action="set-analytics-period" style="background:var(--blue);color:#fff">24h</button>
+            <button class="btn btn-sm" data-period="7d" data-admin-action="set-analytics-period">7 days</button>
+            <button class="btn btn-sm" data-period="30d" data-admin-action="set-analytics-period">30 days</button>
+            <button class="btn btn-sm" data-period="90d" data-admin-action="set-analytics-period">90 days</button>
+            <button class="btn btn-sm" data-period="1y" data-admin-action="set-analytics-period">1 year</button>
+            <button class="btn btn-sm" data-period="all" data-admin-action="set-analytics-period">All time</button>
           </div>
         </div>
       </div>
@@ -399,10 +443,10 @@
               <label style="display:block;font-size:.8rem;font-weight:600;margin-bottom:.35rem" for="prunedays">Delete entries older than (days):</label>
               <div style="display:flex;gap:.5rem;align-items:center">
                 <input id="prunedays" type="number" min="1" max="3650" value="90" style="width:80px;padding:.35rem .5rem;border:1px solid var(--gray-300);border-radius:var(--radius);font-size:.9rem">
-                <button class="btn btn-warning btn-sm" onclick="pruneAnalytics()">Prune Old Data</button>
+                <button class="btn btn-warning btn-sm" data-admin-action="prune-analytics">Prune Old Data</button>
               </div>
             </div>
-            <button class="btn btn-danger btn-sm" onclick="clearAllAnalytics()">Clear All Analytics Data</button>
+            <button class="btn btn-danger btn-sm" data-admin-action="clear-analytics">Clear All Analytics Data</button>
           </div>
         </div>
       </div>
@@ -445,7 +489,7 @@
           <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
             Restart the admin backend service. It will automatically reconnect after 5 seconds.
           </p>
-          <button class="btn btn-primary btn-sm" onclick="restartService()">Restart Admin Service</button>
+          <button class="btn btn-primary btn-sm" data-admin-action="restart-service">Restart Admin Service</button>
         </div>
       </div>
 
@@ -456,7 +500,7 @@
           <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">
             Download a backup of all site data, events, and announcements as a JSON file. Safe to run anytime.
           </p>
-          <button class="btn btn-success btn-sm" onclick="downloadBackup()">Download Backup</button>
+          <button class="btn btn-success btn-sm" data-admin-action="download-backup">Download Backup</button>
           <p style="font-size:.8rem;color:var(--gray-600);margin-top:.75rem">Includes: events.json, content.json, analytics summary</p>
         </div>
       </div>
@@ -544,44 +588,20 @@
       <div class="card">
         <div class="card-head">
           <h2>Bookmobile Staff</h2>
-          <button class="btn btn-success btn-sm" onclick="addBookmobileStaff()">+ Add Person</button>
+          <button class="btn btn-success btn-sm" data-admin-action="add-bookmobile-staff">+ Add Person</button>
         </div>
         <div class="card-body" id="bookmobile-staff-list"></div>
       </div>
       <div class="card" style="margin-top:1rem">
         <div class="card-head">
           <h2>Branch Staff</h2>
-          <button class="btn btn-success btn-sm" onclick="addBranchStaff()">+ Add Branch Staff</button>
+          <button class="btn btn-success btn-sm" data-admin-action="add-branch-staff">+ Add Branch Staff</button>
         </div>
         <div class="card-body" id="branch-staff-list">
           <p style="color:#6b7280;font-size:.9rem">Loading branch staff…</p>
         </div>
       </div>
       <button class="btn btn-primary" id="saveStaffBtn" style="margin-top:.5rem">Save Staff Info</button>
-    </div>
-
-    <!-- ===== FRONT PAGE IMAGES TAB ===== -->
-    <div class="tab-pane" id="tab-homepage-images">
-      <div class="card">
-        <div class="card-head">
-          <h2>Slider Images</h2>
-          <button class="btn btn-success btn-sm" onclick="openImgUpload('slider')">+ Upload Slider Image</button>
-        </div>
-        <div class="card-body">
-          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These images rotate in the hero slideshow at the top of the homepage.</p>
-          <div id="slider-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
-        </div>
-      </div>
-      <div class="card" style="margin-top:1rem">
-        <div class="card-head">
-          <h2>Featured Photos</h2>
-          <button class="btn btn-success btn-sm" onclick="openImgUpload('featured')">+ Upload Featured Photo</button>
-        </div>
-        <div class="card-body">
-          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">These appear as photo cards below the quick links on the homepage (Bob the cat, story trail, events, etc.).</p>
-          <div id="featured-images-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem"></div>
-        </div>
-      </div>
     </div>
 
     <!-- ===== HOSTING INFO TAB ===== -->
@@ -872,7 +892,7 @@
       <div class="card">
         <div class="card-head">
           <h2>Job Postings</h2>
-          <button class="btn btn-success btn-sm" onclick="openJobModal(null)">+ Add Posting</button>
+          <button class="btn btn-success btn-sm" data-admin-action="open-job-modal">+ Add Posting</button>
         </div>
         <div class="card-body" style="padding:0">
           <table>
@@ -888,8 +908,8 @@
       </div>
     </div>
 
-    <!-- ===== RECYCLE BIN TAB ===== -->
-    <div class="tab-pane" id="tab-recyclebin">
+    <!-- ===== OPERATIONS TAB ===== -->
+    <div class="tab-pane" id="tab-operations">
       <div class="card">
         <div class="card-head">
           <h2>🗑️ Recycle Bin</h2>
@@ -907,14 +927,11 @@
           </table>
         </div>
       </div>
-    </div>
 
-    <!-- ── Activity Log ── -->
-    <div class="tab-pane" id="tab-activitylog">
       <div class="card">
         <div class="card-head">
           <h2>🔍 Activity Log</h2>
-          <button class="btn btn-outline btn-sm" onclick="loadActivityLog()">↻ Refresh</button>
+          <button class="btn btn-outline btn-sm" data-admin-action="load-activity-log">↻ Refresh</button>
         </div>
         <div class="card-body">
           <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Every change made through the staff portal is recorded here — who made it (by IP), when, and what was affected. Last 500 actions are kept.</p>
@@ -928,14 +945,11 @@
           </table>
         </div>
       </div>
-    </div>
 
-    <!-- ── Backups ── -->
-    <div class="tab-pane" id="tab-backups">
       <div class="card">
         <div class="card-head">
           <h2>💾 Backups</h2>
-          <button class="btn btn-outline btn-sm" onclick="loadBackups()">↻ Refresh</button>
+          <button class="btn btn-outline btn-sm" data-admin-action="load-backups">↻ Refresh</button>
         </div>
         <div class="card-body">
           <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem">Automatic snapshots are created before every destructive change. Up to 20 backups are kept per file. <strong style="color:#b91c1c">Restoring overwrites the current live data — use with caution.</strong></p>
@@ -961,7 +975,7 @@
   <div class="modal">
     <div class="modal-head">
       <h3 id="imgUploadTitle">Upload Image</h3>
-      <button class="btn btn-sm" onclick="closeImgModal()" aria-label="Close">✕</button>
+      <button class="btn btn-sm" data-admin-action="close-img-modal" aria-label="Close">✕</button>
     </div>
     <div class="modal-body">
       <div class="fg">
@@ -987,8 +1001,8 @@
       <p class="err" id="imgUploadErr"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="closeImgModal()">Cancel</button>
-      <button class="btn btn-primary" id="imgUploadSaveBtn" onclick="submitImgUpload()">Upload &amp; Add</button>
+      <button class="btn btn-outline" data-admin-action="close-img-modal">Cancel</button>
+      <button class="btn btn-primary" id="imgUploadSaveBtn" data-admin-action="submit-img-upload">Upload &amp; Add</button>
     </div>
   </div>
 </div>
@@ -1000,7 +1014,7 @@
   <div class="modal" style="max-width:740px">
     <div class="modal-head">
       <h3 id="jobModalTitle">Add Job Posting</h3>
-      <button class="close-btn" onclick="closeJobModal()">✕</button>
+      <button class="close-btn" data-admin-action="close-job-modal">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="job-idx">
@@ -1038,8 +1052,8 @@
       <p class="err" id="jobErr" style="display:none"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="closeJobModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveJob()">Save Posting</button>
+      <button class="btn btn-outline" data-admin-action="close-job-modal">Cancel</button>
+      <button class="btn btn-primary" data-admin-action="save-job">Save Posting</button>
     </div>
   </div>
 </div>
@@ -1051,7 +1065,7 @@
   <div class="modal">
     <div class="modal-head">
       <h3 id="featureModalTitle">Add Feature Banner</h3>
-      <button class="close-btn" onclick="closeFeatureModal()">✕</button>
+      <button class="close-btn" data-admin-action="close-feature-modal">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="feat-idx">
@@ -1077,8 +1091,8 @@
       <p class="err" id="featErr" style="display:none"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="closeFeatureModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveFeature()">Save Banner</button>
+      <button class="btn btn-outline" data-admin-action="close-feature-modal">Cancel</button>
+      <button class="btn btn-primary" data-admin-action="save-feature">Save Banner</button>
     </div>
   </div>
 </div>
@@ -1209,7 +1223,7 @@
   <div class="modal" style="max-width:640px">
     <div class="modal-head">
       <h3 id="branchModalTitle">Edit Branch Hours</h3>
-      <button class="close-btn" onclick="document.getElementById('branchModal').classList.remove('open')">✕</button>
+      <button class="close-btn" data-admin-action="close-modal" data-modal-id="branchModal">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="branchIdx">
@@ -1223,7 +1237,7 @@
         <div class="fg"><label>Fax</label><input type="tel" id="b-fax" maxlength="80"></div>
       </div>
       <div class="fg">
-        <label>Hours <button type="button" class="btn btn-outline btn-sm" style="margin-left:.5rem" onclick="addHoursRow()">+ Row</button></label>
+        <label>Hours <button type="button" class="btn btn-outline btn-sm" style="margin-left:.5rem" data-admin-action="add-hours-row">+ Row</button></label>
         <table style="margin-top:.5rem;width:100%;font-size:.875rem">
           <thead><tr><th style="width:40%">Days</th><th style="width:25%">Open</th><th style="width:25%">Close</th><th></th></tr></thead>
           <tbody id="hours-rows"></tbody>
@@ -1233,8 +1247,8 @@
       <p class="err" id="branchErr" style="display:none"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="document.getElementById('branchModal').classList.remove('open')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveBranch()">Save Branch</button>
+      <button class="btn btn-outline" data-admin-action="close-modal" data-modal-id="branchModal">Cancel</button>
+      <button class="btn btn-primary" data-admin-action="save-branch">Save Branch</button>
     </div>
   </div>
 </div>
@@ -1246,7 +1260,7 @@
   <div class="modal">
     <div class="modal-head">
       <h3 id="progModalTitle">Add Program Entry</h3>
-      <button class="close-btn" onclick="document.getElementById('programModal').classList.remove('open')">✕</button>
+      <button class="close-btn" data-admin-action="close-modal" data-modal-id="programModal">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="prog-key">
@@ -1257,8 +1271,8 @@
       <p class="err" id="progErr" style="display:none"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="document.getElementById('programModal').classList.remove('open')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveProgramEntry()">Save</button>
+      <button class="btn btn-outline" data-admin-action="close-modal" data-modal-id="programModal">Cancel</button>
+      <button class="btn btn-primary" data-admin-action="save-program-entry">Save</button>
     </div>
   </div>
 </div>
@@ -1270,7 +1284,7 @@
   <div class="modal">
     <div class="modal-head">
       <h3 id="resModalTitle">Add Resource</h3>
-      <button class="close-btn" onclick="document.getElementById('resourceModal').classList.remove('open')">✕</button>
+      <button class="close-btn" data-admin-action="close-modal" data-modal-id="resourceModal">✕</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="res-idx">
@@ -1280,8 +1294,8 @@
       <p class="err" id="resErr" style="display:none"></p>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="document.getElementById('resourceModal').classList.remove('open')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveResource()">Save</button>
+      <button class="btn btn-outline" data-admin-action="close-modal" data-modal-id="resourceModal">Cancel</button>
+      <button class="btn btn-primary" data-admin-action="save-resource">Save</button>
     </div>
   </div>
 </div>
@@ -1292,11 +1306,13 @@
 <script src="js/admin-ui-tabs.js"></script>
 <script src="js/admin-events.js"></script>
 <script src="js/admin-hosting.js"></script>
+<script src="js/admin-actions.js"></script>
+<script src="js/admin-auth.js"></script>
 <script>
 (function() {
   'use strict';
 
-  let TOKEN = sessionStorage.getItem('fcpl_staff_token') || '';
+  let TOKEN = '';
 
   /* ── Utilities ── */
   function api(method, url, body, isForm) {
@@ -1308,8 +1324,25 @@
       opts.body = JSON.stringify(body);
     }
     return fetch('/admin' + url, opts).then(async r => {
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error || 'Request failed');
+      const raw = await r.text();
+      let data = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch (_) {
+        data = { error: raw || `HTTP ${r.status}` };
+      }
+
+      if (!r.ok) {
+        if (r.status === 401) {
+          TOKEN = '';
+          sessionStorage.removeItem('fcpl_staff_token');
+          const login = document.getElementById('loginScreen');
+          const app = document.getElementById('appShell');
+          if (login) login.style.display = 'flex';
+          if (app) app.style.display = 'none';
+        }
+        throw new Error(data.error || `Request failed (${r.status})`);
+      }
       return data;
     });
   }
@@ -1411,48 +1444,6 @@
          + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   }
 
-  /* ── Auth ── */
-  document.getElementById('loginForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    showErr('loginErr', '');
-    const pw = document.getElementById('staffPassword').value;
-    try {
-      const res = await fetch('/admin/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      TOKEN = data.token;
-      sessionStorage.setItem('fcpl_staff_token', TOKEN);
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('appShell').style.display = 'flex';
-      loadAll();
-    } catch (err) {
-      showErr('loginErr', 'Incorrect password. Please try again.');
-    }
-  });
-
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    TOKEN = '';
-    sessionStorage.removeItem('fcpl_staff_token');
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('appShell').style.display = 'none';
-  });
-
-  /* If already logged in (session token still valid), try to show app */
-  if (TOKEN) {
-    fetch('/admin/api/events', { headers: { Authorization: 'Bearer ' + TOKEN } })
-      .then(r => {
-        if (r.ok) {
-          document.getElementById('loginScreen').style.display = 'none';
-          document.getElementById('appShell').style.display = 'flex';
-          loadAll();
-        }
-      }).catch(() => {});
-  }
-
   /* ── Load all data ── */
   function loadAll() {
     loadEvents();
@@ -1472,14 +1463,62 @@
   window.FCPLAdminTabs.init({
     defaultTab: 'events',
     lazyLoadMap: {
-      'homepage-images': () => loadHomepageImages(),
+      announcements: () => loadAnnouncements(),
+      resources: () => loadResources(),
+      hours: () => { loadBranches(); loadHolidays(); },
+      programs: () => loadPrograms(),
+      settings: () => loadSiteSettings(),
+      staff: () => loadStaff(),
+      analytics: () => loadAnalyticsData(),
+      system: () => loadSystemHealth(),
       'homepage-features': () => loadHomepageFeatures(),
       jobs: () => loadJobs(),
-      recyclebin: () => loadRecycleBin(),
+      operations: () => {
+        loadRecycleBin();
+        if (typeof window.loadActivityLog === 'function') window.loadActivityLog();
+        if (typeof window.loadBackups === 'function') window.loadBackups();
+      },
       hosting: () => loadHostingInfo(),
-      activitylog: () => { if (typeof window.loadActivityLog === 'function') window.loadActivityLog(); },
-      backups: () => { if (typeof window.loadBackups === 'function') window.loadBackups(); },
     },
+  });
+
+  window.FCPLAdminActions.init(() => ({
+    openProgramEntry: window.openProgramEntry,
+    saveAdultBookClub: window.saveAdultBookClub,
+    saveLibraryChef: window.saveLibraryChef,
+    openFeatureModal: window.openFeatureModal,
+    setAnalyticsPeriod: window.setAnalyticsPeriod,
+    pruneAnalytics: window.pruneAnalytics,
+    clearAllAnalytics: window.clearAllAnalytics,
+    restartService: window.restartService,
+    downloadBackup: window.downloadBackup,
+    addBookmobileStaff: window.addBookmobileStaff,
+    addBranchStaff: window.addBranchStaff,
+    openImgUpload: window.openImgUpload,
+    closeImgModal: window.closeImgModal,
+    submitImgUpload: window.submitImgUpload,
+    openJobModal: window.openJobModal,
+    closeJobModal: window.closeJobModal,
+    saveJob: window.saveJob,
+    closeFeatureModal: window.closeFeatureModal,
+    saveFeature: window.saveFeature,
+    addHoursRow: window.addHoursRow,
+    removeHoursRow: window.removeHoursRow,
+    saveBranch: window.saveBranch,
+    saveProgramEntry: window.saveProgramEntry,
+    saveResource: window.saveResource,
+    deleteFeature: window.deleteFeature,
+    moveFeature: window.moveFeature,
+    deleteJob: window.deleteJob,
+    loadActivityLog: window.loadActivityLog,
+    loadBackups: window.loadBackups,
+    restoreBackup: window.restoreBackup,
+  }));
+
+  window.FCPLAdminAuth.init({
+    showErr,
+    setToken: token => { TOKEN = token || ''; },
+    onAuthenticated: loadAll,
   });
 
   /* ================================================================
@@ -1682,14 +1721,31 @@
       renderAnnouncements();
     }).catch(() => {
       document.getElementById('annoBody').innerHTML = '<tr><td colspan="4" class="empty">Could not load announcements.</td></tr>';
+      const preview = document.getElementById('eventsAnnouncementsPreview');
+      if (preview) {
+        preview.innerHTML = '<p class="empty">Could not load announcements. Open the Announcements tab and try again.</p>';
+      }
     });
   }
 
   function renderAnnouncements() {
     const tbody = document.getElementById('annoBody');
+    const preview = document.getElementById('eventsAnnouncementsPreview');
     if (!allAnnouncements.length) {
       tbody.innerHTML = '<tr><td colspan="4" class="empty">No announcements. Click "+ Add Announcement" to create one.</td></tr>';
+      if (preview) {
+        preview.innerHTML = '<p class="empty">No announcements yet. Use the Announcements tab to add one.</p>';
+      }
       return;
+    }
+    if (preview) {
+      preview.innerHTML = allAnnouncements.slice(0, 3).map(a => `
+        <div style="padding:.55rem .1rem;border-bottom:1px solid var(--gray-200)">
+          <div style="font-weight:700;color:var(--navy)">${esc(a.title || 'Untitled')}</div>
+          <div style="font-size:.85rem;color:var(--gray-600)">${esc(a.date || '')}</div>
+          <div style="font-size:.9rem;color:var(--gray-700);margin-top:.25rem">${esc((a.body || '').slice(0, 160))}${(a.body || '').length > 160 ? '...' : ''}</div>
+        </div>
+      `).join('');
     }
     tbody.innerHTML = allAnnouncements.map((a, idx) => `
       <tr>
@@ -1745,6 +1801,11 @@
     document.getElementById('annoLink').value = '';
     showErr('annoErr', '');
     document.getElementById('annoModal').classList.add('open');
+  });
+
+  document.getElementById('jumpToAnnouncementsBtn').addEventListener('click', () => {
+    const tabBtn = document.querySelector('.tab-btn[data-tab="announcements"]');
+    if (tabBtn) tabBtn.click();
   });
 
   document.getElementById('closeAnnoModal').addEventListener('click', () => document.getElementById('annoModal').classList.remove('open'));
@@ -1923,7 +1984,7 @@
         <td><input type="text" value="${esc(h.days)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-days="${i}"></td>
         <td><input type="text" value="${esc(h.open)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-open="${i}"></td>
         <td><input type="text" value="${esc(h.close)}" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-close="${i}"></td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeHoursRow(${i})">✕</button></td>
+        <td><button type="button" class="btn btn-danger btn-sm" data-admin-action="remove-hours-row" data-row-id="${i}">✕</button></td>
       </tr>`).join('');
   }
 
@@ -1936,7 +1997,7 @@
       <td><input type="text" placeholder="Mon–Fri" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-days="${i}"></td>
       <td><input type="text" placeholder="9:00 AM" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-open="${i}"></td>
       <td><input type="text" placeholder="5:00 PM" style="width:100%;padding:.3rem .5rem;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem" data-hr-close="${i}"></td>
-      <td><button type="button" class="btn btn-danger btn-sm" onclick="removeHoursRow(${i})">✕</button></td>`;
+      <td><button type="button" class="btn btn-danger btn-sm" data-admin-action="remove-hours-row" data-row-id="${i}">✕</button></td>`;
     tbody.appendChild(tr);
   };
 
@@ -2065,6 +2126,7 @@
       tbody.innerHTML = items.map((item, i) => `
         <tr>
           <td>${esc(item.branch)}</td>
+
           <td>${esc(item.schedule)}</td>
           <td>${esc(item.ages)}</td>
           <td style="white-space:nowrap">
@@ -2089,6 +2151,7 @@
     document.getElementById('abc-location').value = abc.location || '';
     document.getElementById('abc-schedule').value = abc.schedule || '';
     // Library chef
+
     const lc = programsData.library_chef || {};
     document.getElementById('lc-description').value = lc.description || '';
     document.getElementById('lc-url').value = lc.url || '';
@@ -2209,10 +2272,10 @@
           ${f.link ? `<div style="font-size:.8rem;color:var(--blue)">${esc(f.link_label || f.link)}</div>` : ''}
         </div>
         <div style="display:flex;flex-direction:column;gap:.4rem;flex-shrink:0">
-          <button class="btn btn-outline btn-sm" onclick="openFeatureModal(${i})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteFeature(${i})">Delete</button>
-          ${i > 0 ? `<button class="btn btn-outline btn-sm" onclick="moveFeature(${i}, -1)" title="Move up">↑</button>` : ''}
-          ${i < homepageFeatures.length - 1 ? `<button class="btn btn-outline btn-sm" onclick="moveFeature(${i}, 1)" title="Move down">↓</button>` : ''}
+          <button class="btn btn-outline btn-sm" data-admin-action="open-feature-modal" data-idx="${i}">Edit</button>
+          <button class="btn btn-danger btn-sm" data-admin-action="delete-feature" data-idx="${i}">Delete</button>
+          ${i > 0 ? `<button class="btn btn-outline btn-sm" data-admin-action="move-feature" data-idx="${i}" data-dir="-1" title="Move up">↑</button>` : ''}
+          ${i < homepageFeatures.length - 1 ? `<button class="btn btn-outline btn-sm" data-admin-action="move-feature" data-idx="${i}" data-dir="1" title="Move down">↓</button>` : ''}
         </div>
       </div>`).join('');
   }
@@ -2312,8 +2375,8 @@
         <td>${esc(j.salary || '—')}</td>
         <td><span class="badge ${j.status === 'active' ? 'cat-general' : 'cat-children'}" style="${j.status === 'active' ? 'background:#d1fae5;color:#065f46' : 'background:#fee2e2;color:#991b1b'}">${j.status === 'active' ? 'Active' : 'Closed'}</span></td>
         <td style="white-space:nowrap">
-          <button class="btn btn-outline btn-sm" onclick="openJobModal(${i})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteJob(${i})" style="margin-left:.35rem">Delete</button>
+          <button class="btn btn-outline btn-sm" data-admin-action="open-job-modal" data-idx="${i}">Edit</button>
+          <button class="btn btn-danger btn-sm" data-admin-action="delete-job" data-idx="${i}" style="margin-left:.35rem">Delete</button>
         </td>
       </tr>`).join('');
   }
@@ -2397,7 +2460,13 @@
     api('GET', '/api/content/digital_resources').then(res => {
       allResources = res.data || [];
       renderResources();
-    }).catch(() => toast('Could not load digital resources.'));
+    }).catch((e) => {
+      const tbody = document.getElementById('resourcesBody');
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty">Could not load digital resources: ${esc(e.message || 'unknown error')}</td></tr>`;
+      }
+      toast('Could not load digital resources.');
+    });
   }
 
   function renderResources() {
@@ -3212,7 +3281,7 @@
           <td style="font-family:monospace;font-size:.8rem">${esc(b.name)}</td>
           <td style="font-size:.8rem;white-space:nowrap">${dateStr}</td>
           <td style="font-size:.8rem">${kb} KB</td>
-          <td><button class="btn btn-outline btn-sm" data-backup="${esc(b.name)}" onclick="restoreBackup(this.dataset.backup)">Restore</button></td>
+          <td><button class="btn btn-outline btn-sm" data-admin-action="restore-backup" data-backup="${esc(b.name)}">Restore</button></td>
         </tr>`;
       }).join('');
     } catch (e) { tbody.innerHTML = `<tr><td colspan="4" class="empty">Error: ${esc(e.message)}</td></tr>`; }

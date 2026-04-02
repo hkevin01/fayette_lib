@@ -46,6 +46,8 @@
 
 - Admin API integration tests:
   - `cd admin && npm test`
+- Docker-based test execution (no host npm required):
+  - `docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile test run --rm fcpl-admin-test`
 - Faster admin frontend/backend iteration without rebuilding image each edit:
   - `docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile dev up -d --build`
   - This mounts `admin/server.js` and `admin/public` directly into the running admin container.
