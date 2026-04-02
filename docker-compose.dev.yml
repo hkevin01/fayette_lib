@@ -1,0 +1,9 @@
+services:
+  fcpl-admin:
+    profiles: ["dev"]
+    volumes:
+      - ./site/data:/data
+      - ./site/images:/images
+      - ./admin/server.js:/app/server.js
+      - ./admin/public:/app/public
+

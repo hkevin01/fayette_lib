@@ -4,7 +4,8 @@
   "description": "FCPL Staff Admin Backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -13,5 +14,8 @@
     "helmet": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.1"
   }
 }

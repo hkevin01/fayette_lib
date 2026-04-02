@@ -42,6 +42,14 @@
 - [Project Structure Guide](docs/PROJECT_STRUCTURE.md)
 - [Page Maintenance Guide](docs/PAGE_MAINTENANCE_GUIDE.md)
 
+### Developer Ergonomics (New)
+
+- Admin API integration tests:
+  - `cd admin && npm test`
+- Faster admin frontend/backend iteration without rebuilding image each edit:
+  - `docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile dev up -d --build`
+  - This mounts `admin/server.js` and `admin/public` directly into the running admin container.
+
 ---
 
 ## 1. Project Overview

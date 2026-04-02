@@ -219,6 +219,81 @@ function writeJSON(file, data, mode = 0o644) {
   fs.renameSync(tmp, fullPath);
 }
 
+const SCHEMA_VERSION = 1;
+
+function migrateEventsData(raw) {
+  let changed = false;
+  let out;
+
+  if (Array.isArray(raw)) {
+    out = { events: raw };
+    changed = true;
+  } else if (!raw || typeof raw !== 'object') {
+    out = { events: [] };
+    changed = true;
+  } else {
+    out = { ...raw };
+  }
+
+  if (!Array.isArray(out.events)) {
+    out.events = [];
+    changed = true;
+  }
+  if (out._schema_version !== SCHEMA_VERSION) {
+    out._schema_version = SCHEMA_VERSION;
+    changed = true;
+  }
+
+  return { data: out, changed };
+}
+
+function migrateContentData(raw) {
+  let changed = false;
+  let out;
+
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    out = {};
+    changed = true;
+  } else {
+    out = { ...raw };
+  }
+
+  if (out._schema_version !== SCHEMA_VERSION) {
+    out._schema_version = SCHEMA_VERSION;
+    changed = true;
+  }
+
+  return { data: out, changed };
+}
+
+function readMigratedJSON(file, migrator) {
+  const raw = readJSON(file);
+  const { data, changed } = migrator(raw);
+  if (changed) writeJSON(file, data);
+  return data;
+}
+
+function readEventsData() {
+  return readMigratedJSON('events.json', migrateEventsData);
+}
+
+function writeEventsData(data) {
+  writeJSON('events.json', migrateEventsData(data).data);
+}
+
+function readContentData() {
+  return readMigratedJSON('content.json', migrateContentData);
+}
+
+function writeContentData(data) {
+  writeJSON('content.json', migrateContentData(data).data);
+}
+
+function ensureSchemaMigrations() {
+  try { readEventsData(); } catch (e) { console.warn('[schema] events migration skipped:', e.message); }
+  try { readContentData(); } catch (e) { console.warn('[schema] content migration skipped:', e.message); }
+}
+
 /* ================================================================
    AUDIT LOG — every mutating admin action is recorded
    ================================================================ */
@@ -390,18 +465,18 @@ app.post('/admin/api/auth/login', loginLimiter, async (req, res) => {
 
 /* ---- Events ---- */
 app.get('/admin/api/events', requireAuth, (_req, res) => {
-  try { res.json(readJSON('events.json')); }
+  try { res.json(readEventsData()); }
   catch (_) { res.status(500).json({ error: 'Could not read events.' }); }
 });
 
 app.post('/admin/api/events', requireAuth, writeLimiter, (req, res) => {
   try {
-    const data   = readJSON('events.json');
+    const data   = readEventsData();
     const events = Array.isArray(data.events) ? data.events : [];
     const maxId  = events.reduce((m, e) => Math.max(m, Number(e.id) || 0), 0);
     const event  = { id: maxId + 1, ...sanitiseEvent(req.body) };
     events.push(event);
-    writeJSON('events.json', { ...data, events });
+    writeEventsData({ ...data, events });
     res.status(201).json(event);
   } catch (e) {
     res.status(500).json({ error: 'Could not save event.' });
@@ -412,11 +487,11 @@ app.put('/admin/api/events/:id', requireAuth, writeLimiter, (req, res) => {
   try {
     const id   = parseInt(req.params.id, 10);
     if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid id.' });
-    const data = readJSON('events.json');
+    const data = readEventsData();
     const idx  = (data.events || []).findIndex(e => e.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Event not found.' });
     data.events[idx] = { id, ...sanitiseEvent(req.body) };
-    writeJSON('events.json', data);
+    writeEventsData(data);
     res.json(data.events[idx]);
   } catch (_) { res.status(500).json({ error: 'Could not update event.' }); }
 });
@@ -425,12 +500,12 @@ app.delete('/admin/api/events/:id', requireAuth, writeLimiter, (req, res) => {
   try {
     const id    = parseInt(req.params.id, 10);
     if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid id.' });
-    const data  = readJSON('events.json');
+    const data  = readEventsData();
     const event = (data.events || []).find(e => e.id === id);
     if (!event) return res.status(404).json({ error: 'Event not found.' });
     autoBackup('events.json');
     data.events = (data.events || []).filter(e => e.id !== id);
-    writeJSON('events.json', data);
+    writeEventsData(data);
     addToBin('event', event.title || `Event #${id}`, event);
     auditLog(req, 'delete_event', `id=${id} title=${event.title || ''}`);
     res.json({ ok: true });
@@ -440,18 +515,18 @@ app.delete('/admin/api/events/:id', requireAuth, writeLimiter, (req, res) => {
 /* ---- Announcements ---- */
 app.get('/admin/api/announcements', requireAuth, (_req, res) => {
   try {
-    const data = readJSON('content.json');
+    const data = readContentData();
     res.json({ announcements: data.announcements || [] });
   } catch (_) { res.status(500).json({ error: 'Could not read announcements.' }); }
 });
 
 app.post('/admin/api/announcements', requireAuth, writeLimiter, (req, res) => {
   try {
-    const data = readJSON('content.json');
+    const data = readContentData();
     if (!Array.isArray(data.announcements)) data.announcements = [];
     const entry = sanitiseAnnouncement(req.body);
     data.announcements.unshift(entry);
-    writeJSON('content.json', data);
+    writeContentData(data);
     res.status(201).json(entry);
   } catch (_) { res.status(500).json({ error: 'Could not save announcement.' }); }
 });
@@ -460,12 +535,12 @@ app.put('/admin/api/announcements/:idx', requireAuth, writeLimiter, (req, res) =
   try {
     const idx  = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     if (!data.announcements || idx >= data.announcements.length) {
       return res.status(404).json({ error: 'Announcement not found.' });
     }
     data.announcements[idx] = sanitiseAnnouncement(req.body);
-    writeJSON('content.json', data);
+    writeContentData(data);
     res.json(data.announcements[idx]);
   } catch (_) { res.status(500).json({ error: 'Could not update announcement.' }); }
 });
@@ -474,14 +549,14 @@ app.delete('/admin/api/announcements/:idx', requireAuth, writeLimiter, (req, res
   try {
     const idx  = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     if (!data.announcements || idx >= data.announcements.length) {
       return res.status(404).json({ error: 'Announcement not found.' });
     }
     const announcement = data.announcements[idx];
     autoBackup('content.json');
     data.announcements.splice(idx, 1);
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('announcement', announcement.title || `Announcement #${idx}`, announcement);
     auditLog(req, 'delete_announcement', `idx=${idx} title=${announcement.title || ''}`);
     res.json({ ok: true });
@@ -898,7 +973,7 @@ app.get('/admin/api/content/:section', requireAuth, (req, res) => {
   const { section } = req.params;
   if (!ALLOWED_SECTIONS.has(section)) return res.status(400).json({ error: 'Unknown section.' });
   try {
-    const data = readJSON('content.json');
+    const data = readContentData();
     res.json({ section, data: data[section] });
   } catch (_) { res.status(500).json({ error: 'Could not read content.' }); }
 });
@@ -909,9 +984,9 @@ app.put('/admin/api/content/:section', requireAuth, writeLimiter, (req, res) => 
   try {
     const sanitised = sanitiseContentSection(section, req.body);
     autoBackup('content.json');
-    const data = readJSON('content.json');
+    const data = readContentData();
     data[section] = sanitised;
-    writeJSON('content.json', data);
+    writeContentData(data);
     auditLog(req, 'update_content', `section=${section}`);
     res.json({ section, data: sanitised });
   } catch (e) { res.status(500).json({ error: e.message || 'Could not update content.' }); }
@@ -924,13 +999,13 @@ app.delete('/admin/api/content/digital_resources/:idx', requireAuth, writeLimite
   try {
     const idx = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     const resources = Array.isArray(data.digital_resources) ? data.digital_resources : [];
     if (idx >= resources.length) return res.status(404).json({ error: 'Resource not found.' });
     const removed = resources.splice(idx, 1)[0];
     data.digital_resources = resources;
     autoBackup('content.json');
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('digital_resource', removed.name || `Resource #${idx}`, removed);
     auditLog(req, 'delete_resource', `name=${removed.name || ''}`);
     res.json({ ok: true });
@@ -943,7 +1018,7 @@ app.delete('/admin/api/content/programs/:key/:idx', requireAuth, writeLimiter, (
     if (!PROGRAM_ARRAY_KEYS.has(key)) return res.status(400).json({ error: 'Invalid program key.' });
     const idx = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     const programs = data.programs || {};
     const arr = Array.isArray(programs[key]) ? programs[key] : [];
     if (idx >= arr.length) return res.status(404).json({ error: 'Program entry not found.' });
@@ -951,7 +1026,7 @@ app.delete('/admin/api/content/programs/:key/:idx', requireAuth, writeLimiter, (
     programs[key] = arr;
     data.programs = programs;
     autoBackup('content.json');
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('program', `${key} – ${removed.branch || ''}`, { ...removed, _key: key });
     auditLog(req, 'delete_program', `key=${key} branch=${removed.branch || ''}`);
     res.json({ ok: true });
@@ -963,13 +1038,13 @@ app.delete('/admin/api/content/homepage_features/:idx', requireAuth, writeLimite
   try {
     const idx = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     const features = Array.isArray(data.homepage_features) ? data.homepage_features : [];
     if (idx >= features.length) return res.status(404).json({ error: 'Feature not found.' });
     const removed = features.splice(idx, 1)[0];
     data.homepage_features = features;
     autoBackup('content.json');
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('homepage_feature', removed.title || `Feature #${idx}`, removed);
     auditLog(req, 'delete_homepage_feature', `idx=${idx} title=${removed.title || ''}`);
     res.json({ ok: true });
@@ -981,13 +1056,13 @@ app.delete('/admin/api/content/jobs/:idx', requireAuth, writeLimiter, (req, res)
   try {
     const idx = parseInt(req.params.idx, 10);
     if (!Number.isFinite(idx) || idx < 0) return res.status(400).json({ error: 'Invalid index.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     const jobs = Array.isArray(data.jobs) ? data.jobs : [];
     if (idx >= jobs.length) return res.status(404).json({ error: 'Job posting not found.' });
     const removed = jobs.splice(idx, 1)[0];
     data.jobs = jobs;
     autoBackup('content.json');
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('job_posting', removed.title || `Job #${idx}`, removed);
     auditLog(req, 'delete_job', `idx=${idx} title=${removed.title || ''}`);
     res.json({ ok: true });
@@ -997,7 +1072,7 @@ app.delete('/admin/api/content/jobs/:idx', requireAuth, writeLimiter, (req, res)
 /* ---- Homepage Images ---- */
 app.get('/admin/api/homepage-images', requireAuth, (_req, res) => {
   try {
-    const data = readJSON('content.json');
+    const data = readContentData();
     res.json({ images: Array.isArray(data.homepage_images) ? data.homepage_images : [] });
   } catch (_) { res.status(500).json({ error: 'Could not read homepage images.' }); }
 });
@@ -1016,10 +1091,10 @@ app.post('/admin/api/homepage-images', requireAuth, (req, res) => {
       link_label: link_label ? str(link_label, 200) : undefined,
     };
     if (!entry.src) return res.status(400).json({ error: 'src is required.' });
-    const data = readJSON('content.json');
+    const data = readContentData();
     if (!Array.isArray(data.homepage_images)) data.homepage_images = [];
     data.homepage_images.push(entry);
-    writeJSON('content.json', data);
+    writeContentData(data);
     res.status(201).json(entry);
   } catch (_) { res.status(500).json({ error: 'Could not add image.' }); }
 });
@@ -1029,7 +1104,7 @@ app.put('/admin/api/homepage-images/:id', requireAuth, (req, res) => {
     const { id } = req.params;
     const { alt, caption, type, link, link_label } = req.body || {};
     const allowedTypes = new Set(['slider', 'featured']);
-    const data = readJSON('content.json');
+    const data = readContentData();
     const images = Array.isArray(data.homepage_images) ? data.homepage_images : [];
     const idx = images.findIndex(img => img.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Image not found.' });
@@ -1042,7 +1117,7 @@ app.put('/admin/api/homepage-images/:id', requireAuth, (req, res) => {
       link_label: link_label !== undefined ? (link_label ? str(link_label, 200) : undefined) : images[idx].link_label,
     };
     data.homepage_images = images;
-    writeJSON('content.json', data);
+    writeContentData(data);
     res.json(images[idx]);
   } catch (_) { res.status(500).json({ error: 'Could not update image.' }); }
 });
@@ -1050,13 +1125,13 @@ app.put('/admin/api/homepage-images/:id', requireAuth, (req, res) => {
 app.delete('/admin/api/homepage-images/:id', requireAuth, writeLimiter, (req, res) => {
   try {
     const { id } = req.params;
-    const data = readJSON('content.json');
+    const data = readContentData();
     const images = Array.isArray(data.homepage_images) ? data.homepage_images : [];
     const removed = images.find(img => img.id === id);
     if (!removed) return res.status(404).json({ error: 'Image not found.' });
     autoBackup('content.json');
     data.homepage_images = images.filter(img => img.id !== id);
-    writeJSON('content.json', data);
+    writeContentData(data);
     addToBin('homepage_image', removed.alt || removed.src || id, removed);
     auditLog(req, 'delete_image', `alt=${removed.alt || ''} src=${removed.src || ''}`);
     res.json({ ok: true });
@@ -1086,45 +1161,45 @@ app.post('/admin/api/recycle-bin/:binId/restore', requireAuth, writeLimiter, (re
     const item  = bin.items[idx];
 
     if (item.type === 'event') {
-      const evData = readJSON('events.json');
+      const evData = readEventsData();
       const events = Array.isArray(evData.events) ? evData.events : [];
       const maxId  = events.reduce((m, e) => Math.max(m, Number(e.id) || 0), 0);
       events.push({ ...item.data, id: maxId + 1 });
-      writeJSON('events.json', { ...evData, events });
+      writeEventsData({ ...evData, events });
     } else if (item.type === 'announcement') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!Array.isArray(cData.announcements)) cData.announcements = [];
       cData.announcements.unshift(item.data);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else if (item.type === 'digital_resource') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!Array.isArray(cData.digital_resources)) cData.digital_resources = [];
       cData.digital_resources.push(item.data);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else if (item.type === 'program') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!cData.programs) cData.programs = {};
       const key = item.data._key;
       if (!key || !PROGRAM_ARRAY_KEYS.has(key)) return res.status(400).json({ error: 'Cannot restore: unknown program key.' });
       const { _key: _k, ...restData } = item.data;
       if (!Array.isArray(cData.programs[key])) cData.programs[key] = [];
       cData.programs[key].push(restData);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else if (item.type === 'homepage_image') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!Array.isArray(cData.homepage_images)) cData.homepage_images = [];
       cData.homepage_images.push(item.data);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else if (item.type === 'homepage_feature') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!Array.isArray(cData.homepage_features)) cData.homepage_features = [];
       cData.homepage_features.push(item.data);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else if (item.type === 'job_posting') {
-      const cData = readJSON('content.json');
+      const cData = readContentData();
       if (!Array.isArray(cData.jobs)) cData.jobs = [];
       cData.jobs.push(item.data);
-      writeJSON('content.json', cData);
+      writeContentData(cData);
     } else {
       return res.status(400).json({ error: 'Unknown item type.' });
     }
@@ -1611,11 +1686,26 @@ app.use((err, _req, res, _next) => {
 /* ================================================================
    START
    ================================================================ */
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`FCPL Admin backend running on port ${PORT}`);
-  console.log(`Data directory : ${DATA_DIR}`);
-  console.log(`Images directory: ${IMAGES_DIR}`);
-  console.log(`Password auth : ${STAFF_HASH ? 'bcrypt hash ✓' : 'plaintext (upgrade recommended)'}`);
-});
+function startServer() {
+  ensureSchemaMigrations();
+  return app.listen(PORT, '0.0.0.0', () => {
+    console.log(`FCPL Admin backend running on port ${PORT}`);
+    console.log(`Data directory : ${DATA_DIR}`);
+    console.log(`Images directory: ${IMAGES_DIR}`);
+    console.log(`Password auth : ${STAFF_HASH ? 'bcrypt hash ✓' : 'plaintext (upgrade recommended)'}`);
+  });
+}
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = {
+  app,
+  startServer,
+  migrateEventsData,
+  migrateContentData,
+  ensureSchemaMigrations,
+};
 
 
