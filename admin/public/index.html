@@ -644,6 +644,24 @@
           </div>
         </div>
         <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">🔄 Renewal Process</h3></div>
+          <div class="card-body">
+            <p id="hostingRenewalProcess" style="font-size:.9rem;color:var(--gray-700);margin:0;white-space:pre-wrap">Review expiration dates, confirm active registrar account access, and renew before the due date.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">📚 Information Source</h3></div>
+          <div class="card-body">
+            <p id="hostingInfoSource" style="font-size:.9rem;color:var(--gray-700);margin:0;white-space:pre-wrap">Account dashboard, registrar billing portal, and district IT records.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-head"><h3 style="margin:0;font-size:1rem">💳 Staff Renewal & Payment</h3></div>
+          <div class="card-body">
+            <p id="hostingStaffPayment" style="font-size:.9rem;color:var(--gray-700);margin:0;white-space:pre-wrap">Assigned staff logs in, renews subscription, and submits payment using the approved library payment method.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
           <div class="card-head"><h3 style="margin:0;font-size:1rem">🐳 Docker Support</h3></div>
           <div class="card-body">
             <p style="font-size:1.2rem;font-weight:700;color:var(--green);margin:0">✓ Yes</p>
@@ -677,6 +695,21 @@
       </div>
 
       <div class="card">
+        <div class="card-head"><h2>🧾 Staff Renewal Checklist</h2></div>
+        <div class="card-body" style="font-size:.9rem;color:var(--gray-700)">
+          <ol style="margin:0 0 .75rem 1.2rem;padding:0;line-height:1.55">
+            <li>60 days before due date: confirm domain + hosting expiration dates and verify account login works.</li>
+            <li>45 days before due date: confirm budget line and payment method with administration.</li>
+            <li>30 days before due date: renew domain and hosting terms in provider portal (recommend 1-year minimum).</li>
+            <li>Immediately after payment: download invoice/receipt and save to shared finance records.</li>
+            <li>Same day: update this Hosting tab with new renewal date, receipt location, and any account changes.</li>
+            <li>If blocked: escalate to IT contact and Library Director before due date to prevent service interruption.</li>
+          </ol>
+          <p style="margin:0;color:var(--gray-600)">Tip: Use a shared calendar reminder at 60/45/30/14 days before expiration.</p>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h2>📋 Update Hosting Information</h2></div>
         <div class="card-body">
           <div class="form-row">
@@ -690,6 +723,18 @@
           <div class="form-row">
             <div class="fg"><label>SSL Certificate Provider</label><input type="text" id="hosting-ssl" placeholder="Let's Encrypt, DigiCert, etc." maxlength="120"></div>
             <div class="fg"><label>SSL Expiry Date (YYYY-MM-DD)</label><input type="date" id="hosting-ssl-expiry"></div>
+          </div>
+          <div class="fg" style="margin-bottom:1rem">
+            <label>How To Renew (Steps)</label>
+            <textarea id="hosting-renewal-process" rows="5" maxlength="2000" placeholder="List exact renewal steps, timing windows, and escalation contacts."></textarea>
+          </div>
+          <div class="fg" style="margin-bottom:1rem">
+            <label>Where To Get Hosting Information</label>
+            <textarea id="hosting-info-source" rows="4" maxlength="2000" placeholder="Document exact portals, shared drive folders, credentials owner, and support contacts."></textarea>
+          </div>
+          <div class="fg" style="margin-bottom:1rem">
+            <label>How Staff Renew and Pay Subscription Fees</label>
+            <textarea id="hosting-staff-payment" rows="5" maxlength="2000" placeholder="Document approver, purchaser, payment method, receipt storage, and post-payment verification."></textarea>
           </div>
           <button class="btn btn-primary" id="saveHostingBtn">Save Hosting Information</button>
         </div>
@@ -2672,6 +2717,9 @@
     domain_renewal: '2027-01-30',
     ssl_provider: "Let's Encrypt (R13)",
     ssl_expiry: '2026-05-28',
+    renewal_process: '1) 60 days before due date, verify expiration dates and account access.\n2) Confirm budget approval and payment method with administration.\n3) Renew domain/hosting from provider portal at least 30 days before expiration.\n4) Verify confirmation email and active service term after renewal.\n5) Update this Hosting tab with new dates and notes.',
+    info_source: 'Primary source: registrar or hosting provider dashboard.\nBilling source: provider invoices/receipts and finance office records.\nTechnical source: district IT documentation and DNS zone records.\nCredential source: approved password vault or designated account owner.',
+    staff_payment: 'Assigned staff member initiates renewal in provider portal.\nLibrary Director or approved designee confirms purchase authorization.\nPay using approved card or purchase workflow per library policy.\nSave invoice/receipt to shared finance folder and record transaction ID.\nAfter payment, confirm service term updated and set reminder for next cycle.',
   };
 
   function loadHostingInfo() {
@@ -2695,6 +2743,9 @@
     document.getElementById('hostingDomainRenewal').textContent = hostingData.domain_renewal ? 'Due: ' + hostingData.domain_renewal : 'Not set';
     document.getElementById('hostingSslStatus').textContent = hostingData.ssl_provider || "Let's Encrypt";
     document.getElementById('hostingSslExpiry').textContent = hostingData.ssl_expiry ? 'Expires: ' + hostingData.ssl_expiry : 'Not set';
+    document.getElementById('hostingRenewalProcess').textContent = hostingData.renewal_process || 'Not configured';
+    document.getElementById('hostingInfoSource').textContent = hostingData.info_source || 'Not configured';
+    document.getElementById('hostingStaffPayment').textContent = hostingData.staff_payment || 'Not configured';
 
     // Populate form
     document.getElementById('hosting-dns').value = hostingData.dns_provider || '';
@@ -2703,6 +2754,9 @@
     document.getElementById('hosting-renewal-date').value = hostingData.domain_renewal || '';
     document.getElementById('hosting-ssl').value = hostingData.ssl_provider || '';
     document.getElementById('hosting-ssl-expiry').value = hostingData.ssl_expiry || '';
+    document.getElementById('hosting-renewal-process').value = hostingData.renewal_process || '';
+    document.getElementById('hosting-info-source').value = hostingData.info_source || '';
+    document.getElementById('hosting-staff-payment').value = hostingData.staff_payment || '';
   }
 
   document.getElementById('saveHostingBtn').addEventListener('click', async () => {
@@ -2713,6 +2767,9 @@
       domain_renewal: document.getElementById('hosting-renewal-date').value || '',
       ssl_provider: document.getElementById('hosting-ssl').value.trim() || "Let's Encrypt",
       ssl_expiry: document.getElementById('hosting-ssl-expiry').value || '',
+      renewal_process: document.getElementById('hosting-renewal-process').value.trim() || '',
+      info_source: document.getElementById('hosting-info-source').value.trim() || '',
+      staff_payment: document.getElementById('hosting-staff-payment').value.trim() || '',
     };
     try {
       await api('PUT', '/api/content/hosting', hostingData);

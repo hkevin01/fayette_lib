@@ -609,6 +609,9 @@ function sanitiseContentSection(section, data) {
         domain_renewal:  str(data.domain_renewal, 30),
         ssl_provider:    str(data.ssl_provider, 120),
         ssl_expiry:      str(data.ssl_expiry, 30),
+        renewal_process: str(data.renewal_process, 2000),
+        info_source:     str(data.info_source, 2000),
+        staff_payment:   str(data.staff_payment, 2000),
       };
     }
     case 'holiday_closures': {
