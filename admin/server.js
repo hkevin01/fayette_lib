@@ -22,6 +22,8 @@ const multer      = require('multer');
 const path        = require('path');
 const fs          = require('fs');
 const crypto      = require('crypto');
+const dns         = require('dns').promises;
+const https       = require('https');
 
 const app = express();
 
@@ -666,6 +668,184 @@ function sanitiseContentSection(section, data) {
   }
 }
 
+function formatDateISO(input) {
+  if (!input) return '';
+  const d = new Date(input);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toISOString().slice(0, 10);
+}
+
+function getDomainCandidates(hostname) {
+  const labels = String(hostname || '').split('.').filter(Boolean);
+  const out = [];
+  for (let i = 0; i < labels.length - 1; i++) {
+    out.push(labels.slice(i).join('.'));
+  }
+  return out;
+}
+
+function httpsRequestJSON(urlString, timeoutMs = 7000) {
+  return new Promise((resolve, reject) => {
+    let url;
+    try {
+      url = new URL(urlString);
+    } catch (e) {
+      return reject(new Error('Invalid URL'));
+    }
+
+    const req = https.request({
+      protocol: url.protocol,
+      hostname: url.hostname,
+      port: url.port || 443,
+      path: (url.pathname || '/') + (url.search || ''),
+      method: 'GET',
+      timeout: timeoutMs,
+      headers: {
+        'User-Agent': 'fcpl-admin/1.0',
+        'Accept': 'application/json',
+      },
+    }, (res) => {
+      let body = '';
+      res.setEncoding('utf8');
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          return reject(new Error(`HTTP ${res.statusCode}`));
+        }
+        try {
+          resolve(JSON.parse(body));
+        } catch (_e) {
+          reject(new Error('Invalid JSON response'));
+        }
+      });
+    });
+
+    req.on('timeout', () => req.destroy(new Error('Request timeout')));
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+function httpsProbe(hostname, timeoutMs = 7000) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname,
+      port: 443,
+      path: '/',
+      method: 'GET',
+      timeout: timeoutMs,
+      servername: hostname,
+      rejectUnauthorized: false,
+      headers: {
+        'User-Agent': 'fcpl-admin/1.0',
+      },
+    }, (res) => {
+      const cert = res.socket && res.socket.getPeerCertificate
+        ? res.socket.getPeerCertificate()
+        : null;
+      resolve({
+        statusCode: res.statusCode,
+        headers: res.headers || {},
+        cert,
+      });
+      res.resume();
+    });
+    req.on('timeout', () => req.destroy(new Error('Probe timeout')));
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+async function discoverHostingInfo(hostname) {
+  const target = String(hostname || '').trim().toLowerCase();
+  if (!target || !/^[a-z0-9.-]+$/.test(target)) {
+    throw new Error('Invalid hostname');
+  }
+
+  const discovered = {
+    source_hostname: target,
+    checked_at: new Date().toISOString(),
+  };
+
+  try {
+    const ips = await dns.lookup(target, { all: true });
+    if (Array.isArray(ips) && ips.length) {
+      discovered.server_ip = ips[0].address;
+    }
+  } catch (_) {}
+
+  const nsCandidates = getDomainCandidates(target);
+  for (const candidate of nsCandidates) {
+    try {
+      const ns = await dns.resolveNs(candidate);
+      if (Array.isArray(ns) && ns.length) {
+        discovered.dns_provider = ns.join(', ');
+        break;
+      }
+    } catch (_) {}
+  }
+
+  try {
+    const probe = await httpsProbe(target);
+    const serverHeader = String(probe.headers.server || '').trim();
+    const poweredBy = String(probe.headers['x-powered-by'] || '').trim();
+    const serviceParts = [serverHeader, poweredBy].filter(Boolean);
+    if (serviceParts.length) {
+      discovered.hosting_service = serviceParts.join(' / ');
+    }
+    const cert = probe.cert || {};
+    const issuerOrg = (cert.issuer && (cert.issuer.O || cert.issuer.CN)) || '';
+    if (issuerOrg) discovered.ssl_provider = String(issuerOrg);
+    if (cert.valid_to) discovered.ssl_expiry = formatDateISO(cert.valid_to);
+  } catch (_) {}
+
+  for (const candidate of nsCandidates) {
+    try {
+      const rdap = await httpsRequestJSON(`https://rdap.org/domain/${candidate}`);
+      const events = Array.isArray(rdap.events) ? rdap.events : [];
+      const exp = events.find(e => /expir/i.test(String(e.eventAction || '')));
+      if (exp && exp.eventDate) {
+        discovered.domain_renewal = formatDateISO(exp.eventDate);
+      }
+      if (!discovered.dns_provider) {
+        const entities = Array.isArray(rdap.entities) ? rdap.entities : [];
+        const registrar = entities.find(ent => {
+          const roles = Array.isArray(ent.roles) ? ent.roles : [];
+          return roles.includes('registrar');
+        });
+        const vcard = registrar && Array.isArray(registrar.vcardArray) ? registrar.vcardArray : null;
+        const fields = vcard && Array.isArray(vcard[1]) ? vcard[1] : [];
+        const fn = fields.find(f => Array.isArray(f) && f[0] === 'fn');
+        if (fn && fn[3]) discovered.dns_provider = String(fn[3]);
+      }
+      if (discovered.domain_renewal || discovered.dns_provider) break;
+    } catch (_) {}
+  }
+
+  const renewalTarget = discovered.domain_renewal || 'the registrar renewal date';
+  const sslTarget = discovered.ssl_expiry || 'the SSL certificate expiry date';
+  discovered.renewal_process = [
+    `1) Verify live DNS/IP/SSL values for ${target}.`,
+    `2) Confirm renewal budget and approver before ${renewalTarget}.`,
+    `3) Renew domain/hosting with provider before ${renewalTarget}.`,
+    `4) Confirm TLS certificate is valid through at least ${sslTarget}.`,
+    '5) Save invoice and update this hosting record immediately after renewal.',
+  ].join('\n');
+  discovered.info_source = [
+    `Live source host: ${target}`,
+    `Checked: ${discovered.checked_at}`,
+    'Data sources: DNS lookup, nameserver records, HTTPS response headers, TLS certificate metadata, and RDAP domain records.',
+  ].join('\n');
+  discovered.staff_payment = [
+    'Assigned staff member initiates renewal in the provider account.',
+    `Director/approver validates renewal window tied to ${renewalTarget}.`,
+    'Payment is completed using the approved purchasing workflow.',
+    'Invoice/receipt is stored in finance records and transaction ID is logged in admin notes.',
+  ].join('\n');
+
+  return discovered;
+}
+
 app.get('/admin/api/content/:section', requireAuth, (req, res) => {
   const { section } = req.params;
   if (!ALLOWED_SECTIONS.has(section)) return res.status(400).json({ error: 'Unknown section.' });
@@ -1264,6 +1444,21 @@ app.get('/admin/api/system/health', requireAuth, (_req, res) => {
     },
     timestamp: new Date().toISOString(),
   });
+});
+
+/**
+ * GET /admin/api/hosting/discover
+ * Discover live hosting details from DNS/HTTPS/RDAP (requires auth)
+ * Query: ?host=fayette.lib.wv.us
+ */
+app.get('/admin/api/hosting/discover', requireAuth, async (req, res) => {
+  const host = String(req.query.host || 'fayette.lib.wv.us').trim();
+  try {
+    const discovered = await discoverHostingInfo(host);
+    res.json({ host, discovered });
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not discover hosting info.' });
+  }
 });
 
 /**

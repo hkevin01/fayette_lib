@@ -606,6 +606,16 @@
 
     <!-- ===== HOSTING INFO TAB ===== -->
     <div class="tab-pane" id="tab-hosting">
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-body" style="display:flex;gap:.75rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
+          <div>
+            <div style="font-size:.78rem;color:var(--gray-600);text-transform:uppercase;letter-spacing:.04em">Live Hosting Source</div>
+            <div id="hostingLiveStatus" style="font-size:.9rem;color:var(--gray-700)">Checking live hosting source...</div>
+          </div>
+          <button class="btn btn-outline btn-sm" id="refreshHostingLiveBtn">Refresh From Live Source</button>
+        </div>
+      </div>
+
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:1.5rem">
         <div class="card" style="margin-bottom:0">
           <div class="card-head"><h3 style="margin:0;font-size:1rem">🔗 DNS Provider</h3></div>
@@ -712,31 +722,167 @@
       <div class="card">
         <div class="card-head"><h2>📋 Update Hosting Information</h2></div>
         <div class="card-body">
-          <div class="form-row">
-            <div class="fg"><label>DNS Provider</label><input type="text" id="hosting-dns" placeholder="GoDaddy, Namecheap, Cloudflare, etc." maxlength="120"></div>
-            <div class="fg"><label>Hosting Service</label><input type="text" id="hosting-service" placeholder="Docker, VPS, Dedicated, etc." maxlength="120"></div>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-top:0;margin-bottom:1rem">Each setting has its own box. Click <strong>Edit</strong> to update one item at a time.</p>
+          <div id="hostingEditGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem">
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">DNS Provider</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="dns_provider">Edit</button>
+              </div>
+              <p id="hosting-editor-view-dns_provider" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-dns_provider" style="display:none;margin-top:.6rem">
+                <select id="hosting-edit-dns-select">
+                  <option value="West Virginia Library Commission (lib.wv.us)">West Virginia Library Commission (lib.wv.us)</option>
+                  <option value="GoDaddy">GoDaddy</option>
+                  <option value="Cloudflare">Cloudflare</option>
+                  <option value="Namecheap">Namecheap</option>
+                  <option value="Route 53">Route 53</option>
+                  <option value="__custom__">Custom...</option>
+                </select>
+                <input type="text" id="hosting-edit-dns-custom" placeholder="Enter custom DNS provider" maxlength="120" style="display:none;margin-top:.5rem">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="dns_provider">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="dns_provider">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">Hosting Service</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="hosting_service">Edit</button>
+              </div>
+              <p id="hosting-editor-view-hosting_service" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-hosting_service" style="display:none;margin-top:.6rem">
+                <select id="hosting-edit-service-select">
+                  <option value="Apache / WordPress (production)">Apache / WordPress (production)</option>
+                  <option value="Docker / Nginx">Docker / Nginx</option>
+                  <option value="Shared Hosting">Shared Hosting</option>
+                  <option value="VPS">VPS</option>
+                  <option value="Dedicated Server">Dedicated Server</option>
+                  <option value="__custom__">Custom...</option>
+                </select>
+                <input type="text" id="hosting-edit-service-custom" placeholder="Enter custom hosting service" maxlength="160" style="display:none;margin-top:.5rem">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="hosting_service">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="hosting_service">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">Server IP Address</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="server_ip">Edit</button>
+              </div>
+              <p id="hosting-editor-view-server_ip" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-server_ip" style="display:none;margin-top:.6rem">
+                <input type="text" id="hosting-edit-server-ip" placeholder="203.0.113.42 or example.com" maxlength="120">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="server_ip">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="server_ip">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">Domain Renewal Date</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="domain_renewal">Edit</button>
+              </div>
+              <p id="hosting-editor-view-domain_renewal" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-domain_renewal" style="display:none;margin-top:.6rem">
+                <input type="date" id="hosting-edit-domain-renewal">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="domain_renewal">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="domain_renewal">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">SSL Certificate Provider</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="ssl_provider">Edit</button>
+              </div>
+              <p id="hosting-editor-view-ssl_provider" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-ssl_provider" style="display:none;margin-top:.6rem">
+                <select id="hosting-edit-ssl-select">
+                  <option value="Let's Encrypt (R13)">Let's Encrypt (R13)</option>
+                  <option value="Let's Encrypt">Let's Encrypt</option>
+                  <option value="DigiCert">DigiCert</option>
+                  <option value="Sectigo">Sectigo</option>
+                  <option value="Cloudflare SSL">Cloudflare SSL</option>
+                  <option value="__custom__">Custom...</option>
+                </select>
+                <input type="text" id="hosting-edit-ssl-custom" placeholder="Enter custom SSL provider" maxlength="120" style="display:none;margin-top:.5rem">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="ssl_provider">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="ssl_provider">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">SSL Expiry Date</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="ssl_expiry">Edit</button>
+              </div>
+              <p id="hosting-editor-view-ssl_expiry" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-ssl_expiry" style="display:none;margin-top:.6rem">
+                <input type="date" id="hosting-edit-ssl-expiry">
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="ssl_expiry">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="ssl_expiry">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff;grid-column:1 / -1">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">How To Renew (Steps)</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="renewal_process">Edit</button>
+              </div>
+              <p id="hosting-editor-view-renewal_process" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-renewal_process" style="display:none;margin-top:.6rem">
+                <textarea id="hosting-edit-renewal-process" rows="5" maxlength="2000" placeholder="List exact renewal steps, timing windows, and escalation contacts."></textarea>
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="renewal_process">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="renewal_process">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff;grid-column:1 / -1">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">Where To Get Hosting Information</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="info_source">Edit</button>
+              </div>
+              <p id="hosting-editor-view-info_source" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-info_source" style="display:none;margin-top:.6rem">
+                <textarea id="hosting-edit-info-source" rows="4" maxlength="2000" placeholder="Document exact portals, shared drive folders, credentials owner, and support contacts."></textarea>
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="info_source">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="info_source">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--gray-200);border-radius:10px;padding:.85rem;background:#fff;grid-column:1 / -1">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+                <strong style="font-size:.9rem">How Staff Renew and Pay Subscription Fees</strong>
+                <button class="btn btn-outline btn-sm" data-action="hosting-edit" data-key="staff_payment">Edit</button>
+              </div>
+              <p id="hosting-editor-view-staff_payment" style="font-size:.9rem;color:var(--gray-700);margin:.55rem 0 0;white-space:pre-wrap">Not configured</p>
+              <div id="hosting-editor-form-staff_payment" style="display:none;margin-top:.6rem">
+                <textarea id="hosting-edit-staff-payment" rows="5" maxlength="2000" placeholder="Document approver, purchaser, payment method, receipt storage, and post-payment verification."></textarea>
+                <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+                  <button class="btn btn-primary btn-sm" data-action="hosting-save" data-key="staff_payment">Save</button>
+                  <button class="btn btn-outline btn-sm" data-action="hosting-cancel" data-key="staff_payment">Cancel</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="form-row">
-            <div class="fg"><label>Server IP Address</label><input type="text" id="hosting-ip" placeholder="203.0.113.42 or example.com" maxlength="120"></div>
-            <div class="fg"><label>Domain Renewal Date (YYYY-MM-DD)</label><input type="date" id="hosting-renewal-date"></div>
-          </div>
-          <div class="form-row">
-            <div class="fg"><label>SSL Certificate Provider</label><input type="text" id="hosting-ssl" placeholder="Let's Encrypt, DigiCert, etc." maxlength="120"></div>
-            <div class="fg"><label>SSL Expiry Date (YYYY-MM-DD)</label><input type="date" id="hosting-ssl-expiry"></div>
-          </div>
-          <div class="fg" style="margin-bottom:1rem">
-            <label>How To Renew (Steps)</label>
-            <textarea id="hosting-renewal-process" rows="5" maxlength="2000" placeholder="List exact renewal steps, timing windows, and escalation contacts."></textarea>
-          </div>
-          <div class="fg" style="margin-bottom:1rem">
-            <label>Where To Get Hosting Information</label>
-            <textarea id="hosting-info-source" rows="4" maxlength="2000" placeholder="Document exact portals, shared drive folders, credentials owner, and support contacts."></textarea>
-          </div>
-          <div class="fg" style="margin-bottom:1rem">
-            <label>How Staff Renew and Pay Subscription Fees</label>
-            <textarea id="hosting-staff-payment" rows="5" maxlength="2000" placeholder="Document approver, purchaser, payment method, receipt storage, and post-payment verification."></textarea>
-          </div>
-          <button class="btn btn-primary" id="saveHostingBtn">Save Hosting Information</button>
         </div>
       </div>
     </div>
@@ -2721,19 +2867,66 @@
     info_source: 'Primary source: registrar or hosting provider dashboard.\nBilling source: provider invoices/receipts and finance office records.\nTechnical source: district IT documentation and DNS zone records.\nCredential source: approved password vault or designated account owner.',
     staff_payment: 'Assigned staff member initiates renewal in provider portal.\nLibrary Director or approved designee confirms purchase authorization.\nPay using approved card or purchase workflow per library policy.\nSave invoice/receipt to shared finance folder and record transaction ID.\nAfter payment, confirm service term updated and set reminder for next cycle.',
   };
+  const hostingLiveTargetHost = 'fayette.lib.wv.us';
+
+  function setHostingLiveStatus(msg, color) {
+    const el = document.getElementById('hostingLiveStatus');
+    if (!el) return;
+    el.textContent = msg;
+    if (color) el.style.color = color;
+  }
 
   function loadHostingInfo() {
-    api('GET', '/api/content/hosting').then(res => {
-      const incoming = res && res.data ? res.data : {};
+    setHostingLiveStatus('Checking live source: ' + hostingLiveTargetHost + ' ...', 'var(--gray-700)');
+    Promise.allSettled([
+      api('GET', '/api/content/hosting'),
+      api('GET', '/api/hosting/discover?host=' + encodeURIComponent(hostingLiveTargetHost)),
+    ]).then(([savedRes, liveRes]) => {
+      const saved = savedRes.status === 'fulfilled' && savedRes.value && savedRes.value.data
+        ? savedRes.value.data
+        : {};
+      const discovered = liveRes.status === 'fulfilled' && liveRes.value && liveRes.value.discovered
+        ? liveRes.value.discovered
+        : {};
+
       hostingData = {
         ...hostingData,
-        ...incoming,
+        ...saved,
+        ...discovered,
       };
       renderHostingInfo();
+
+      if (discovered && discovered.checked_at) {
+        setHostingLiveStatus('Live data synced from ' + hostingLiveTargetHost + ' at ' + new Date(discovered.checked_at).toLocaleString(), 'var(--green)');
+      } else {
+        setHostingLiveStatus('Loaded saved hosting values. Live probe unavailable right now.', 'var(--gold)');
+      }
     }).catch(() => {
-      // Render defaults if hosting section does not exist yet.
       renderHostingInfo();
+      setHostingLiveStatus('Loaded saved hosting values. Live probe failed.', 'var(--red)');
     });
+  }
+
+  async function refreshHostingLiveInfo() {
+    setHostingLiveStatus('Refreshing from live source: ' + hostingLiveTargetHost + ' ...', 'var(--gray-700)');
+    try {
+      const liveRes = await api('GET', '/api/hosting/discover?host=' + encodeURIComponent(hostingLiveTargetHost));
+      const discovered = liveRes && liveRes.discovered ? liveRes.discovered : {};
+      hostingData = {
+        ...hostingData,
+        ...discovered,
+      };
+      renderHostingInfo();
+      if (discovered.checked_at) {
+        setHostingLiveStatus('Live data refreshed from ' + hostingLiveTargetHost + ' at ' + new Date(discovered.checked_at).toLocaleString(), 'var(--green)');
+      } else {
+        setHostingLiveStatus('Live source refreshed, but some fields were unavailable.', 'var(--gold)');
+      }
+      toast('Live hosting data refreshed.');
+    } catch (e) {
+      setHostingLiveStatus('Live refresh failed. Showing latest saved values.', 'var(--red)');
+      toast('Error refreshing live data: ' + e.message);
+    }
   }
 
   function renderHostingInfo() {
@@ -2747,38 +2940,133 @@
     document.getElementById('hostingInfoSource').textContent = hostingData.info_source || 'Not configured';
     document.getElementById('hostingStaffPayment').textContent = hostingData.staff_payment || 'Not configured';
 
-    // Populate form
-    document.getElementById('hosting-dns').value = hostingData.dns_provider || '';
-    document.getElementById('hosting-service').value = hostingData.hosting_service || '';
-    document.getElementById('hosting-ip').value = hostingData.server_ip || '';
-    document.getElementById('hosting-renewal-date').value = hostingData.domain_renewal || '';
-    document.getElementById('hosting-ssl').value = hostingData.ssl_provider || '';
-    document.getElementById('hosting-ssl-expiry').value = hostingData.ssl_expiry || '';
-    document.getElementById('hosting-renewal-process').value = hostingData.renewal_process || '';
-    document.getElementById('hosting-info-source').value = hostingData.info_source || '';
-    document.getElementById('hosting-staff-payment').value = hostingData.staff_payment || '';
+    // Populate inline editor views and controls
+    document.getElementById('hosting-editor-view-dns_provider').textContent = hostingData.dns_provider || 'Not configured';
+    document.getElementById('hosting-editor-view-hosting_service').textContent = hostingData.hosting_service || 'Not configured';
+    document.getElementById('hosting-editor-view-server_ip').textContent = hostingData.server_ip || 'Not configured';
+    document.getElementById('hosting-editor-view-domain_renewal').textContent = hostingData.domain_renewal || 'Not configured';
+    document.getElementById('hosting-editor-view-ssl_provider').textContent = hostingData.ssl_provider || 'Not configured';
+    document.getElementById('hosting-editor-view-ssl_expiry').textContent = hostingData.ssl_expiry || 'Not configured';
+    document.getElementById('hosting-editor-view-renewal_process').textContent = hostingData.renewal_process || 'Not configured';
+    document.getElementById('hosting-editor-view-info_source').textContent = hostingData.info_source || 'Not configured';
+    document.getElementById('hosting-editor-view-staff_payment').textContent = hostingData.staff_payment || 'Not configured';
+
+    setHostingPresetValue('hosting-edit-dns-select', 'hosting-edit-dns-custom', hostingData.dns_provider || '');
+    setHostingPresetValue('hosting-edit-service-select', 'hosting-edit-service-custom', hostingData.hosting_service || '');
+    setHostingPresetValue('hosting-edit-ssl-select', 'hosting-edit-ssl-custom', hostingData.ssl_provider || '');
+    document.getElementById('hosting-edit-server-ip').value = hostingData.server_ip || '';
+    document.getElementById('hosting-edit-domain-renewal').value = hostingData.domain_renewal || '';
+    document.getElementById('hosting-edit-ssl-expiry').value = hostingData.ssl_expiry || '';
+    document.getElementById('hosting-edit-renewal-process').value = hostingData.renewal_process || '';
+    document.getElementById('hosting-edit-info-source').value = hostingData.info_source || '';
+    document.getElementById('hosting-edit-staff-payment').value = hostingData.staff_payment || '';
   }
 
-  document.getElementById('saveHostingBtn').addEventListener('click', async () => {
-    hostingData = {
-      dns_provider: document.getElementById('hosting-dns').value.trim() || 'Not configured',
-      hosting_service: document.getElementById('hosting-service').value.trim() || 'Not configured',
-      server_ip: document.getElementById('hosting-ip').value.trim() || 'Not configured',
-      domain_renewal: document.getElementById('hosting-renewal-date').value || '',
-      ssl_provider: document.getElementById('hosting-ssl').value.trim() || "Let's Encrypt",
-      ssl_expiry: document.getElementById('hosting-ssl-expiry').value || '',
-      renewal_process: document.getElementById('hosting-renewal-process').value.trim() || '',
-      info_source: document.getElementById('hosting-info-source').value.trim() || '',
-      staff_payment: document.getElementById('hosting-staff-payment').value.trim() || '',
-    };
+  function setHostingPresetValue(selectId, customId, value) {
+    const selectEl = document.getElementById(selectId);
+    const customEl = document.getElementById(customId);
+    if (!selectEl || !customEl) return;
+    const options = Array.from(selectEl.options).map(o => o.value);
+    if (value && options.includes(value)) {
+      selectEl.value = value;
+      customEl.value = '';
+      customEl.style.display = 'none';
+      return;
+    }
+    selectEl.value = '__custom__';
+    customEl.value = value || '';
+    customEl.style.display = 'block';
+  }
+
+  function getHostingPresetValue(selectId, customId) {
+    const selectEl = document.getElementById(selectId);
+    const customEl = document.getElementById(customId);
+    if (!selectEl || !customEl) return '';
+    if (selectEl.value === '__custom__') return customEl.value.trim();
+    return selectEl.value;
+  }
+
+  function openHostingEditor(key) {
+    const el = document.getElementById('hosting-editor-form-' + key);
+    if (el) el.style.display = 'block';
+  }
+
+  function closeHostingEditor(key) {
+    const el = document.getElementById('hosting-editor-form-' + key);
+    if (el) el.style.display = 'none';
+  }
+
+  async function saveHostingField(key) {
+    const next = { ...hostingData };
+    if (key === 'dns_provider') {
+      next.dns_provider = getHostingPresetValue('hosting-edit-dns-select', 'hosting-edit-dns-custom') || 'Not configured';
+    } else if (key === 'hosting_service') {
+      next.hosting_service = getHostingPresetValue('hosting-edit-service-select', 'hosting-edit-service-custom') || 'Not configured';
+    } else if (key === 'server_ip') {
+      next.server_ip = document.getElementById('hosting-edit-server-ip').value.trim() || 'Not configured';
+    } else if (key === 'domain_renewal') {
+      next.domain_renewal = document.getElementById('hosting-edit-domain-renewal').value || '';
+    } else if (key === 'ssl_provider') {
+      next.ssl_provider = getHostingPresetValue('hosting-edit-ssl-select', 'hosting-edit-ssl-custom') || "Let's Encrypt";
+    } else if (key === 'ssl_expiry') {
+      next.ssl_expiry = document.getElementById('hosting-edit-ssl-expiry').value || '';
+    } else if (key === 'renewal_process') {
+      next.renewal_process = document.getElementById('hosting-edit-renewal-process').value.trim() || '';
+    } else if (key === 'info_source') {
+      next.info_source = document.getElementById('hosting-edit-info-source').value.trim() || '';
+    } else if (key === 'staff_payment') {
+      next.staff_payment = document.getElementById('hosting-edit-staff-payment').value.trim() || '';
+    } else {
+      return;
+    }
+
     try {
-      await api('PUT', '/api/content/hosting', hostingData);
+      await api('PUT', '/api/content/hosting', next);
+      hostingData = next;
       renderHostingInfo();
-      toast('Hosting information saved!');
+      closeHostingEditor(key);
+      toast('Saved: ' + key.replace(/_/g, ' '));
     } catch (e) {
       toast('Error: ' + e.message);
     }
-  });
+  }
+
+  function bindHostingEditorActions() {
+    const grid = document.getElementById('hostingEditGrid');
+    if (!grid || grid.dataset.bound) return;
+
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-action][data-key]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-action');
+      const key = btn.getAttribute('data-key');
+      if (action === 'hosting-edit') openHostingEditor(key);
+      if (action === 'hosting-cancel') {
+        renderHostingInfo();
+        closeHostingEditor(key);
+      }
+      if (action === 'hosting-save') saveHostingField(key);
+    });
+
+    grid.addEventListener('change', e => {
+      const selectEl = e.target.closest('select');
+      if (!selectEl) return;
+      if (selectEl.id === 'hosting-edit-dns-select') {
+        document.getElementById('hosting-edit-dns-custom').style.display = selectEl.value === '__custom__' ? 'block' : 'none';
+      }
+      if (selectEl.id === 'hosting-edit-service-select') {
+        document.getElementById('hosting-edit-service-custom').style.display = selectEl.value === '__custom__' ? 'block' : 'none';
+      }
+      if (selectEl.id === 'hosting-edit-ssl-select') {
+        document.getElementById('hosting-edit-ssl-custom').style.display = selectEl.value === '__custom__' ? 'block' : 'none';
+      }
+    });
+
+    grid.dataset.bound = '1';
+  }
+
+  bindHostingEditorActions();
+  document.getElementById('refreshHostingLiveBtn').addEventListener('click', refreshHostingLiveInfo);
 
 
   /* ================================================================
