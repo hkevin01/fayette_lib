@@ -1,4 +1,5 @@
 {
+  "_schema_version": 1,
   "site": {
     "name": "Fayette County Public Libraries",
     "tagline": "Without libraries what have we? We have no past and no future.",
@@ -37,7 +38,7 @@
         "branch": "Ansted Public Library",
         "name": "",
         "role": "Branch Librarian",
-        "phone": "304-658-5731"
+        "phone": "304-658-5472"
       },
       {
         "branch": "Fayetteville Public Library",
@@ -84,9 +85,9 @@
     {
       "id": "ansted",
       "name": "Ansted Public Library",
-      "address": "150 Main Street",
+      "address": "102 Oak Street",
       "city": "Ansted, WV 25812",
-      "phone": "304-658-5731",
+      "phone": "304-658-5472",
       "fax": "",
       "hours": [
         {
@@ -558,6 +559,5 @@
       "new_years_day"
     ],
     "extra_notes": ""
-  },
-  "_schema_version": 1
+  }
 }
