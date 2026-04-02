@@ -1,4 +1,14 @@
 #!/bin/sh
+# Requirement ID: SPEC-INFRA-001
+# Purpose: bind active certificate material and keep nginx cert links refreshed.
+# Rationale: support dev self-signed mode and production certbot renewals.
+# Inputs: DOMAIN env var, certbot live paths, renewal trigger file.
+# Outputs: active cert symlinks and nginx reload when certificates rotate.
+# Preconditions: nginx runtime has readable certificate paths.
+# Postconditions: nginx uses latest available cert without full container rebuild.
+# Failure Modes: missing cert files, invalid DOMAIN, reload failure.
+# Error Handling: fail fast for startup errors; tolerate reload errors to avoid crash loop.
+# Verification: check startup logs and run TLS handshake inspection after renewal.
 set -e
 
 DOMAIN="${DOMAIN:-}"

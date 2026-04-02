@@ -1,7 +1,18 @@
 /**
- * FCPL Calendar — pure JS, no dependencies
- * Reads events.json, renders month/list view,
- * ICS export, Google Calendar URL links
+ * Requirement ID: SPEC-CAL-001
+ * Purpose: render event browsing UI, filtering, and calendar export links.
+ * Rationale: provide an accessible event experience without external calendar services.
+ * Inputs: events.json data, category filters, view toggles, modal actions.
+ * Outputs: month/list DOM rendering, event details modal, ICS and web calendar links.
+ * Preconditions: calendar container nodes and event payload structure are available.
+ * Postconditions: users can browse events and export selected entries.
+ * Assumptions: event timestamps parse consistently in runtime browser locale.
+ * Side Effects: client-only URL generation and transient modal/focus management.
+ * Failure Modes: invalid timestamps, empty event lists, missing category metadata.
+ * Error Handling: empty states and non-fatal rendering fallbacks.
+ * Constraints: dependency-free implementation and keyboard-friendly interaction model.
+ * Verification: validate month/list parity, export links, and keyboard modal flows.
+ * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-CAL-001, SPEC-A11Y-001)
  */
 const FCPLCalendar = (function() {
   'use strict';

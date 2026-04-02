@@ -1,3 +1,13 @@
+# Requirement ID: SPEC-INFRA-001
+# Purpose: define two-service runtime topology for public site + admin backend.
+# Rationale: deterministic deployment, consistent mount points, and recoverable operations.
+# Inputs: repository sources, admin/.env, host-mounted site/data + site/images.
+# Outputs: running containers with health checks and stable network paths.
+# Preconditions: Docker permissions and required host ports are available.
+# Postconditions: site and admin services are reachable and data volumes persist changes.
+# Failure Modes: port collisions, permission-denied mounts, unhealthy containers.
+# Error Handling: restart policies + healthcheck visibility for operator remediation.
+# Verification: docker compose ps + manual smoke tests from docs/OPS_RUNBOOK.md.
 services:
   fcpl-site:
     build:

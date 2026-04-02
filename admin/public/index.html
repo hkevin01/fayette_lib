@@ -2856,6 +2856,22 @@
   /* ================================================================
      HOSTING INFORMATION
      ================================================================ */
+    /*
+    Requirement ID: SPEC-UI-001
+    Purpose: show editable hosting state and merge saved data with live discovery.
+    Rationale: staff need one place to view technical status and manage renewals.
+    Inputs: /api/content/hosting, /api/hosting/discover responses, per-field edits.
+    Outputs: rendered hosting cards, inline editor state, persisted hosting updates.
+    Preconditions: authenticated session and reachable admin API.
+    Postconditions: UI reflects latest available values and save operations persist sanitized data.
+    Assumptions: hosting editor DOM IDs remain stable with this script block.
+    Side Effects: PUT writes to hosting content section and refresh probes live sources.
+    Failure Modes: discovery timeout, partial metadata, auth/token expiry, save conflicts.
+    Error Handling: toast notifications + fail-soft fallback to saved values.
+    Constraints: no framework and single-file admin UI architecture.
+    Verification: edit/save/cancel for each field and manual live refresh validation.
+    References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-UI-001, SPEC-API-001)
+    */
   let hostingData = {
     dns_provider: 'West Virginia Library Commission (lib.wv.us)',
     hosting_service: 'Apache / WordPress (production)',

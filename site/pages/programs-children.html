@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+<!--
+  Requirement ID: SPEC-PAGE-001
+  Purpose: deliver patron-facing static content page with shared navigation and footer patterns.
+  Rationale: keep content maintainable without framework/toolchain dependency.
+  Inputs: static HTML + shared CSS/JS + optional content.json hydration.
+  Outputs: accessible page rendering for desktop/mobile patrons.
+  Preconditions: shared asset links and page IDs remain valid.
+  Postconditions: page loads with navigation, accessibility controls, and footer context.
+  Failure Modes: broken links, missing assets, stale content references.
+  Error Handling: fail-soft content sections and progressive enhancement behavior.
+  Verification: keyboard navigation, link check, mobile viewport check.
+  References: docs/PAGE_MAINTENANCE_GUIDE.md
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">

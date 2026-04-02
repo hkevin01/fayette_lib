@@ -1,5 +1,18 @@
 /**
- * FCPL Main JS — loads content.json, renders nav, announcements, etc.
+ * Requirement ID: SPEC-FE-001
+ * Purpose: hydrate public pages from data files and attach shared interactive behavior.
+ * Rationale: keep public pages static while allowing centralized content updates.
+ * Inputs: content.json, events.json, DOM hooks, browser storage availability.
+ * Outputs: rendered content blocks, active navigation state, interactive UI handlers.
+ * Preconditions: public data files are reachable and page markup IDs/classes are intact.
+ * Postconditions: key content areas render with graceful fallback behavior when data is missing.
+ * Assumptions: browser supports fetch, querySelector, and modern event APIs.
+ * Side Effects: reads browser storage and may emit analytics events through admin endpoint.
+ * Failure Modes: network failures, missing data keys, per-page missing DOM targets.
+ * Error Handling: fail-soft rendering with warnings and no hard page crash.
+ * Constraints: no framework dependency and no build step required for deployment.
+ * Verification: smoke test home + core subpages and ensure nav/content components load.
+ * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-FE-001, SPEC-A11Y-001)
  */
 (function() {
   'use strict';

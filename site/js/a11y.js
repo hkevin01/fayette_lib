@@ -1,14 +1,18 @@
 /**
- * FCPL Accessibility Toolbar — a11y.js
- * WCAG 2.1 AA compliant accessibility controls
- *
- * Features:
- *  - Font size toggle (normal / large / extra-large)
- *  - High contrast mode toggle
- *  - Dyslexia-friendly font toggle (OpenDyslexic / system sans)
- *  - Reduced motion preference support
- *  - Persistent preferences via localStorage
- *  - Screen reader announcements via aria-live
+ * Requirement ID: SPEC-A11Y-001
+ * Purpose: provide accessibility controls for typography, contrast, and readability.
+ * Rationale: maintain WCAG-friendly adjustments without external dependencies.
+ * Inputs: user toggle actions, stored preferences, DOM availability.
+ * Outputs: document-level accessibility state and screen-reader announcements.
+ * Preconditions: script loaded after DOM and browser storage available (or fail-soft).
+ * Postconditions: selected accessibility options persist and apply consistently.
+ * Assumptions: CSS selectors for data attributes exist in style sheet.
+ * Side Effects: updates localStorage and mutates html/body attributes/classes.
+ * Failure Modes: blocked storage, missing toolbar mount point, CDN font unavailable.
+ * Error Handling: silent fallback for storage failures and resilient DOM checks.
+ * Constraints: must remain dependency-free and compatible with static delivery.
+ * Verification: keyboard-only toggle test, reload persistence test, screen-reader announcements.
+ * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-A11Y-001)
  */
 (function () {
   'use strict';

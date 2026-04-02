@@ -1,7 +1,19 @@
 /* ====================================================
-   FAYETTE COUNTY PUBLIC LIBRARIES
-   Modern CSS — No external dependencies
-   ==================================================== */
+  Requirement ID: SPEC-FE-001
+  Purpose: define visual system, responsive layout, and accessibility styling.
+  Rationale: single-source styling for static public pages with consistent branding.
+  Inputs: semantic HTML structures, JS-applied state classes/attributes.
+  Outputs: rendered typography, layout, navigation, and interactive visual states.
+  Preconditions: shared class names and data attributes remain stable across pages.
+  Postconditions: pages remain readable, navigable, and responsive.
+  Assumptions: modern browser CSS support for flex/grid and custom properties.
+  Side Effects: none server-side; client rendering behavior only.
+  Failure Modes: class drift, missing variables, conflicting inline styles.
+  Error Handling: graceful CSS fallback behavior by cascade.
+  Constraints: no build pipeline and no required external CSS framework.
+  Verification: desktop/mobile layout checks + accessibility contrast/keyboard testing.
+  References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-FE-001, SPEC-A11Y-001)
+  ==================================================== */
 
 /* --- CSS Custom Properties --- */
 :root {

@@ -1,4 +1,14 @@
 #!/bin/bash
+# Requirement ID: SPEC-INFRA-001
+# Purpose: obtain and activate Let's Encrypt certificate for production domain.
+# Rationale: reduce manual TLS provisioning errors during operations handoff.
+# Inputs: domain and contact email arguments.
+# Outputs: certificate files in certbot volume and restarted site container.
+# Preconditions: DNS points to host and challenge endpoint reachable on port 80.
+# Postconditions: HTTPS endpoint serves trusted certificate when issuance succeeds.
+# Failure Modes: DNS mismatch, rate limits, challenge failure, docker permission errors.
+# Error Handling: immediate non-zero exit on command failure (set -e).
+# Verification: visit https://<domain> and inspect certificate issuer/expiry.
 # ================================================================
 # get-cert.sh  —  Obtain a Let's Encrypt TLS certificate
 #

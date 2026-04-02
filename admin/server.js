@@ -193,6 +193,22 @@ function readJSON(file) {
   return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
 
+/**
+ * Requirement ID: SPEC-DATA-001
+ * Purpose: persist JSON content atomically to prevent partial writes and corruption.
+ * Rationale: admin writes are critical state transitions and must be crash-safe.
+ * Inputs: relative data filename, serializable data object, file mode.
+ * Outputs: target file replaced with formatted JSON content.
+ * Preconditions: DATA_DIR exists and is writable by runtime user.
+ * Postconditions: file is fully written or previous file remains unchanged.
+ * Assumptions: underlying filesystem supports atomic rename semantics.
+ * Side Effects: creates and renames temporary files in DATA_DIR.
+ * Failure Modes: invalid path, permission denied, disk full, serialization failure.
+ * Error Handling: throws to caller for route-level response handling.
+ * Constraints: target path must stay within DATA_DIR.
+ * Verification: confirm write + restart still loads JSON; inspect temp-file cleanup.
+ * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-DATA-001, SPEC-API-001)
+ */
 function writeJSON(file, data, mode = 0o644) {
   const base = path.resolve(DATA_DIR);
   const fullPath = path.resolve(base, file);
@@ -493,6 +509,22 @@ const ALLOWED_SECTIONS = new Set([
   'site', 'staff', 'branches', 'programs', 'digital_resources', 'services', 'memorial_program', 'hosting', 'holiday_closures', 'homepage_features', 'jobs'
 ]);
 
+/**
+ * Requirement ID: SPEC-API-001
+ * Purpose: normalize and constrain section payloads before persistence.
+ * Rationale: prevent malformed content, oversized fields, and schema drift.
+ * Inputs: section key and raw client payload.
+ * Outputs: sanitized section object/array suitable for content.json.
+ * Preconditions: section is allow-listed and data is JSON-compatible.
+ * Postconditions: returned structure adheres to expected shape and length limits.
+ * Assumptions: downstream consumers rely on existing key names and types.
+ * Side Effects: none (pure transform) until caller writes the result.
+ * Failure Modes: unsupported section, invalid type for required arrays.
+ * Error Handling: throws explicit errors consumed by route handlers.
+ * Constraints: do not include executable content or unbounded strings.
+ * Verification: save + reload each section in admin UI.
+ * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-API-001)
+ */
 function sanitiseContentSection(section, data) {
   switch (section) {
     case 'site': {
@@ -757,6 +789,22 @@ function httpsProbe(hostname, timeoutMs = 7000) {
 }
 
 async function discoverHostingInfo(hostname) {
+  /**
+   * Requirement ID: SPEC-API-001
+   * Purpose: discover live hosting metadata for admin visibility and drift detection.
+   * Rationale: keep hosting fields aligned with observed DNS/TLS/runtime state.
+   * Inputs: hostname query parameter.
+   * Outputs: discovered fields (ip, dns provider, service headers, ssl issuer/expiry, rdap renewal date).
+   * Preconditions: outbound DNS and HTTPS access from admin runtime.
+   * Postconditions: best-effort discovery object returned with timestamp.
+   * Assumptions: external DNS/RDAP endpoints are reachable and standards-compliant.
+   * Side Effects: outbound network calls to DNS resolvers and rdap.org.
+   * Failure Modes: timeout, NXDOMAIN, rdap unavailability, partial cert/header metadata.
+   * Error Handling: per-step try/catch for partial success; fatal input validation error on bad host.
+   * Constraints: host input limited to safe hostname characters.
+   * Verification: compare output with manual nslookup/certificate checks.
+   * References: docs/FILE_LEVEL_SPECIFICATIONS.md (SPEC-API-001, SPEC-INFRA-001)
+   */
   const target = String(hostname || '').trim().toLowerCase();
   if (!target || !/^[a-z0-9.-]+$/.test(target)) {
     throw new Error('Invalid hostname');
@@ -1452,6 +1500,7 @@ app.get('/admin/api/system/health', requireAuth, (_req, res) => {
  * Query: ?host=fayette.lib.wv.us
  */
 app.get('/admin/api/hosting/discover', requireAuth, async (req, res) => {
+  // Requirement linkage: SPEC-API-001 dynamic hosting discovery route for admin tab.
   const host = String(req.query.host || 'fayette.lib.wv.us').trim();
   try {
     const discovered = await discoverHostingInfo(host);
