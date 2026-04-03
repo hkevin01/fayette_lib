@@ -20,10 +20,14 @@ services:
     restart: unless-stopped
     depends_on:
       - fcpl-admin
+    environment:
+      - DOMAIN=${DOMAIN:-}
     volumes:
       - ./site/data:/usr/share/nginx/html/data
       - ./site/images:/usr/share/nginx/html/images
-      - ./docker/certs:/etc/nginx/certs:ro
+      - letsencrypt:/etc/letsencrypt:ro
+      - certbot-webroot:/var/www/certbot:ro
+      - certbot-data:/var/certbot
     healthcheck:
       test: ["CMD", "curl", "-fsk", "--max-time", "3", "https://127.0.0.1/", "-o", "/dev/null"]
       interval: 30s
@@ -49,3 +53,26 @@ services:
     expose:
       - "3000"
 
+  # ── Certbot: automatic Let's Encrypt renewal ──────────────────────────────
+  # Runs continuously; renews when < 30 days remain (certs last 90 days);
+  # touches /var/certbot/reload-trigger to signal nginx to hot-reload the cert.
+  certbot:
+    image: certbot/certbot:latest
+    container_name: fcpl-certbot
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - certbot-webroot:/var/www/certbot
+      - certbot-data:/var/certbot
+    entrypoint: >
+      /bin/sh -c 'trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet &&
+        touch /var/certbot/reload-trigger;
+        sleep 12h & wait $${!};
+      done'
+    restart: unless-stopped
+
+volumes:
+  letsencrypt:
+  certbot-webroot:
+  certbot-data:

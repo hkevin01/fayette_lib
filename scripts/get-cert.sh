@@ -3,10 +3,10 @@
 # Purpose: obtain and activate Let's Encrypt certificate for production domain.
 # Rationale: reduce manual TLS provisioning errors during operations handoff.
 # Inputs: domain and contact email arguments.
-# Outputs: certificate files in certbot volume and restarted site container.
-# Preconditions: DNS points to host and challenge endpoint reachable on port 80.
-# Postconditions: HTTPS endpoint serves trusted certificate when issuance succeeds.
-# Failure Modes: DNS mismatch, rate limits, challenge failure, docker permission errors.
+# Outputs: certificate files in letsencrypt volume; nginx hot-reloaded with real cert.
+# Preconditions: DNS A record points to host; docker compose stack running; port 80 open.
+# Postconditions: HTTPS endpoint serves trusted certificate; certbot auto-renews it.
+# Failure Modes: DNS mismatch, rate limits, ACME challenge failure, docker permission errors.
 # Error Handling: immediate non-zero exit on command failure (set -e).
 # Verification: visit https://<domain> and inspect certificate issuer/expiry.
 # ================================================================
@@ -17,8 +17,8 @@
 #
 # Run this ONCE on the production server after:
 #   1. DNS A record for your domain points to this server's public IP
-#   2. docker-compose is already running (port 80 must be reachable)
-#   3. DOMAIN= is set in your .env or docker-compose environment
+#   2. docker compose up -d is already running (ports 80 AND 443 reachable)
+#   3. Firewall allows inbound TCP 80 and 443
 # ================================================================
 set -e
 
@@ -32,11 +32,23 @@ if [ -z "$DOMAIN" ] || [ -z "$EMAIL" ]; then
 fi
 
 echo "► Requesting Let's Encrypt certificate for ${DOMAIN} (contact: ${EMAIL})"
-echo "  Make sure the domain's DNS A record points to this server's public IP first!"
+echo "  Ensure the DNS A record for ${DOMAIN} points to this server's public IP first!"
 echo ""
 
-# Request the cert — nginx must already be running to serve the ACME challenge
-sudo docker-compose run --rm certbot certonly \
+# Persist DOMAIN so the fcpl-site container entrypoint activates the LE cert on next start.
+# This only writes if DOMAIN is not already set in .env.
+if [ -f .env ]; then
+  if ! grep -q "^DOMAIN=" .env; then
+    echo "DOMAIN=${DOMAIN}" >> .env
+    echo "► Appended DOMAIN=${DOMAIN} to .env"
+  fi
+else
+  echo "DOMAIN=${DOMAIN}" > .env
+  echo "► Created .env with DOMAIN=${DOMAIN}"
+fi
+
+# Issue the certificate via the certbot container (uses the shared ACME webroot volume)
+docker compose run --rm certbot certonly \
   --webroot -w /var/www/certbot \
   -d "$DOMAIN" \
   --email "$EMAIL" \
@@ -44,11 +56,17 @@ sudo docker-compose run --rm certbot certonly \
 
 echo ""
 echo "✓ Certificate obtained!"
-echo "► Restarting nginx to load the real certificate..."
-sudo docker-compose restart fcpl-site
+echo "► Signalling nginx to hot-reload with the new certificate..."
 
+# Touch the reload-trigger file inside the shared certbot-data volume.
+# The entrypoint background watcher detects this and gracefully reloads nginx.
+docker compose exec fcpl-site sh -c "touch /var/certbot/reload-trigger"
+
+sleep 3
 echo ""
-echo "✓ Done! Visit https://${DOMAIN} — no browser warning this time."
+echo "✓ Done! Visit https://${DOMAIN} — trusted certificate, no browser warning."
 echo ""
-echo "Note: Certificates auto-renew every 12 hours if needed (Let's Encrypt"
-echo "      certs last 90 days; Certbot renews when < 30 days remain)."
+echo "Certificates auto-renew every 12 hours when < 30 days remain (90-day certs)."
+echo ""
+echo "Next step — HSTS preload: once the site is stable on HTTPS, submit at:"
+echo "  https://hstspreload.org"
