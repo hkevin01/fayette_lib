@@ -21,7 +21,8 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <a href="#main" class="skip-link">Skip to content</a>
+  <a href="#main" class="skip-link" accesskey="1">Skip to main content</a>
+  <a href="#siteNav" class="skip-link" accesskey="2">Skip to navigation</a>
 
   <!-- HEADER -->
   <header class="site-header">
@@ -408,7 +409,7 @@
       try {
         track.innerHTML = '';
         slides = validImages;
-        
+
         slides.forEach((img, idx) => {
           try {
             const slide = document.createElement('div');
@@ -417,7 +418,7 @@
             slide.setAttribute('tabindex', '0');
             slide.setAttribute('aria-label', (img.alt || 'Photo ' + (idx+1)) + ' — click to enlarge');
             const el = document.createElement('img');
-            el.src = img.src; 
+            el.src = img.src;
             el.alt = img.alt || '';
             el.loading = idx === 0 ? 'eager' : 'lazy';
             // Handle image load errors gracefully
@@ -427,7 +428,7 @@
               this.parentElement.classList.add('image-failed');
             };
             slide.appendChild(el);
-            
+
             // Caption bar
             if (img.caption && typeof img.caption === 'string') {
               const cap = document.createElement('div');
@@ -435,14 +436,14 @@
               cap.textContent = img.caption;
               slide.appendChild(cap);
             }
-            
+
             // "Tap/click to enlarge" hint — or link label if navigating
             const hint = document.createElement('div');
             hint.className = 'img-slide-hint';
             hint.setAttribute('aria-hidden','true');
             hint.textContent = img.link ? ('🔗 ' + (img.link_label || 'Click to visit')) : '🔍 Click to enlarge';
             slide.appendChild(hint);
-            
+
             // If image has a link, navigate on click; otherwise open lightbox
             const openThis = img.link && typeof img.link === 'string'
               ? () => window.open(img.link, '_blank', 'noopener,noreferrer')
@@ -475,7 +476,7 @@
         prevBtn.style.display = slides.length > 1 ? '' : 'none';
         nextBtn.style.display = slides.length > 1 ? '' : 'none';
         goTo(0);
-        
+
         if (slides.length > 1) startAuto();
       } catch (err) {
         console.error('Critical error in buildSlider:', err);
@@ -532,11 +533,11 @@
       .then(data => {
         try {
           if (!data || typeof data !== 'object') throw new Error('Invalid data format');
-          
+
           const all = Array.isArray(data.homepage_images) ? data.homepage_images : [];
           const sliderImgs   = all.filter(i => i && i.type === 'slider');
           const featuredImgs = all.filter(i => i && i.type === 'featured');
-          
+
           // Only build slider if we have valid images
           if (sliderImgs.length > 0) {
             try {
@@ -546,7 +547,7 @@
               // Keep fallback hero visible if slider build fails
             }
           }
-          
+
           // Build featured cards, handling any individual failures
           if (featuredImgs.length > 0) {
             try {
@@ -607,7 +608,7 @@
     }
 
     const consentStorage = getStorage();
-    
+
     // Check if user has already made a choice
     function checkCookieConsent() {
       try {
@@ -617,7 +618,7 @@
         return null;
       }
     }
-    
+
     // Save cookie preference
     function setCookieConsent(accepted) {
       try {
@@ -630,12 +631,12 @@
         console.warn('Could not save cookie preference:', e);
       }
     }
-    
+
     // Show/hide consent banner
     function showConsentBanner() {
       const banner = document.getElementById('cookieConsent');
       if (!banner) return;
-      
+
       const saved = checkCookieConsent();
       if (saved === null) {
         // First time visiting, show banner
@@ -644,7 +645,7 @@
         banner.style.display = 'none';
       }
     }
-    
+
     // Hide banner and enable analytics
     function acceptCookies() {
       setCookieConsent(true);
@@ -655,7 +656,7 @@
       }
       initAnalytics();
     }
-    
+
     // Hide banner but don't track
     function rejectCookies() {
       setCookieConsent(false);
@@ -665,12 +666,12 @@
         setTimeout(() => { banner.style.display = 'none'; }, 300);
       }
     }
-    
+
     // Track page views and interactions
     function initAnalytics() {
       const consent = checkCookieConsent();
       if (consent && consent.accepted !== true) return;
-      
+
       // Track page view
       const pageView = {
         page: window.location.pathname,
@@ -679,14 +680,14 @@
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent
       };
-      
+
       // Send to analytics endpoint (will be created on backend)
       fetch('api/analytics/pageview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pageView)
       }).catch(e => console.warn('Analytics disabled or unavailable'));
-      
+
       // Track link clicks
       document.addEventListener('click', e => {
         if (e.target.tagName === 'A' || e.target.closest('a')) {
@@ -704,7 +705,7 @@
           }).catch(e => {});
         }
       });
-      
+
       // Track tab/window visibility
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
@@ -721,17 +722,17 @@
         }
       });
     }
-    
+
     // Set up buttons
     const acceptBtn = document.getElementById('cookieAccept');
     const rejectBtn = document.getElementById('cookieReject');
-    
+
     if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
     if (rejectBtn) rejectBtn.addEventListener('click', rejectCookies);
-    
+
     // Initialize on page load
     showConsentBanner();
-    
+
     // If cookie was previously accepted, enable analytics
     const consent = checkCookieConsent();
     if (consent && consent.accepted === true) {
