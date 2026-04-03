@@ -15,8 +15,8 @@ services:
       dockerfile: docker/Dockerfile
     container_name: fcpl-website
     ports:
-      - "8080:80"    # HTTP  → direct access fallback
-      - "8443:443"   # HTTPS → access at https://localhost:8443
+      - "8080:80"    # HTTP  → primary access: http://localhost:8080
+      - "8443:443"   # HTTPS → optional (requires cert): https://localhost:8443
     restart: unless-stopped
     depends_on:
       - fcpl-admin
@@ -29,7 +29,7 @@ services:
       - certbot-webroot:/var/www/certbot:ro
       - certbot-data:/var/certbot
     healthcheck:
-      test: ["CMD", "curl", "-fsk", "--max-time", "3", "https://127.0.0.1/", "-o", "/dev/null"]
+      test: ["CMD", "curl", "-fs", "--max-time", "3", "http://127.0.0.1/", "-o", "/dev/null"]
       interval: 30s
       timeout: 5s
       start_period: 15s

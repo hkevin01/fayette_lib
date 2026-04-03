@@ -7,8 +7,10 @@ FROM nginx:alpine
 # curl for healthcheck; openssl for self-signed cert generation
 RUN apk add --no-cache curl openssl
 
-# Remove default nginx config
-RUN rm /etc/nginx/conf.d/default.conf
+# Remove default nginx config; seed empty hsts.conf (entrypoint overwrites it at runtime)
+RUN rm /etc/nginx/conf.d/default.conf && \
+    echo '# HSTS disabled — entrypoint enables this only when a real LE cert is active' \
+      > /etc/nginx/conf.d/hsts.conf
 
 # Generate self-signed certificate for development / fallback use.
 # get-cert.sh replaces this with a trusted Let's Encrypt certificate in production.

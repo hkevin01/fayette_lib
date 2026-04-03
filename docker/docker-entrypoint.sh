@@ -28,6 +28,21 @@ else
   echo "[ssl] Run 'bash scripts/get-cert.sh <domain> <email>' on the server for a trusted cert."
 fi
 
+# ── Conditional HSTS ──────────────────────────────────────────
+# HSTS is ONLY enabled when a verified Let's Encrypt cert is active.
+# Without it, visiting HTTPS once would lock browsers off HTTP for a year.
+# HTTP (port 80) is always fully functional without any HTTPS requirement.
+mkdir -p /etc/nginx/conf.d
+if [ -n "$DOMAIN" ] && [ -f "${LE_DIR}/fullchain.pem" ]; then
+  printf 'add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;\n' \
+    > /etc/nginx/conf.d/hsts.conf
+  echo "[ssl] HSTS enabled for ${DOMAIN}"
+else
+  printf '# HSTS disabled — HTTP fully functional; HTTPS available but not enforced.\n' \
+    > /etc/nginx/conf.d/hsts.conf
+  echo "[ssl] HSTS disabled (HTTP-first mode — no lock-in)"
+fi
+
 # ── Background watcher: reload nginx when certbot renews ───────
 # Runs as a background process; nginx is started by the base entrypoint after
 # all /docker-entrypoint.d/ scripts complete (so nginx -s reload works).
