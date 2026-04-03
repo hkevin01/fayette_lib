@@ -732,9 +732,18 @@ function sanitiseContentSection(section, data) {
       const observed = Array.isArray(data.observed)
         ? data.observed.filter(k => VALID_KEYS.has(String(k)))
         : [];
+      // Custom/emergency closures: power outages, water issues, snow days, etc.
+      const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+      const raw_custom = Array.isArray(data.custom_closures) ? data.custom_closures : [];
+      const custom_closures = raw_custom.slice(0, 60).map(c => ({
+        id:     /^[a-f0-9]{8}$/.test(String(c.id || '')) ? String(c.id) : crypto.randomBytes(4).toString('hex'),
+        date:   DATE_RE.test(String(c.date || '')) ? String(c.date) : null,
+        reason: str(c.reason || '', 200),
+      })).filter(c => c.date !== null);
       return {
         observed,
-        extra_notes: str(data.extra_notes || '', 600),
+        extra_notes:     str(data.extra_notes || '', 600),
+        custom_closures,
       };
     }
     case 'homepage_features': {
@@ -1275,7 +1284,7 @@ app.post('/admin/api/analytics/pageview', (req, res) => {
     if (!url || typeof url !== 'string') {
       return res.status(400).json({ error: 'url is required' });
     }
-    
+
     // Ensure analytics.json exists with proper structure
     let analytics = { pageviews: [], events: [], last_updated: new Date().toISOString() };
     try {
@@ -1288,7 +1297,7 @@ app.post('/admin/api/analytics/pageview', (req, res) => {
     // Cap arrays to prevent unbounded growth (keep last 10000 entries)
     if (!Array.isArray(analytics.pageviews)) analytics.pageviews = [];
     if (!Array.isArray(analytics.events)) analytics.events = [];
-    
+
     // Add pageview entry
     analytics.pageviews.push({
       url: str(url, 500),
@@ -1512,7 +1521,7 @@ app.get('/admin/api/analytics/pageviews', requireAuth, (req, res) => {
     const limit = Math.min(parseInt(req.query.limit || '100', 10), 500);
     const offset = Math.max(parseInt(req.query.offset || '0', 10), 0);
     const pageviews = (analytics.pageviews || []).slice(-limit * 2).reverse().slice(offset, offset + limit);
-    
+
     res.json({ pageviews, total: (analytics.pageviews || []).length, limit, offset });
   } catch (e) {
     console.error('[analytics/pageviews]', e.message);
@@ -1536,7 +1545,7 @@ app.get('/admin/api/analytics/events', requireAuth, (req, res) => {
     const limit = Math.min(parseInt(req.query.limit || '100', 10), 500);
     const offset = Math.max(parseInt(req.query.offset || '0', 10), 0);
     const events = (analytics.events || []).slice(-limit * 2).reverse().slice(offset, offset + limit);
-    
+
     res.json({ events, total: (analytics.events || []).length, limit, offset });
   } catch (e) {
     console.error('[analytics/events]', e.message);
@@ -1592,7 +1601,7 @@ app.get('/admin/api/hosting/discover', requireAuth, async (req, res) => {
  */
 app.post('/admin/api/system/restart', requireAuth, (req, res) => {
   console.log('[system] Restart signal received from staff portal');
-  res.json({ 
+  res.json({
     ok: true,
     message: 'Restart signal sent. Service should restart within 5 seconds.',
     timestamp: new Date().toISOString(),
@@ -1707,5 +1716,3 @@ module.exports = {
   migrateContentData,
   ensureSchemaMigrations,
 };
-
-

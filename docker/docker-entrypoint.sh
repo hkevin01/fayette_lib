@@ -1,14 +1,17 @@
 #!/bin/sh
 # Requirement ID: SPEC-INFRA-001
-# Purpose: bind active certificate material and keep nginx cert links refreshed.
-# Rationale: support dev self-signed mode and production certbot renewals.
-# Inputs: DOMAIN env var, certbot live paths, renewal trigger file.
-# Outputs: active cert symlinks and nginx reload when certificates rotate.
-# Preconditions: nginx runtime has readable certificate paths.
+# Purpose: select active certificate and hot-reload nginx when certbot renews.
+# This script is placed in /docker-entrypoint.d/ so nginx's native entrypoint
+# runs it BEFORE starting nginx — no need to override the base ENTRYPOINT.
+# Rationale: /docker-entrypoint.d/ is the correct extension point for nginx:alpine.
+# Inputs: DOMAIN env var, certbot live paths, /var/certbot/reload-trigger file.
+# Outputs: /etc/ssl/fcpl/{server.crt,server.key} symlinks pointing at active cert;
+#          background watcher that reloads nginx on certbot renewal.
+# Preconditions: /etc/ssl/fcpl/ created during image build with self-signed fallback.
 # Postconditions: nginx uses latest available cert without full container rebuild.
 # Failure Modes: missing cert files, invalid DOMAIN, reload failure.
-# Error Handling: fail fast for startup errors; tolerate reload errors to avoid crash loop.
-# Verification: check startup logs and run TLS handshake inspection after renewal.
+# Error Handling: fall through to self-signed cert on any missing LE cert file.
+# Verification: check startup logs; run TLS handshake inspection after renewal.
 set -e
 
 DOMAIN="${DOMAIN:-}"
@@ -22,11 +25,14 @@ if [ -n "$DOMAIN" ] && [ -f "${LE_DIR}/fullchain.pem" ]; then
   echo "[ssl] Using Let's Encrypt certificate for ${DOMAIN}"
 else
   echo "[ssl] Self-signed certificate in use (dev/localhost mode)."
-  echo "[ssl] Run 'bash scripts/get-cert.sh <domain> <email>' on the server to get a real certificate."
+  echo "[ssl] Run 'bash scripts/get-cert.sh <domain> <email>' on the server for a trusted cert."
 fi
 
 # ── Background watcher: reload nginx when certbot renews ───────
+# Runs as a background process; nginx is started by the base entrypoint after
+# all /docker-entrypoint.d/ scripts complete (so nginx -s reload works).
 (while true; do
+  sleep 30
   if [ -f "$TRIGGER" ]; then
     rm -f "$TRIGGER"
     if [ -n "$DOMAIN" ] && [ -f "${LE_DIR}/fullchain.pem" ]; then
@@ -35,7 +41,7 @@ fi
     fi
     nginx -s reload 2>/dev/null && echo "[ssl] Certificate reloaded" || true
   fi
-  sleep 30
 done) &
 
-exec nginx -g "daemon off;"
+# Do NOT call exec nginx here — the nginx base entrypoint does that after
+# all /docker-entrypoint.d/ scripts have returned successfully.

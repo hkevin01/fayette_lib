@@ -1,0 +1,20 @@
+# Requirement ID: SPEC-INFRA-001
+# Purpose: production port overrides for live deployment at fayette.lib.wv.us.
+# Rationale: dev compose uses 8080/8443 to avoid needing root; production binds
+#   the standard ports 80/443 directly so no port-forwarding is needed.
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# Preconditions: DOMAIN= in .env, ports 80/443 open in firewall, DNS propagated.
+# Postconditions: site reachable at https://<DOMAIN>; certbot renewing automatically.
+services:
+  fcpl-site:
+    ports:
+      - "80:80"      # HTTP  → ACME challenge + (optionally) redirect to HTTPS
+      - "443:443"    # HTTPS → public site with HSTS
+    restart: always   # production: restart even after manual docker stop
+
+  fcpl-admin:
+    restart: always
+
+  certbot:
+    restart: always

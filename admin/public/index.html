@@ -235,7 +235,27 @@
             <label>Additional Closure Notes <span style="font-weight:400;color:#6b7280">(optional — e.g. "Closed Dec 24 Christmas Eve")</span></label>
             <textarea id="holiday-extra-notes" rows="3" maxlength="600" placeholder="Library may close early Christmas Eve and New Year's Eve."></textarea>
           </div>
-          <button class="btn btn-primary btn-sm" id="saveHolidaysBtn">Save Holiday Closures</button>
+
+          <hr style="margin:1.25rem 0;border:none;border-top:1px solid var(--gray-200)">
+          <h3 style="font-size:.95rem;font-weight:600;margin-bottom:.35rem">⚠️ Emergency &amp; Custom Closures</h3>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:.75rem">
+            For unexpected closures: power outages, water main breaks, snow days, or any other unplanned event.
+            These appear as an urgent notice on the public website.
+          </p>
+          <div id="customClosuresList" style="margin-bottom:.75rem"></div>
+          <div style="display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem">
+            <div class="fg" style="flex:0 0 auto;margin:0">
+              <label style="font-size:.8rem;display:block;margin-bottom:.25rem">Date</label>
+              <input type="date" id="customClosureDate" style="width:10rem;padding:.35rem .5rem;border:1px solid var(--gray-300);border-radius:6px;font-size:.875rem">
+            </div>
+            <div class="fg" style="flex:1 1 220px;margin:0">
+              <label style="font-size:.8rem;display:block;margin-bottom:.25rem">Reason <span style="font-weight:400;color:#6b7280">(e.g. &ldquo;Power outage &mdash; all branches closed&rdquo;)</span></label>
+              <input type="text" id="customClosureReason" maxlength="200" placeholder="Power outage — all branches closed" style="width:100%;padding:.35rem .5rem;border:1px solid var(--gray-300);border-radius:6px;font-size:.875rem">
+            </div>
+            <button class="btn btn-sm" id="addCustomClosureBtn" style="background:#d97706;color:#fff;height:2.25rem">+ Add Closure</button>
+          </div>
+
+          <button class="btn btn-primary btn-sm" id="saveHolidaysBtn">Save All Closures</button>
         </div>
       </div>
     </div>
@@ -2065,14 +2085,17 @@
     { key: 'new_years_eve',       label: "New Year's Eve",              date: 'Dec 31' },
   ];
 
-  let holidayData = { observed: [], extra_notes: '' };
+  let holidayData = { observed: [], extra_notes: '', custom_closures: [] };
 
   function loadHolidays() {
     api('GET', '/api/content/holiday_closures').then(res => {
-      holidayData = res.data || { observed: [], extra_notes: '' };
+      holidayData = res.data || { observed: [], extra_notes: '', custom_closures: [] };
+      if (!Array.isArray(holidayData.custom_closures)) holidayData.custom_closures = [];
       renderHolidayCheckboxes();
+      renderCustomClosures();
     }).catch(() => {
       renderHolidayCheckboxes();
+      renderCustomClosures();
     });
   }
 
@@ -2091,16 +2114,69 @@
     if (notes) notes.value = holidayData.extra_notes || '';
   }
 
+  function renderCustomClosures() {
+    const container = document.getElementById('customClosuresList');
+    if (!container) return;
+    const list = holidayData.custom_closures || [];
+    if (!list.length) {
+      container.innerHTML = '<p style="font-size:.85rem;color:var(--gray-400);font-style:italic;margin:0 0 .25rem">No custom closures added yet.</p>';
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    const sorted = [...list].sort((a, b) => a.date.localeCompare(b.date));
+    container.innerHTML = sorted.map(c => {
+      const isPast = c.date < today;
+      const border = isPast ? 'var(--gray-200)' : '#d97706';
+      const bg     = isPast ? 'transparent' : '#fffbeb';
+      return `<div style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border:1px solid ${border};border-radius:6px;margin-bottom:.35rem;font-size:.875rem;background:${bg};${isPast ? 'opacity:.6' : ''}">
+        <span style="font-weight:700;white-space:nowrap;color:${isPast ? 'var(--gray-500)' : '#92400e'}">${esc(c.date)}</span>
+        <span style="flex:1;color:${isPast ? 'var(--gray-500)' : '#1f2937'}">${esc(c.reason)}</span>
+        ${isPast ? '<span style="font-size:.72rem;color:var(--gray-400);white-space:nowrap">(past)</span>' : ''}
+        <button class="btn btn-sm" style="padding:.15rem .45rem;font-size:.75rem;background:#fee2e2;color:#991b1b;border:none;border-radius:4px;cursor:pointer" data-remove-closure="${esc(c.id)}">✕ Remove</button>
+      </div>`;
+    }).join('');
+  }
+
   document.addEventListener('click', e => {
+    // Add custom closure
+    if (e.target.closest('#addCustomClosureBtn')) {
+      const dateEl   = document.getElementById('customClosureDate');
+      const reasonEl = document.getElementById('customClosureReason');
+      const date   = (dateEl   ? dateEl.value   : '').trim();
+      const reason = (reasonEl ? reasonEl.value : '').trim();
+      if (!date)   { toast('Please pick a date for the closure.'); return; }
+      if (!reason) { toast('Please enter a reason for the closure.'); return; }
+      const id = Math.random().toString(16).slice(2, 10);
+      holidayData.custom_closures = [...(holidayData.custom_closures || []), { id, date, reason }];
+      if (dateEl)   dateEl.value   = '';
+      if (reasonEl) reasonEl.value = '';
+      renderCustomClosures();
+      // Auto-save immediately so the public site sees it right away
+      saveHolidays().then(() => toast('Emergency closure added and saved!'));
+      return;
+    }
+    // Remove custom closure
+    const removeBtn = e.target.closest('[data-remove-closure]');
+    if (removeBtn) {
+      const id = removeBtn.getAttribute('data-remove-closure');
+      holidayData.custom_closures = (holidayData.custom_closures || []).filter(c => c.id !== id);
+      renderCustomClosures();
+      saveHolidays().then(() => toast('Closure removed and saved!'));
+      return;
+    }
+    // Save all closures button
     const btn = e.target.closest('#saveHolidaysBtn');
     if (!btn) return;
-    const observed = [...document.querySelectorAll('[data-holiday-key]:checked')].map(cb => cb.getAttribute('data-holiday-key'));
-    const extra_notes = (document.getElementById('holiday-extra-notes') || {}).value || '';
-    holidayData = { observed, extra_notes };
-    api('PUT', '/api/content/holiday_closures', holidayData)
-      .then(() => toast('Holiday closures saved!'))
-      .catch(e => toast('Error: ' + e.message));
+    saveHolidays().then(() => toast('All closures saved!'));
   });
+
+  function saveHolidays() {
+    const observed    = [...document.querySelectorAll('[data-holiday-key]:checked')].map(cb => cb.getAttribute('data-holiday-key'));
+    const extra_notes = (document.getElementById('holiday-extra-notes') || {}).value || '';
+    holidayData = { observed, extra_notes, custom_closures: holidayData.custom_closures || [] };
+    return api('PUT', '/api/content/holiday_closures', holidayData)
+      .catch(e => { toast('Error: ' + e.message); throw e; });
+  }
 
   /* ================================================================
      PROGRAMS

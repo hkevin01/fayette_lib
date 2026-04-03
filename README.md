@@ -980,8 +980,8 @@ cat site/data/audit_log.json | python3 -m json.tool | head -100
 | **Phase 2 — Admin Portal** | Q1 2026 | Staff CMS: events, hours, announcements, programs, images | ✅ Complete |
 | **Phase 3 — Security Hardening** | Q1 2026 | OWASP Top 10 mitigations; dual-layer rate limiting; bcrypt + JWT | ✅ Complete |
 | **Phase 4 — Resilience** | Q1 2026 | Auto-backup, recycle bin, activity log, atomic writes | ✅ Complete |
-| **Phase 5 — Production TLS** | Q2 2026 | Let's Encrypt cert automation; HSTS preload | 🟡 In Progress |
-| **Phase 6 — Production Deploy** | Q2 2026 | Go live at fayette.lib.wv.us; DNS cutover; smoke tests | ⭕ Planned |
+| **Phase 5 — Production TLS** | Q2 2026 | Let's Encrypt cert automation; HSTS preload | ✅ Complete |
+| **Phase 6 — Production Deploy** | Q2 2026 | Go live at fayette.lib.wv.us; DNS cutover; smoke tests | 🟡 In Progress |
 | **Phase 7 — Analytics** | Q3 2026 | Self-hosted page-view analytics (no Google Analytics) | ⭕ Planned |
 | **Phase 8 — Mobile App** | Q4 2026 | Progressive web app (PWA) manifest + offline support | ⭕ Planned |
 | **Phase 9 — Multi-Staff** | 2027 | Optional: per-staff accounts with role-based permissions | ⭕ Backlog |

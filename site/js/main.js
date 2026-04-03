@@ -279,9 +279,23 @@
   function renderHoursBar() {
     const bar = document.getElementById('hoursBar');
     if (!bar || !siteData) return;
+
+    // ── Custom / Emergency Closure check ──────────────────────────────────
+    // If today has an emergency closure entry, override the bar immediately.
+    const today = new Date().toISOString().slice(0, 10);
+    const closures = (siteData.holiday_closures || {}).custom_closures || [];
+    const todayClosure = closures.find(function(c) { return c.date === today; });
+    if (todayClosure) {
+      bar.innerHTML = '<span class="open-badge closed">\u26a0\ufe0f Emergency Closure</span>' +
+        '<p><strong>All library branches are closed today.</strong><br>' +
+        '<span style="font-size:.9em">' + (todayClosure.reason || 'Unplanned closure \u2014 check back soon.') + '</span></p>' +
+        '<a href="' + pageBase() + 'locations.html" class="text-sm">View all locations \u2192</a>';
+      return;
+    }
+
     // Use the main Oak Hill branch (id: oak-hill) or fall back to first branch
     const branches = siteData.branches || [];
-    const branch = branches.find(b => b.id === 'oak-hill') || branches.find(b => b.id !== 'admin') || branches[0];
+    const branch = branches.find(function(b) { return b.id === 'oak-hill'; }) || branches.find(function(b) { return b.id !== 'admin'; }) || branches[0];
     if (!branch) return;
 
     const now = new Date();
