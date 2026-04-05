@@ -107,6 +107,7 @@ Rural public libraries often lack IT budgets for commercial CMS platforms. This 
 | **Digital resources directory** | Staff-managed list of eBook/database links via admin portal | Patron-facing resource page always stays current | ✅ Live |
 | **Holiday closure management** | Staff check holiday checkboxes; changes live immediately | Patrons never show up to a closed library | ✅ Live |
 | **Docker Compose deployment** | Two-container stack: `fcpl-site` (Nginx) + `fcpl-admin` (Node.js) | Deploy anywhere Docker runs — VPS, bare metal, local | ✅ Live |
+| **Simple / No-JS Site** | JavaScript-free HTML 4.01 site at `/simple/` for IE6–8, Windows XP, and JS-disabled browsers | Auto-detected via nginx UA map + `<noscript>` redirect; usable on any browser without JS | ✅ Live |
 
 ---
 
@@ -132,6 +133,7 @@ Rural public libraries often lack IT budgets for commercial CMS platforms. This 
 │  │  │  /css, /js       → Static assets (30d cache)         │    │   │
 │  │  │  /images/*       → Uploaded + static images          │    │   │
 │  │  │  /data/*.json    → Content files (no-cache)          │    │   │
+│  │  │  /simple/*       → Simple site (IE6–8 / no-JS)       │    │   │
 │  │  │  /admin/*   ─────────────────────────────────────┐   │    │   │
 │  │  │  /api/*     ─────────────────────────────────┐   │   │    │   │
 │  │  └──────────────────────────────────────────────│───│───┘    │   │
@@ -170,7 +172,7 @@ Rural public libraries often lack IT budgets for commercial CMS platforms. This 
 | `admin/public/index.html` | Vanilla JS SPA | Staff content management portal — tabbed, responsive |
 | `site/data/events.json` | JSON | Live event data — read by both nginx (static) and admin API |
 | `site/data/content.json` | JSON | All other site content: branches, hours, programs, announcements |
-| `docker/nginx.conf` | Nginx config | Security headers, CSP, rate limit zones, proxy rules, caching |
+| `docker/nginx.conf` | Nginx config | Security headers, CSP, rate limit zones, proxy rules, caching, legacy UA detection → `/simple/` |
 | `admin/.env` | Environment file | Credentials and secrets — never committed to git |
 
 ### Data Flow
@@ -390,7 +392,16 @@ Browser visits http://library-domain.org
         ├── /pages/ebooks.html    ► Digital resources list
         ├── /pages/bookmobile.html► Bookmobile schedule
         ├── /pages/homebound.html ► Homebound delivery service
-        └── /pages/...            ► 16 total pages
+        ├── /pages/...            ► 16 total pages
+        │
+        └── Legacy / no-JS browsers
+                │
+                ├── IE6–8 or Windows XP: nginx UA map detects user-agent
+                │       └── 302 redirect ──────────────────► /simple/
+                │
+                └── JavaScript disabled (any modern browser)
+                        ├── index.html: <noscript> meta-refresh → /simple/
+                        └── pages/*.html: <noscript> amber banner with manual link
 ```
 
 ### Staff Content Management Flow
@@ -737,6 +748,21 @@ fayette_lib/
 │   │   ├── jobs.html
 │   │   ├── catalog.html
 │   │   └── myaccount.html
+│   ├── simple/                       ← No-JS / legacy browser version (IE6+)
+│   │   ├── index.html                ← Simple homepage — HTML 4.01, no JS required
+│   │   ├── about.html
+│   │   ├── locations.html
+│   │   ├── programs.html
+│   │   ├── ebooks.html
+│   │   ├── bookmobile.html
+│   │   ├── homebound.html
+│   │   ├── research.html
+│   │   ├── news.html
+│   │   ├── jobs.html
+│   │   ├── catalog.html
+│   │   ├── archives.html
+│   │   └── css/
+│   │       └── simple.css            ← IE6+ compatible stylesheet (float layout, no CSS custom properties)
 │   ├── images/                       ← Static images + uploaded event photos
 │   └── data/
 │       ├── events.json               ← All calendar events (live data)
@@ -981,6 +1007,7 @@ cat site/data/audit_log.json | python3 -m json.tool | head -100
 | **Phase 3 — Security Hardening** | Q1 2026 | OWASP Top 10 mitigations; dual-layer rate limiting; bcrypt + JWT | ✅ Complete |
 | **Phase 4 — Resilience** | Q1 2026 | Auto-backup, recycle bin, activity log, atomic writes | ✅ Complete |
 | **Phase 5 — Production TLS** | Q2 2026 | Let's Encrypt cert automation; HSTS preload | ✅ Complete |
+| **Phase 5b — Legacy Browser Support** | Q2 2026 | No-JS simple site at `/simple/`; nginx IE6–8 + Windows XP UA detection; `<noscript>` redirects and banners on all pages | ✅ Complete |
 | **Phase 6 — Production Deploy** | Q2 2026 | Go live at fayette.lib.wv.us; DNS cutover; smoke tests | 🟡 In Progress |
 | **Phase 7 — Analytics** | Q3 2026 | Self-hosted page-view analytics (no Google Analytics) | ⭕ Planned |
 | **Phase 8 — Mobile App** | Q4 2026 | Progressive web app (PWA) manifest + offline support | ⭕ Planned |
@@ -998,6 +1025,12 @@ Yes — **🗑️ Recycle Bin** tab. Items are kept for 60 days.
 
 **Q: How do I close the library for a holiday?**
 Check the holiday in **🕒 Branch Hours → Holiday Closures**, or add a calendar event with category `closure`.
+
+**Q: What is the simple site and who uses it?**
+The simple site at `/simple/` is a JavaScript-free HTML 4.01 version of the site. It is served automatically to browsers that don't support modern JS — specifically IE6, IE7, IE8, and any browser running on Windows XP. It is also shown to any browser with JavaScript manually disabled, via a `<noscript>` meta-refresh on the homepage and amber warning banners on all subpages.
+
+**Q: How do I update the content in the simple site?**
+Edit the HTML files directly in `site/simple/`. The content is hardcoded (no JSON fetching). After editing, rebuild with `sudo docker compose up -d --build`.
 
 **Q: A staff member left — how do I prevent access?**
 Change the admin password. See [Section 10 — Security](#10-security). Takes effect immediately on restart.
