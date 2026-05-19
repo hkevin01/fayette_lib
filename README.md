@@ -62,14 +62,14 @@ The **FCPL Website & Staff Portal** is a fully self-hosted web platform for [Fay
 
 ### What Problem It Solves
 
-| Problem | Solution |
+| <sub>Problem</sub> | <sub>Solution</sub> |
 |---------|----------|
-| Legacy CMS required vendor maintenance contracts | Fully self-hosted on any Docker-capable server |
-| Staff needed technical skills to update content | Browser-based admin portal — no coding needed |
-| Website inaccessible to patrons with disabilities | WCAG 2.1 AA compliant throughout |
-| No content backup or audit trail | Auto-backup + 60-day recycle bin + activity log |
-| Expensive hosted platform subscriptions | Runs on a single VPS or local server, zero SaaS fees |
-| Slow page loads from heavy JavaScript frameworks | Zero-framework static HTML — loads in milliseconds |
+| <sub>Legacy CMS required vendor maintenance contracts</sub> | <sub>Fully self-hosted on any Docker-capable server</sub> |
+| <sub>Staff needed technical skills to update content</sub> | <sub>Browser-based admin portal — no coding needed</sub> |
+| <sub>Website inaccessible to patrons with disabilities</sub> | <sub>WCAG 2.1 AA compliant throughout</sub> |
+| <sub>No content backup or audit trail</sub> | <sub>Auto-backup + 60-day recycle bin + activity log</sub> |
+| <sub>Expensive hosted platform subscriptions</sub> | <sub>Runs on a single VPS or local server, zero SaaS fees</sub> |
+| <sub>Slow page loads from heavy JavaScript frameworks</sub> | <sub>Zero-framework static HTML — loads in milliseconds</sub> |
 
 ### Who It Is For
 
@@ -90,24 +90,24 @@ Rural public libraries often lack IT budgets for commercial CMS platforms. This 
 
 ## 2. Key Features
 
-| Feature | Description | Impact | Status |
+| <sub>Feature</sub> | <sub>Description</sub> | <sub>Impact</sub> | <sub>Status</sub> |
 |---------|-------------|--------|--------|
-| **Zero-framework static site** | Pure HTML/CSS/JS — no React, Vue, or build pipeline | Sub-100ms page loads; no Node.js needed on host | ✅ Live |
-| **Browser-based CMS** | Staff manage all content via a tabbed SPA admin portal | No coding or terminal access required for content changes | ✅ Live |
-| **WCAG 2.1 AA Accessibility** | Skip links, ARIA labels, keyboard navigation, accessibility toolbar | Usable by patrons on screen readers, elderly, and children | ✅ Live |
-| **Multi-layer security** | Nginx + Express dual rate-limiting, bcrypt(12), JWT, Helmet.js | Resistant to brute-force, XSS, clickjacking, CSRF, injection | ✅ Live |
-| **Soft-delete recycle bin** | Deleted items recoverable for 60 days | Prevents accidental permanent loss of content | ✅ Live |
-| **Auto-backup before writes** | Snapshot of data files created before every destructive change | One-click rollback to any previous state | ✅ Live |
-| **Full audit log** | Every staff action logged with timestamp, IP, and detail | Accountability and forensics for every content change | ✅ Live |
-| **Self-signed / Let's Encrypt TLS** | Local: auto-generated self-signed cert. Production: Certbot script | HTTPS on port 8443 out of the box | ✅ Live |
-| **Image upload pipeline** | MIME-type validation, 5 MB cap, random filename on disk | Prevents file-type spoofing and enumerable URLs | ✅ Live |
-| **Interactive event calendar** | Dynamic calendar widget fed by `events.json` via API | Patrons see accurate upcoming events in real-time | ✅ Live |
-| **Bookmobile & Homebound pages** | Dedicated service pages for outreach programs | Serves patrons who cannot visit branches in person | ✅ Live |
-| **5-branch location maps** | OpenStreetMap embed with per-branch hours and directions | Works without Google Maps API; no cost, no rate limits | ✅ Live |
-| **Digital resources directory** | Staff-managed list of eBook/database links via admin portal | Patron-facing resource page always stays current | ✅ Live |
-| **Holiday closure management** | Staff check holiday checkboxes; changes live immediately | Patrons never show up to a closed library | ✅ Live |
-| **Docker Compose deployment** | Two-container stack: `fcpl-site` (Nginx) + `fcpl-admin` (Node.js) | Deploy anywhere Docker runs — VPS, bare metal, local | ✅ Live |
-| **Simple / No-JS Site** | JavaScript-free HTML 4.01 site at `/simple/` for IE6–8, Windows XP, and JS-disabled browsers | Auto-detected via nginx UA map + `<noscript>` redirect; usable on any browser without JS | ✅ Live |
+| <sub>**Zero-framework static site**</sub> | <sub>Pure HTML/CSS/JS — no React, Vue, or build pipeline</sub> | <sub>Sub-100ms page loads; no Node.js needed on host</sub> | <sub>✅ Live</sub> |
+| <sub>**Browser-based CMS**</sub> | <sub>Staff manage all content via a tabbed SPA admin portal</sub> | <sub>No coding or terminal access required for content changes</sub> | <sub>✅ Live</sub> |
+| <sub>**WCAG 2.1 AA Accessibility**</sub> | <sub>Skip links, ARIA labels, keyboard navigation, accessibility toolbar</sub> | <sub>Usable by patrons on screen readers, elderly, and children</sub> | <sub>✅ Live</sub> |
+| <sub>**Multi-layer security**</sub> | <sub>Nginx + Express dual rate-limiting, bcrypt(12), JWT, Helmet.js</sub> | <sub>Resistant to brute-force, XSS, clickjacking, CSRF, injection</sub> | <sub>✅ Live</sub> |
+| <sub>**Soft-delete recycle bin**</sub> | <sub>Deleted items recoverable for 60 days</sub> | <sub>Prevents accidental permanent loss of content</sub> | <sub>✅ Live</sub> |
+| <sub>**Auto-backup before writes**</sub> | <sub>Snapshot of data files created before every destructive change</sub> | <sub>One-click rollback to any previous state</sub> | <sub>✅ Live</sub> |
+| <sub>**Full audit log**</sub> | <sub>Every staff action logged with timestamp, IP, and detail</sub> | <sub>Accountability and forensics for every content change</sub> | <sub>✅ Live</sub> |
+| <sub>**Self-signed / Let's Encrypt TLS**</sub> | <sub>Local: auto-generated self-signed cert. Production: Certbot script</sub> | <sub>HTTPS on port 8443 out of the box</sub> | <sub>✅ Live</sub> |
+| <sub>**Image upload pipeline**</sub> | <sub>MIME-type validation, 5 MB cap, random filename on disk</sub> | <sub>Prevents file-type spoofing and enumerable URLs</sub> | <sub>✅ Live</sub> |
+| <sub>**Interactive event calendar**</sub> | <sub>Dynamic calendar widget fed by `events.json` via API</sub> | <sub>Patrons see accurate upcoming events in real-time</sub> | <sub>✅ Live</sub> |
+| <sub>**Bookmobile & Homebound pages**</sub> | <sub>Dedicated service pages for outreach programs</sub> | <sub>Serves patrons who cannot visit branches in person</sub> | <sub>✅ Live</sub> |
+| <sub>**5-branch location maps**</sub> | <sub>OpenStreetMap embed with per-branch hours and directions</sub> | <sub>Works without Google Maps API; no cost, no rate limits</sub> | <sub>✅ Live</sub> |
+| <sub>**Digital resources directory**</sub> | <sub>Staff-managed list of eBook/database links via admin portal</sub> | <sub>Patron-facing resource page always stays current</sub> | <sub>✅ Live</sub> |
+| <sub>**Holiday closure management**</sub> | <sub>Staff check holiday checkboxes; changes live immediately</sub> | <sub>Patrons never show up to a closed library</sub> | <sub>✅ Live</sub> |
+| <sub>**Docker Compose deployment**</sub> | <sub>Two-container stack: `fcpl-site` (Nginx) + `fcpl-admin` (Node.js)</sub> | <sub>Deploy anywhere Docker runs — VPS, bare metal, local</sub> | <sub>✅ Live</sub> |
+| <sub>**Simple / No-JS Site**</sub> | <sub>JavaScript-free HTML 4.01 site at `/simple/` for IE6–8, Windows XP, and JS-disabled browsers</sub> | <sub>Auto-detected via nginx UA map + `<noscript>` redirect; usable on any browser without JS</sub> | <sub>✅ Live</sub> |
 
 ---
 
@@ -164,16 +164,16 @@ Rural public libraries often lack IT budgets for commercial CMS platforms. This 
 
 ### Component Breakdown
 
-| Component | Technology | Role |
+| <sub>Component</sub> | <sub>Technology</sub> | <sub>Role</sub> |
 |-----------|-----------|------|
-| `fcpl-site` | `nginx:alpine` | Reverse proxy, static file serving, TLS termination, rate limiting |
-| `fcpl-admin` | `node:20-alpine` + Express | REST API for all content mutations; serves staff portal SPA |
-| `site/` | Plain HTML/CSS/JS | Public-facing website — 16 pages, no JS framework |
-| `admin/public/index.html` | Vanilla JS SPA | Staff content management portal — tabbed, responsive |
-| `site/data/events.json` | JSON | Live event data — read by both nginx (static) and admin API |
-| `site/data/content.json` | JSON | All other site content: branches, hours, programs, announcements |
-| `docker/nginx.conf` | Nginx config | Security headers, CSP, rate limit zones, proxy rules, caching, legacy UA detection → `/simple/` |
-| `admin/.env` | Environment file | Credentials and secrets — never committed to git |
+| <sub>`fcpl-site`</sub> | <sub>`nginx:alpine`</sub> | <sub>Reverse proxy, static file serving, TLS termination, rate limiting</sub> |
+| <sub>`fcpl-admin`</sub> | <sub>`node:20-alpine` + Express</sub> | <sub>REST API for all content mutations; serves staff portal SPA</sub> |
+| <sub>`site/`</sub> | <sub>Plain HTML/CSS/JS</sub> | <sub>Public-facing website — 16 pages, no JS framework</sub> |
+| <sub>`admin/public/index.html`</sub> | <sub>Vanilla JS SPA</sub> | <sub>Staff content management portal — tabbed, responsive</sub> |
+| <sub>`site/data/events.json`</sub> | <sub>JSON</sub> | <sub>Live event data — read by both nginx (static) and admin API</sub> |
+| <sub>`site/data/content.json`</sub> | <sub>JSON</sub> | <sub>All other site content: branches, hours, programs, announcements</sub> |
+| <sub>`docker/nginx.conf`</sub> | <sub>Nginx config</sub> | <sub>Security headers, CSP, rate limit zones, proxy rules, caching, legacy UA detection → `/simple/`</sub> |
+| <sub>`admin/.env`</sub> | <sub>Environment file</sub> | <sub>Credentials and secrets — never committed to git</sub> |
 
 ### Data Flow
 
@@ -211,31 +211,31 @@ POST/PUT/DELETE /admin/api/...
 
 ### Runtime Stack
 
-| Technology | Version | Why Chosen | Alternatives Considered | Tradeoffs |
+| <sub>Technology</sub> | <sub>Version</sub> | <sub>Why Chosen</sub> | <sub>Alternatives Considered</sub> | <sub>Tradeoffs</sub> |
 |-----------|---------|-----------|------------------------|-----------|
-| **Docker + Compose** | 29.3 / 5.1 | Zero host dependencies; reproducible deployments; easy backup of bind-mounted volumes | Bare-metal nginx, Podman | Docker requires root or docker group; Compose v2 has no separate install |
-| **Nginx (Alpine)** | latest-alpine | Best-in-class static file serving; sub-ms latency; mature rate-limiting; tiny 8 MB image | Caddy, Apache, Traefik | Caddy has auto-HTTPS but adds complexity; Nginx config is well-understood by admins |
-| **Node.js (Alpine)** | 20 LTS | LTS stability; native `crypto` module; excellent ecosystem for JWT/bcrypt; 50 MB image | Deno, Python/Flask, Go | Deno too new for rural IT handoff; Go requires compiled binary; Python slower startup |
-| **Express.js** | 4.18 | Minimal, battle-tested, widely documented | Fastify, Koa, Hono | Fastify is faster but Express has more documentation for non-JS-native maintainers |
-| **Plain HTML/CSS/JS** | ES2020 | Zero build pipeline; no npm vulnerabilities in frontend; loads in <100ms | React, Vue, Astro, HTMX | Frameworks add maintenance burden and version rot — library may not have a dev on staff |
+| <sub>**Docker + Compose**</sub> | <sub>29.3 / 5.1</sub> | <sub>Zero host dependencies; reproducible deployments; easy backup of bind-mounted volumes</sub> | <sub>Bare-metal nginx, Podman</sub> | <sub>Docker requires root or docker group; Compose v2 has no separate install</sub> |
+| <sub>**Nginx (Alpine)**</sub> | <sub>latest-alpine</sub> | <sub>Best-in-class static file serving; sub-ms latency; mature rate-limiting; tiny 8 MB image</sub> | <sub>Caddy, Apache, Traefik</sub> | <sub>Caddy has auto-HTTPS but adds complexity; Nginx config is well-understood by admins</sub> |
+| <sub>**Node.js (Alpine)**</sub> | <sub>20 LTS</sub> | <sub>LTS stability; native `crypto` module; excellent ecosystem for JWT/bcrypt; 50 MB image</sub> | <sub>Deno, Python/Flask, Go</sub> | <sub>Deno too new for rural IT handoff; Go requires compiled binary; Python slower startup</sub> |
+| <sub>**Express.js**</sub> | <sub>4.18</sub> | <sub>Minimal, battle-tested, widely documented</sub> | <sub>Fastify, Koa, Hono</sub> | <sub>Fastify is faster but Express has more documentation for non-JS-native maintainers</sub> |
+| <sub>**Plain HTML/CSS/JS**</sub> | <sub>ES2020</sub> | <sub>Zero build pipeline; no npm vulnerabilities in frontend; loads in <100ms</sub> | <sub>React, Vue, Astro, HTMX</sub> | <sub>Frameworks add maintenance burden and version rot — library may not have a dev on staff</sub> |
 
 ### Security Dependencies (`admin/`)
 
-| Package | Version | Purpose | Why This One |
+| <sub>Package</sub> | <sub>Version</sub> | <sub>Purpose</sub> | <sub>Why This One</sub> |
 |---------|---------|---------|-------------|
-| `helmet` | ^7.2 | Sets 12 security response headers (CSP, HSTS, X-Frame-Options, etc.) | Industry standard; maintained by the Express team |
-| `bcryptjs` | ^2.4 | Password hashing at cost factor 12 | Pure JS (no native bindings); portable across Alpine |
-| `jsonwebtoken` | ^9.0 | JWT session tokens (HS256, 8-hour expiry) | Most widely audited JWT library for Node.js |
-| `express-rate-limit` | ^7.4 | Request rate limiting per IP (login + write + global) | Works with `trust proxy 1` behind Nginx; draft-7 headers |
-| `multer` | ^2.0 | Multipart file upload handling | Integrates cleanly with Express; supports `fileFilter` + `limits` |
+| <sub>`helmet`</sub> | <sub>^7.2</sub> | <sub>Sets 12 security response headers (CSP, HSTS, X-Frame-Options, etc.)</sub> | <sub>Industry standard; maintained by the Express team</sub> |
+| <sub>`bcryptjs`</sub> | <sub>^2.4</sub> | <sub>Password hashing at cost factor 12</sub> | <sub>Pure JS (no native bindings); portable across Alpine</sub> |
+| <sub>`jsonwebtoken`</sub> | <sub>^9.0</sub> | <sub>JWT session tokens (HS256, 8-hour expiry)</sub> | <sub>Most widely audited JWT library for Node.js</sub> |
+| <sub>`express-rate-limit`</sub> | <sub>^7.4</sub> | <sub>Request rate limiting per IP (login + write + global)</sub> | <sub>Works with `trust proxy 1` behind Nginx; draft-7 headers</sub> |
+| <sub>`multer`</sub> | <sub>^2.0</sub> | <sub>Multipart file upload handling</sub> | <sub>Integrates cleanly with Express; supports `fileFilter` + `limits`</sub> |
 
 ### Frontend Libraries (CDN via HTML `<script>`)
 
-| Library | Purpose | Notes |
+| <sub>Library</sub> | <sub>Purpose</sub> | <sub>Notes</sub> |
 |---------|---------|-------|
-| **Leaflet.js** (unpkg) | Interactive branch location maps | No Google Maps API key required; OpenStreetMap tiles are free |
-| **LibraryThing** (ltfl) | Book cover images in catalog widget | Optional external integration |
-| **CDN Fonts** | Typography | `fonts.cdnfonts.com` — scoped in CSP |
+| <sub>**Leaflet.js** (unpkg)</sub> | <sub>Interactive branch location maps</sub> | <sub>No Google Maps API key required; OpenStreetMap tiles are free</sub> |
+| <sub>**LibraryThing** (ltfl)</sub> | <sub>Book cover images in catalog widget</sub> | <sub>Optional external integration</sub> |
+| <sub>**CDN Fonts**</sub> | <sub>Typography</sub> | <sub>`fonts.cdnfonts.com` — scoped in CSP</sub> |
 
 ---
 
@@ -281,12 +281,12 @@ xdg-open http://localhost:8080/admin/
 
 ### Prerequisites
 
-| Requirement | Check | Install |
+| <sub>Requirement</sub> | <sub>Check</sub> | <sub>Install</sub> |
 |------------|-------|---------|
-| Docker ≥ 24 | `docker --version` | [docs.docker.com](https://docs.docker.com/get-docker/) |
-| Docker Compose v2 | `docker compose version` | Included with Docker Desktop; `pacman -S docker-compose` on Arch |
-| OpenSSL | `openssl version` | Pre-installed on most Linux distros |
-| curl (optional) | `curl --version` | For endpoint verification |
+| <sub>Docker ≥ 24</sub> | <sub>`docker --version`</sub> | <sub>[docs.docker.com](https://docs.docker.com/get-docker/)</sub> |
+| <sub>Docker Compose v2</sub> | <sub>`docker compose version`</sub> | <sub>Included with Docker Desktop; `pacman -S docker-compose` on Arch</sub> |
+| <sub>OpenSSL</sub> | <sub>`openssl version`</sub> | <sub>Pre-installed on most Linux distros</sub> |
+| <sub>curl (optional)</sub> | <sub>`curl --version`</sub> | <sub>For endpoint verification</sub> |
 
 No Node.js, Python, npm, or build tools are needed on the host machine.
 
@@ -358,13 +358,13 @@ Sessions last **8 hours**, then require re-login.
 
 ### Development vs Production
 
-| Setting | Development | Production |
+| <sub>Setting</sub> | <sub>Development</sub> | <sub>Production</sub> |
 |---------|-------------|------------|
-| Password | `STAFF_PASSWORD=...` (plaintext OK) | `STAFF_PASSWORD_HASH=...` (bcrypt required) |
-| JWT Secret | Any string ≥ 32 chars | `openssl rand -hex 48` minimum |
-| TLS cert | Self-signed (browser warning) | Let's Encrypt via `scripts/get-cert.sh` |
-| HSTS preload | Off | Enable after HTTPS confirmed stable |
-| Port | 8080 / 8443 | 80 / 443 (reverse proxy or firewall redirect) |
+| <sub>Password</sub> | <sub>`STAFF_PASSWORD=...` (plaintext OK)</sub> | <sub>`STAFF_PASSWORD_HASH=...` (bcrypt required)</sub> |
+| <sub>JWT Secret</sub> | <sub>Any string ≥ 32 chars</sub> | <sub>`openssl rand -hex 48` minimum</sub> |
+| <sub>TLS cert</sub> | <sub>Self-signed (browser warning)</sub> | <sub>Let's Encrypt via `scripts/get-cert.sh`</sub> |
+| <sub>HSTS preload</sub> | <sub>Off</sub> | <sub>Enable after HTTPS confirmed stable</sub> |
+| <sub>Port</sub> | <sub>8080 / 8443</sub> | <sub>80 / 443 (reverse proxy or firewall redirect)</sub> |
 
 ---
 
@@ -449,23 +449,23 @@ Staff opens http://localhost:8080/admin/
 
 ### Tab Reference
 
-| Tab | Icon | What You Can Do |
+| <sub>Tab</sub> | <sub>Icon</sub> | <sub>What You Can Do</sub> |
 |-----|------|----------------|
-| Events | 📅 | Add / edit / delete calendar events; upload event photos |
-| Announcements | 📢 | Manage homepage sidebar announcements |
-| Branch Hours | 🕒 | Edit hours for all 5 branches; holiday closures |
-| Programs | 📚 | Storytime schedules, adult book club, Library Chef |
-| Digital Resources | 🌐 | Manage eBook/database/website links |
-| Analytics | 📊 | Page-view stats |
-| System | ⚡ | Server health check; restart signal |
-| Settings | ⚙️ | Site name, phone number, social media links |
-| Calendars | 📆 | Manage shareable calendar feeds |
-| Hosting Info | 🏠 | DNS, SSL cert status, server IP records |
-| Staff | 👥 | Director, assistant, bookmobile staff names |
-| Images | 🖼️ | Homepage slider photos and featured event cards |
-| Recycle Bin | 🗑️ | Restore items deleted in the last 60 days |
-| Activity Log | 🔍 | Full audit trail — every change with IP + timestamp |
-| Backups | 💾 | Browse and restore automatic pre-change snapshots |
+| <sub>Events</sub> | <sub>📅</sub> | <sub>Add / edit / delete calendar events; upload event photos</sub> |
+| <sub>Announcements</sub> | <sub>📢</sub> | <sub>Manage homepage sidebar announcements</sub> |
+| <sub>Branch Hours</sub> | <sub>🕒</sub> | <sub>Edit hours for all 5 branches; holiday closures</sub> |
+| <sub>Programs</sub> | <sub>📚</sub> | <sub>Storytime schedules, adult book club, Library Chef</sub> |
+| <sub>Digital Resources</sub> | <sub>🌐</sub> | <sub>Manage eBook/database/website links</sub> |
+| <sub>Analytics</sub> | <sub>📊</sub> | <sub>Page-view stats</sub> |
+| <sub>System</sub> | <sub>⚡</sub> | <sub>Server health check; restart signal</sub> |
+| <sub>Settings</sub> | <sub>⚙️</sub> | <sub>Site name, phone number, social media links</sub> |
+| <sub>Calendars</sub> | <sub>📆</sub> | <sub>Manage shareable calendar feeds</sub> |
+| <sub>Hosting Info</sub> | <sub>🏠</sub> | <sub>DNS, SSL cert status, server IP records</sub> |
+| <sub>Staff</sub> | <sub>👥</sub> | <sub>Director, assistant, bookmobile staff names</sub> |
+| <sub>Images</sub> | <sub>🖼️</sub> | <sub>Homepage slider photos and featured event cards</sub> |
+| <sub>Recycle Bin</sub> | <sub>🗑️</sub> | <sub>Restore items deleted in the last 60 days</sub> |
+| <sub>Activity Log</sub> | <sub>🔍</sub> | <sub>Full audit trail — every change with IP + timestamp</sub> |
+| <sub>Backups</sub> | <sub>💾</sub> | <sub>Browse and restore automatic pre-change snapshots</sub> |
 
 ### Adding an Event
 
@@ -510,9 +510,9 @@ All API endpoints are under `/admin/api/`. All mutating endpoints require a `Bea
 
 ### Authentication
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/auth/login` | POST | None | Exchange password for JWT |
+| <sub>`/admin/api/auth/login`</sub> | <sub>POST</sub> | <sub>None</sub> | <sub>Exchange password for JWT</sub> |
 
 **Request:**
 ```json
@@ -525,12 +525,12 @@ All API endpoints are under `/admin/api/`. All mutating endpoints require a `Bea
 
 ### Events
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/events` | GET | ✅ | List all events |
-| `/admin/api/events` | POST | ✅ | Create new event |
-| `/admin/api/events/:id` | PUT | ✅ | Update event by ID |
-| `/admin/api/events/:id` | DELETE | ✅ | Soft-delete event (moves to recycle bin) |
+| <sub>`/admin/api/events`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>List all events</sub> |
+| <sub>`/admin/api/events`</sub> | <sub>POST</sub> | <sub>✅</sub> | <sub>Create new event</sub> |
+| <sub>`/admin/api/events/:id`</sub> | <sub>PUT</sub> | <sub>✅</sub> | <sub>Update event by ID</sub> |
+| <sub>`/admin/api/events/:id`</sub> | <sub>DELETE</sub> | <sub>✅</sub> | <sub>Soft-delete event (moves to recycle bin)</sub> |
 
 **Event object fields:**
 ```json
@@ -549,54 +549,54 @@ All API endpoints are under `/admin/api/`. All mutating endpoints require a `Bea
 
 ### Announcements
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/announcements` | GET | ✅ | List all announcements |
-| `/admin/api/announcements` | POST | ✅ | Create announcement |
-| `/admin/api/announcements/:idx` | PUT | ✅ | Update by array index |
-| `/admin/api/announcements/:idx` | DELETE | ✅ | Soft-delete announcement |
+| <sub>`/admin/api/announcements`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>List all announcements</sub> |
+| <sub>`/admin/api/announcements`</sub> | <sub>POST</sub> | <sub>✅</sub> | <sub>Create announcement</sub> |
+| <sub>`/admin/api/announcements/:idx`</sub> | <sub>PUT</sub> | <sub>✅</sub> | <sub>Update by array index</sub> |
+| <sub>`/admin/api/announcements/:idx`</sub> | <sub>DELETE</sub> | <sub>✅</sub> | <sub>Soft-delete announcement</sub> |
 
 ### Content Sections
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/content/:section` | GET | ✅ | Read a content section |
-| `/admin/api/content/:section` | PUT | ✅ | Update a content section |
+| <sub>`/admin/api/content/:section`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>Read a content section</sub> |
+| <sub>`/admin/api/content/:section`</sub> | <sub>PUT</sub> | <sub>✅</sub> | <sub>Update a content section</sub> |
 
 **Allowed sections:** `site` · `staff` · `branches` · `programs` · `digital_resources` · `services` · `memorial_program` · `hosting` · `holiday_closures` · `homepage_features` · `jobs`
 
 ### Images
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/upload` | POST | ✅ | Upload image (multipart/form-data) |
+| <sub>`/admin/api/upload`</sub> | <sub>POST</sub> | <sub>✅</sub> | <sub>Upload image (multipart/form-data)</sub> |
 
 Accepted: JPEG · PNG · GIF · WebP · Max 5 MB
 Returns: `{ "url": "/images/events/timestamp-randomhex.ext" }`
 
 ### System & Audit
 
-| Endpoint | Method | Auth | Description |
+| <sub>Endpoint</sub> | <sub>Method</sub> | <sub>Auth</sub> | <sub>Description</sub> |
 |---------|--------|------|-------------|
-| `/admin/api/recycle-bin` | GET | ✅ | List deleted items |
-| `/admin/api/recycle-bin/:bin_id/restore` | POST | ✅ | Restore an item |
-| `/admin/api/recycle-bin/:bin_id` | DELETE | ✅ | Permanently delete |
-| `/admin/api/audit-log` | GET | ✅ | Last 500 audit entries |
-| `/admin/api/backups` | GET | ✅ | List available backups |
-| `/admin/api/backups/restore` | POST | ✅ | Restore a backup |
+| <sub>`/admin/api/recycle-bin`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>List deleted items</sub> |
+| <sub>`/admin/api/recycle-bin/:bin_id/restore`</sub> | <sub>POST</sub> | <sub>✅</sub> | <sub>Restore an item</sub> |
+| <sub>`/admin/api/recycle-bin/:bin_id`</sub> | <sub>DELETE</sub> | <sub>✅</sub> | <sub>Permanently delete</sub> |
+| <sub>`/admin/api/audit-log`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>Last 500 audit entries</sub> |
+| <sub>`/admin/api/backups`</sub> | <sub>GET</sub> | <sub>✅</sub> | <sub>List available backups</sub> |
+| <sub>`/admin/api/backups/restore`</sub> | <sub>POST</sub> | <sub>✅</sub> | <sub>Restore a backup</sub> |
 
 ### Response Conventions
 
-| Status | Meaning |
+| <sub>Status</sub> | <sub>Meaning</sub> |
 |--------|---------|
-| `200 OK` | Read success |
-| `201 Created` | Write success |
-| `400 Bad Request` | Invalid input |
-| `401 Unauthorized` | Missing or expired JWT |
-| `404 Not Found` | Resource doesn't exist |
-| `413 Payload Too Large` | Image over 5 MB |
-| `429 Too Many Requests` | Rate limit exceeded |
-| `500 Internal Server Error` | Server-side failure |
+| <sub>`200 OK`</sub> | <sub>Read success</sub> |
+| <sub>`201 Created`</sub> | <sub>Write success</sub> |
+| <sub>`400 Bad Request`</sub> | <sub>Invalid input</sub> |
+| <sub>`401 Unauthorized`</sub> | <sub>Missing or expired JWT</sub> |
+| <sub>`404 Not Found`</sub> | <sub>Resource doesn't exist</sub> |
+| <sub>`413 Payload Too Large`</sub> | <sub>Image over 5 MB</sub> |
+| <sub>`429 Too Many Requests`</sub> | <sub>Rate limit exceeded</sub> |
+| <sub>`500 Internal Server Error`</sub> | <sub>Server-side failure</sub> |
 
 ---
 
@@ -633,43 +633,43 @@ Internet Request
 
 ### Security Headers (Nginx — all responses)
 
-| Header | Value |
+| <sub>Header</sub> | <sub>Value</sub> |
 |--------|-------|
-| `X-Frame-Options` | `SAMEORIGIN` |
-| `X-Content-Type-Options` | `nosniff` |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | Camera/mic/payment blocked; geolocation self-only |
-| `X-DNS-Prefetch-Control` | `off` |
-| `Cross-Origin-Opener-Policy` | `same-origin` |
-| `Content-Security-Policy` | Restricts scripts/styles/images/frames to trusted origins |
+| <sub>`X-Frame-Options`</sub> | <sub>`SAMEORIGIN`</sub> |
+| <sub>`X-Content-Type-Options`</sub> | <sub>`nosniff`</sub> |
+| <sub>`Referrer-Policy`</sub> | <sub>`strict-origin-when-cross-origin`</sub> |
+| <sub>`Permissions-Policy`</sub> | <sub>Camera/mic/payment blocked; geolocation self-only</sub> |
+| <sub>`X-DNS-Prefetch-Control`</sub> | <sub>`off`</sub> |
+| <sub>`Cross-Origin-Opener-Policy`</sub> | <sub>`same-origin`</sub> |
+| <sub>`Content-Security-Policy`</sub> | <sub>Restricts scripts/styles/images/frames to trusted origins</sub> |
 
 ### Additional Admin Headers (Helmet.js)
 
-| Header | Value |
+| <sub>Header</sub> | <sub>Value</sub> |
 |--------|-------|
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` |
-| `X-Frame-Options` | `DENY` (stricter for admin) |
-| `Content-Security-Policy` | Admin-specific; blocks all external CDNs |
+| <sub>`Strict-Transport-Security`</sub> | <sub>`max-age=31536000; includeSubDomains`</sub> |
+| <sub>`X-Frame-Options`</sub> | <sub>`DENY` (stricter for admin)</sub> |
+| <sub>`Content-Security-Policy`</sub> | <sub>Admin-specific; blocks all external CDNs</sub> |
 
 ### Rate Limits
 
-| Endpoint | Nginx | Express |
+| <sub>Endpoint</sub> | <sub>Nginx</sub> | <sub>Express</sub> |
 |---------|-------|---------|
-| Login (`/admin/api/auth/login`) | 5 req/min, burst 3 | 10 req/15 min |
-| Admin API writes | 30 req/min, burst 10 | 60 req/15 min |
-| All admin API | — | 200 req/15 min |
-| Public site | 120 req/min, burst 30 | — |
+| <sub>Login (`/admin/api/auth/login`)</sub> | <sub>5 req/min, burst 3</sub> | <sub>10 req/15 min</sub> |
+| <sub>Admin API writes</sub> | <sub>30 req/min, burst 10</sub> | <sub>60 req/15 min</sub> |
+| <sub>All admin API</sub> | <sub>—</sub> | <sub>200 req/15 min</sub> |
+| <sub>Public site</sub> | <sub>120 req/min, burst 30</sub> | <sub>—</sub> |
 
 ### OWASP Top 10 Mitigations
 
-| OWASP Risk | Mitigation |
+| <sub>OWASP Risk</sub> | <sub>Mitigation</sub> |
 |-----------|------------|
-| A02 Cryptographic Failures | bcrypt(12) for passwords; HS256 JWT with strong secret |
-| A03 Injection | All inputs sanitized and truncated; no `eval`/`exec`; no SQL |
-| A05 Misconfiguration | Helmet defaults; `server_tokens off`; no X-Powered-By header |
-| A06 Vulnerable Components | Pinned npm dependencies; minimal image size |
-| A07 Auth Failures | Rate limiting on login; JWT expiry; constant-time password comparison |
-| A08 Software Integrity | Atomic writes (write→temp→rename); no partial JSON on crash |
+| <sub>A02 Cryptographic Failures</sub> | <sub>bcrypt(12) for passwords; HS256 JWT with strong secret</sub> |
+| <sub>A03 Injection</sub> | <sub>All inputs sanitized and truncated; no `eval`/`exec`; no SQL</sub> |
+| <sub>A05 Misconfiguration</sub> | <sub>Helmet defaults; `server_tokens off`; no X-Powered-By header</sub> |
+| <sub>A06 Vulnerable Components</sub> | <sub>Pinned npm dependencies; minimal image size</sub> |
+| <sub>A07 Auth Failures</sub> | <sub>Rate limiting on login; JWT expiry; constant-time password comparison</sub> |
+| <sub>A08 Software Integrity</sub> | <sub>Atomic writes (write→temp→rename); no partial JSON on crash</sub> |
 
 ### Changing the Password (Staff Departure)
 
@@ -779,10 +779,10 @@ fayette_lib/
 
 **The two key data files:**
 
-| File | Contents | Who edits it |
+| <sub>File</sub> | <sub>Contents</sub> | <sub>Who edits it</sub> |
 |------|---------|-------------|
-| `site/data/events.json` | All calendar events with dates, times, locations | Admin portal → Events tab |
-| `site/data/content.json` | Branch hours, announcements, programs, staff, settings | Admin portal → all other tabs |
+| <sub>`site/data/events.json`</sub> | <sub>All calendar events with dates, times, locations</sub> | <sub>Admin portal → Events tab</sub> |
+| <sub>`site/data/content.json`</sub> | <sub>Branch hours, announcements, programs, staff, settings</sub> | <sub>Admin portal → all other tabs</sub> |
 
 ---
 
@@ -898,13 +898,13 @@ Open `site/css/style.css` and edit the CSS variables in `:root { ... }` at the t
 
 ### Server Requirements
 
-| Resource | Minimum | Recommended |
+| <sub>Resource</sub> | <sub>Minimum</sub> | <sub>Recommended</sub> |
 |---------|---------|-------------|
-| CPU | 1 vCPU | 2 vCPU |
-| RAM | 512 MB | 1 GB |
-| Disk | 5 GB | 20 GB |
-| OS | Any Linux with Docker | Ubuntu 24 LTS / Arch |
-| Inbound ports | 80, 443 | 80, 443 |
+| <sub>CPU</sub> | <sub>1 vCPU</sub> | <sub>2 vCPU</sub> |
+| <sub>RAM</sub> | <sub>512 MB</sub> | <sub>1 GB</sub> |
+| <sub>Disk</sub> | <sub>5 GB</sub> | <sub>20 GB</sub> |
+| <sub>OS</sub> | <sub>Any Linux with Docker</sub> | <sub>Ubuntu 24 LTS / Arch</sub> |
+| <sub>Inbound ports</sub> | <sub>80, 443</sub> | <sub>80, 443</sub> |
 
 ### DNS Setup
 
@@ -1000,18 +1000,18 @@ cat site/data/audit_log.json | python3 -m json.tool | head -100
 
 ## 17. Project Roadmap
 
-| Phase | Timeline | Goals | Status |
+| <sub>Phase</sub> | <sub>Timeline</sub> | <sub>Goals</sub> | <sub>Status</sub> |
 |-------|----------|-------|--------|
-| **Phase 1 — Core Site** | Q1 2026 | Static website with all 16 pages; Docker stack; WCAG 2.1 AA | ✅ Complete |
-| **Phase 2 — Admin Portal** | Q1 2026 | Staff CMS: events, hours, announcements, programs, images | ✅ Complete |
-| **Phase 3 — Security Hardening** | Q1 2026 | OWASP Top 10 mitigations; dual-layer rate limiting; bcrypt + JWT | ✅ Complete |
-| **Phase 4 — Resilience** | Q1 2026 | Auto-backup, recycle bin, activity log, atomic writes | ✅ Complete |
-| **Phase 5 — Production TLS** | Q2 2026 | Let's Encrypt cert automation; HSTS preload | ✅ Complete |
-| **Phase 5b — Legacy Browser Support** | Q2 2026 | No-JS simple site at `/simple/`; nginx IE6–8 + Windows XP UA detection; `<noscript>` redirects and banners on all pages | ✅ Complete |
-| **Phase 6 — Production Deploy** | Q2 2026 | Go live at fayette.lib.wv.us; DNS cutover; smoke tests | 🟡 In Progress |
-| **Phase 7 — Analytics** | Q3 2026 | Self-hosted page-view analytics (no Google Analytics) | ⭕ Planned |
-| **Phase 8 — Mobile App** | Q4 2026 | Progressive web app (PWA) manifest + offline support | ⭕ Planned |
-| **Phase 9 — Multi-Staff** | 2027 | Optional: per-staff accounts with role-based permissions | ⭕ Backlog |
+| <sub>**Phase 1 — Core Site**</sub> | <sub>Q1 2026</sub> | <sub>Static website with all 16 pages; Docker stack; WCAG 2.1 AA</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 2 — Admin Portal**</sub> | <sub>Q1 2026</sub> | <sub>Staff CMS: events, hours, announcements, programs, images</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 3 — Security Hardening**</sub> | <sub>Q1 2026</sub> | <sub>OWASP Top 10 mitigations; dual-layer rate limiting; bcrypt + JWT</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 4 — Resilience**</sub> | <sub>Q1 2026</sub> | <sub>Auto-backup, recycle bin, activity log, atomic writes</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 5 — Production TLS**</sub> | <sub>Q2 2026</sub> | <sub>Let's Encrypt cert automation; HSTS preload</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 5b — Legacy Browser Support**</sub> | <sub>Q2 2026</sub> | <sub>No-JS simple site at `/simple/`; nginx IE6–8 + Windows XP UA detection; `<noscript>` redirects and banners on all pages</sub> | <sub>✅ Complete</sub> |
+| <sub>**Phase 6 — Production Deploy**</sub> | <sub>Q2 2026</sub> | <sub>Go live at fayette.lib.wv.us; DNS cutover; smoke tests</sub> | <sub>🟡 In Progress</sub> |
+| <sub>**Phase 7 — Analytics**</sub> | <sub>Q3 2026</sub> | <sub>Self-hosted page-view analytics (no Google Analytics)</sub> | <sub>⭕ Planned</sub> |
+| <sub>**Phase 8 — Mobile App**</sub> | <sub>Q4 2026</sub> | <sub>Progressive web app (PWA) manifest + offline support</sub> | <sub>⭕ Planned</sub> |
+| <sub>**Phase 9 — Multi-Staff**</sub> | <sub>2027</sub> | <sub>Optional: per-staff accounts with role-based permissions</sub> | <sub>⭕ Backlog</sub> |
 
 ---
 
